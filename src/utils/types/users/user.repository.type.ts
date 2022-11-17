@@ -1,0 +1,8 @@
+
+interface BaseUserRepository {
+
+};
+
+export {
+    BaseUserRepository
+};
