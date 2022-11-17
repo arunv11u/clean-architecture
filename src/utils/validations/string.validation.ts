@@ -1,8 +1,8 @@
-import { GenericValidationError } from "../errors";
+import { GenericError } from "../errors";
 
 const checkStrMaxLen = (inputData: string, length: number): boolean => {
-    if (!inputData || (typeof inputData !== "string")) throw new GenericValidationError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
-    if (!length || (typeof length !== "number")) throw new GenericValidationError({ error: new Error("Maximum length input is invalid, expected a number"), errorCode: 500 });
+    if (!inputData || (typeof inputData !== "string")) throw new GenericError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
+    if (!length || (typeof length !== "number")) throw new GenericError({ error: new Error("Maximum length input is invalid, expected a number"), errorCode: 500 });
 
     if (inputData.length <= length) return true;
 
@@ -10,8 +10,8 @@ const checkStrMaxLen = (inputData: string, length: number): boolean => {
 };
 
 const checkStrMinLen = (inputData: string, length: number): boolean => {
-    if (!inputData || (typeof inputData !== "string")) throw new GenericValidationError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
-    if (!length || (typeof length !== "number")) throw new GenericValidationError({ error: new Error("Minimum length input is invalid, expected a number"), errorCode: 500 });
+    if (!inputData || (typeof inputData !== "string")) throw new GenericError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
+    if (!length || (typeof length !== "number")) throw new GenericError({ error: new Error("Minimum length input is invalid, expected a number"), errorCode: 500 });
 
     if (inputData.length >= length) return true;
 
@@ -19,7 +19,7 @@ const checkStrMinLen = (inputData: string, length: number): boolean => {
 };
 
 const checkValidEmail = (inputData: string): boolean => {
-    if (!inputData || (typeof inputData !== "string")) throw new GenericValidationError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
+    if (!inputData || (typeof inputData !== "string")) throw new GenericError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
 
     return !!String(inputData)
         .toLowerCase()
@@ -29,7 +29,7 @@ const checkValidEmail = (inputData: string): boolean => {
 };
 
 const allowEmptyStr = (inputData: string): boolean => {
-    if ((inputData !== "" && !inputData) || (typeof inputData !== "string")) throw new GenericValidationError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
+    if ((inputData !== "" && !inputData) || (typeof inputData !== "string")) throw new GenericError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
 
     return true;
 };

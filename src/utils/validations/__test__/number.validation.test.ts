@@ -1,4 +1,4 @@
-import { GenericValidationError } from "../../errors";
+import { GenericError } from "../../errors";
 import { checkNumMaxVal, checkNumMinVal } from '../number.validation';
 
 
@@ -6,17 +6,17 @@ describe("Basic Input Validation", () => {
     describe(`"checkNumMaxVal" fn`, () => {
         describe("Exception Path", () => {
             it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkNumMaxVal(undefined as any, 9)).toThrow(GenericValidationError);
+                expect(() => checkNumMaxVal(undefined as any, 9)).toThrow(GenericError);
                 expect(() => checkNumMaxVal(undefined as any, 9)).toThrow("Input data is invalid, expected a number");
             });
 
             it("Passing array as an input data, should throw an error", () => {
-                expect(() => checkNumMaxVal([] as any, 0)).toThrow(GenericValidationError);
+                expect(() => checkNumMaxVal([] as any, 0)).toThrow(GenericError);
                 expect(() => checkNumMaxVal([] as any, 0)).toThrow("Input data is invalid, expected a number");
             });
 
             it("Passing undefined as an input to maximum value, should throw an error", () => {
-                expect(() => checkNumMaxVal(10, undefined as any)).toThrow(GenericValidationError);
+                expect(() => checkNumMaxVal(10, undefined as any)).toThrow(GenericError);
                 expect(() => checkNumMaxVal(0, undefined as any)).toThrow("Maximum value input is invalid, expected a number");
             });
         });
@@ -42,17 +42,17 @@ describe("Basic Input Validation", () => {
     describe(`"checkNumMinVal" fn`, () => {
         describe("Exception Path", () => {
             it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkNumMinVal(undefined as any, 9)).toThrow(GenericValidationError);
+                expect(() => checkNumMinVal(undefined as any, 9)).toThrow(GenericError);
                 expect(() => checkNumMinVal(undefined as any, 9)).toThrow("Input data is invalid, expected a number");
             });
 
             it("Passing array as an input data, should throw an error", () => {
-                expect(() => checkNumMinVal([] as any, 0)).toThrow(GenericValidationError);
+                expect(() => checkNumMinVal([] as any, 0)).toThrow(GenericError);
                 expect(() => checkNumMinVal([] as any, 0)).toThrow("Input data is invalid, expected a number");
             });
 
             it("Passing undefined as an input to minimum value, should throw an error", () => {
-                expect(() => checkNumMinVal(10, undefined as any)).toThrow(GenericValidationError);
+                expect(() => checkNumMinVal(10, undefined as any)).toThrow(GenericError);
                 expect(() => checkNumMinVal(0, undefined as any)).toThrow("Minimum value input is invalid, expected a number");
             });
         });
