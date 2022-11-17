@@ -1,4 +1,4 @@
-import { GenericValidationError } from '../../errors';
+import { GenericError } from '../../errors';
 import { checkFieldIsNumber, checkFieldIsString, checkFieldIsBoolean, checkFieldIsObject, checkFieldIsArray } from '../type-check.validation';
 
 describe("Basic Input Validation", () => {
@@ -7,7 +7,7 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsString" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsString(undefined as any)).toThrow(GenericValidationError);
+                    expect(() => checkFieldIsString(undefined as any)).toThrow(GenericError);
                     expect(() => checkFieldIsString(undefined as any)).toThrow("Input data is invalid, expected a string");
                     expect(() => checkFieldIsString("")).toThrow("Input data is invalid, expected a string");
                 });
@@ -44,7 +44,7 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsNumber" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsNumber(undefined as any)).toThrow(GenericValidationError);
+                    expect(() => checkFieldIsNumber(undefined as any)).toThrow(GenericError);
                     expect(() => checkFieldIsNumber(undefined as any)).toThrow("Input data is invalid, expected a number");
                 });
             });
@@ -85,7 +85,7 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsBoolean" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsBoolean(undefined as any)).toThrow(GenericValidationError);
+                    expect(() => checkFieldIsBoolean(undefined as any)).toThrow(GenericError);
                     expect(() => checkFieldIsBoolean(undefined as any)).toThrow("Input data is invalid, expected a boolean");
                 });
             });
@@ -126,7 +126,7 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsObject" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsObject(undefined as any)).toThrow(GenericValidationError);
+                    expect(() => checkFieldIsObject(undefined as any)).toThrow(GenericError);
                     expect(() => checkFieldIsObject(undefined as any)).toThrow("Input data is invalid, expected an object");
                 });
             });
@@ -162,7 +162,7 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsArray" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsArray(undefined as any)).toThrow(GenericValidationError);
+                    expect(() => checkFieldIsArray(undefined as any)).toThrow(GenericError);
                     expect(() => checkFieldIsArray(undefined as any)).toThrow("Input data is invalid, expected an array");
                 });
             });

@@ -1,5 +1,5 @@
 import express from 'express';
-import { GenericValidationError } from './errors';
+import { GenericError } from './errors';
 import { BaseResponse, BaseUtilResponseHandler, TypedResponse } from './types';
 
 
@@ -33,36 +33,36 @@ class UtilResponseHandler implements BaseUtilResponseHandler {
         return response.status(201).send({ data });
     };
 
-    clientError(message: string = "Bad Request"): GenericValidationError {
-        return new GenericValidationError({ error: new Error(message), errorCode: 400 });
+    clientError(message: string = "Bad Request"): GenericError {
+        return new GenericError({ error: new Error(message), errorCode: 400 });
     };
 
-    unauthorized(message: string = "Unauthorized"): GenericValidationError {
-        return new GenericValidationError({ error: new Error(message), errorCode: 401 });
+    unauthorized(message: string = "Unauthorized"): GenericError {
+        return new GenericError({ error: new Error(message), errorCode: 401 });
     };
 
-    paymentRequired(message: string = "Payment required"): GenericValidationError {
-        return new GenericValidationError({ error: new Error(message), errorCode: 402 });
+    paymentRequired(message: string = "Payment required"): GenericError {
+        return new GenericError({ error: new Error(message), errorCode: 402 });
     };
 
-    forbidden(message: string = "Forbidden"): GenericValidationError {
-        return new GenericValidationError({ error: new Error(message), errorCode: 403 });
+    forbidden(message: string = "Forbidden"): GenericError {
+        return new GenericError({ error: new Error(message), errorCode: 403 });
     };
 
-    notFound(message: string = "Not found"): GenericValidationError {
-        return new GenericValidationError({ error: new Error(message), errorCode: 404 });
+    notFound(message: string = "Not found"): GenericError {
+        return new GenericError({ error: new Error(message), errorCode: 404 });
     };
 
-    conflict(message: string = "Conflict"): GenericValidationError {
-        return new GenericValidationError({ error: new Error(message), errorCode: 409 });
+    conflict(message: string = "Conflict"): GenericError {
+        return new GenericError({ error: new Error(message), errorCode: 409 });
     };
 
-    tooMany(message: string = "Too many requests"): GenericValidationError {
-        return new GenericValidationError({ error: new Error(message), errorCode: 429 });
+    tooMany(message: string = "Too many requests"): GenericError {
+        return new GenericError({ error: new Error(message), errorCode: 429 });
     };
 
-    internalError(message: string = "Internal server error"): GenericValidationError {
-        return new GenericValidationError({ error: new Error(message), errorCode: 500 });
+    internalError(message: string = "Internal server error"): GenericError {
+        return new GenericError({ error: new Error(message), errorCode: 500 });
     };
 };
 

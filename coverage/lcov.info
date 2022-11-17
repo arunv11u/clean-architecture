@@ -539,14 +539,14 @@ BRF:2
 BRH:0
 end_of_record
 TN:
-SF:src/utils/errors/generic-validation.error.ts
+SF:src/utils/errors/generic.error.ts
 FN:5,(anonymous_6)
-FN:7,GenericValidationError
+FN:7,GenericError
 FN:15,(anonymous_8)
 FNF:3
 FNH:2
 FNDA:6,(anonymous_6)
-FNDA:93,GenericValidationError
+FNDA:93,GenericError
 FNDA:0,(anonymous_8)
 DA:1,6
 DA:5,6

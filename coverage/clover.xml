@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1668668310620" clover="3.2.0">
-  <project timestamp="1668668310620" name="All files">
+<coverage generated="1668678808294" clover="3.2.0">
+  <project timestamp="1668678808294" name="All files">
     <metrics statements="465" coveredstatements="359" conditionals="135" coveredconditionals="98" methods="99" coveredmethods="57" elements="699" coveredelements="514" complexity="0" loc="465" ncloc="465" packages="19" files="51" classes="51"/>
     <package name="src">
       <metrics statements="19" coveredstatements="17" conditionals="5" coveredconditionals="4" methods="3" coveredmethods="2"/>
@@ -315,7 +315,7 @@
         <line num="15" count="0" type="stmt"/>
         <line num="17" count="6" type="stmt"/>
       </file>
-      <file name="generic-validation.error.ts" path="/home/arun/Projects/kingdom_nation_temp/christmas-event/src/utils/errors/generic-validation.error.ts">
+      <file name="generic.error.ts" path="/home/arun/Projects/kingdom_nation_temp/christmas-event/src/utils/errors/generic.error.ts">
         <metrics statements="10" coveredstatements="8" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="5" count="6" type="stmt"/>

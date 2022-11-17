@@ -1,15 +1,15 @@
 import { CustomError } from './';
-import { ErrorObject, GenericError } from '../types';
+import { ErrorObject, GenericErrorObject } from '../types';
 
 
-export class GenericValidationError extends CustomError {
+export class GenericError extends CustomError {
     statusCode;
-    constructor(public errors: GenericError) {
+    constructor(public errors: GenericErrorObject) {
         super(errors.error.message);
 
         this.statusCode = errors.errorCode;
 
-        Object.setPrototypeOf(this, GenericValidationError.prototype);
+        Object.setPrototypeOf(this, GenericError.prototype);
     };
 
     serializeErrors(): ErrorObject[] {
