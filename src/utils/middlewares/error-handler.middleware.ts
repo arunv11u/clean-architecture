@@ -7,7 +7,6 @@ export const errorHandler = async (err: Error,
     res: Response,
     next: NextFunction) => {
 
-    // Error structure for all services.
     const formattedErrorResponse: FormattedError = {
         errors: [
             {
@@ -19,13 +18,6 @@ export const errorHandler = async (err: Error,
         _code: 500,
     };
     if (err instanceof CustomError) {
-        // Abort mongo transaction and ending session.
-        // if (res.locals.session) {
-        //     const session = res.locals.session;
-        //     await session.abortTransaction();
-        //     await session.endSession();
-        // }
-
         return res.status(err.statusCode).send({ errors: err.serializeErrors() });
     };
 
