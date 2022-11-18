@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import { NCONF, Config, BaseHelperFactory, HelperFactory, BaseServiceFactory, ServiceFactory, BaseUserService } from "../../utils";
+import { NCONF, Config, BaseHelperFactory, HelperFactory, BaseServiceFactory, ServiceFactory, BaseUserService } from "../utils";
 
 
 class UserService implements BaseUserService {

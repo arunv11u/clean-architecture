@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import { BaseUserPipe, TypedMulterRequest } from "../../utils";
+import { BaseUserPipe, TypedMulterRequest } from "../utils";
 
 
 class UserPipe implements BaseUserPipe {

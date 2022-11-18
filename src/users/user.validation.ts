@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { RequestHandler } from "express";
-import { BaseUserValidation } from "../../utils";
+import { BaseUserValidation } from "../utils";
 
 class UserValidation implements BaseUserValidation {
 
