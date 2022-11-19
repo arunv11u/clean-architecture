@@ -10,7 +10,7 @@ export interface ErrorObject {
 };
 
 
-export interface BaseGenericError {
+export interface GenericErrorObject {
     error: Error;
     errorCode: number;
 };

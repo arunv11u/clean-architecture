@@ -12,7 +12,7 @@
     "start:staging": "npm run build && NODE_ENV=staging node build/app.js",
     "start": "npm run build && NODE_ENV=production node build/app.js",
     "clean": "del ./build/*",
-    "build": "npm run clean && tsc && cp -r ./src/utils/assets ./build/utils/",
+    "build": "npm run clean && tsc --project tsconfig.build.json && cp -r ./src/utils/assets ./build/utils/",
     "test": "jest --watchAll --verbose --no-cache --detectOpenHandles --env=node --coverage"
   },
   "jest": {
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
-    "@types/jest": "^29.1.2",
+    "@types/jest": "^29.2.3",
     "@types/multer": "^1.4.7",
     "@types/nconf": "^0.10.3",
     "del-cli": "^5.0.0",

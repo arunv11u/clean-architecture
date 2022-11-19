@@ -15,14 +15,13 @@ export const corsOptions = function (req: any, callback: any) {
 
 
     let corsOptions = {
-        origin: "*",
-        // function (origin: any, callback: any) {
-        //     if (whitelist.indexOf(origin) !== -1 || !origin) {
-        //         callback(null, true);
-        //     } else {
-        //         callback(new Error('Not allowed by CORS'));
-        //     }
-        // },
+        origin: function (origin: any, callback: any) {
+            if (whitelist.indexOf(origin) !== -1 || !origin) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
         exposedHeaders: ['x-auth-token', 'x-auth-refresh-token'],
     };
     callback(null, corsOptions);

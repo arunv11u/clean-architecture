@@ -1,6 +1,6 @@
 import nconf from 'nconf';
 import { Environment } from './types';
-import { GenericValidationError } from './errors';
+import { GenericError } from './errors';
 
 export type NCONF = typeof nconf;
 
@@ -29,7 +29,7 @@ export class Config extends BaseConfig {
     };
 
     get nconf() {
-        if (!this.isRequired) throw new GenericValidationError({ error: new Error(`Cannot get nconf without setting it up`), errorCode: 500 });
+        if (!this.isRequired) throw new GenericError({ error: new Error(`Cannot get nconf without setting it up`), errorCode: 500 });
         return this._nconf;
     };
 
