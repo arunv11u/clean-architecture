@@ -1,10 +1,10 @@
 import { CustomError } from './';
-import { ErrorObject, BaseGenericError } from '../types';
+import { ErrorObject, GenericErrorObject } from '../types';
 
 
 export class GenericError extends CustomError {
     statusCode;
-    constructor(public errors: BaseGenericError) {
+    constructor(public errors: GenericErrorObject) {
         super(errors.error.message);
 
         this.statusCode = errors.errorCode;

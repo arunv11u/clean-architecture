@@ -2,13 +2,13 @@ import express, { Request, Response, NextFunction, Express } from 'express';
 import cors from 'cors';
 import path from 'path';
 import { corsOptions } from './cors';
-import { GenericValidationError } from './errors';
+import { GenericError } from './errors';
 import { errorHandler } from './middlewares';
 import { BaseRoutes } from './types';
 import { AppRouter } from '../app-router';
 
 // Import controller files here
-import '../users/controllers/user.controller';
+import '../users/user.controller';
 
 
 export class Routes implements BaseRoutes {
@@ -48,7 +48,7 @@ export class Routes implements BaseRoutes {
 
         // If the requested URL doesn't match a route, then the below route will be processed.
         app.use('/**', function (req: Request, res: Response, next: NextFunction) {
-            throw new GenericValidationError({
+            throw new GenericError({
                 error: new Error(`There is no route to process your request.`),
                 errorCode: 404,
             });

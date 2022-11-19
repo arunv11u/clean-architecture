@@ -1,11 +1,11 @@
 
 // Pipes
-export * from './pipes/user.pipe';
+export * from './user.pipe';
 
 // Services
-export * from './services/user.service';
+export * from './user.service';
 
 // Validations
-export * from './validations/user.validation';
+export * from './user.validation';
 
 // Repositories

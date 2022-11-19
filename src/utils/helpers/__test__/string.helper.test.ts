@@ -1,16 +1,16 @@
-import { GenericValidationError } from "../../errors";
+import { GenericError } from "../../errors";
 import { trimString } from "../string.helper";
 
 describe("String Helper Module", () => {
     describe(`"trimString" fn`, () => {
         describe("Exception Path", () => {
             it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => trimString(undefined as any)).toThrow(GenericValidationError);
+                expect(() => trimString(undefined as any)).toThrow(GenericError);
                 expect(() => trimString(undefined as any)).toThrow("Input data is invalid, expected a string");
             });
 
             it("Passing array as an input data, should throw an error", () => {
-                expect(() => trimString([] as any)).toThrow(GenericValidationError);
+                expect(() => trimString([] as any)).toThrow(GenericError);
                 expect(() => trimString([] as any)).toThrow("Input data is invalid, expected a string");
             });
         });

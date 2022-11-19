@@ -1,11 +1,11 @@
 import { allowFields, allowUndefinedField, checkFieldExist } from '../object.validation';
-import { GenericValidationError } from '../../errors';
+import { GenericError } from '../../errors';
 
 describe("Basic Input Validation", () => {
     describe(`"checkFieldExist" fn`, () => {
         describe("Exception Path", () => {
             it("Passing array as an input, should throw an error", () => {
-                expect(() => checkFieldExist([{ test: "value" }], "someField")).toThrow(GenericValidationError);
+                expect(() => checkFieldExist([{ test: "value" }], "someField")).toThrow(GenericError);
                 expect(() => checkFieldExist([{ test: "value" }], "someField")).toThrow("Input data is invalid, expected an object");
             });
         });
@@ -45,22 +45,22 @@ describe("Basic Input Validation", () => {
     describe(`"allowFields" fn`, () => {
         describe("Exception Path", () => {
             it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => allowFields(undefined as any, [])).toThrow(GenericValidationError);
+                expect(() => allowFields(undefined as any, [])).toThrow(GenericError);
                 expect(() => allowFields(undefined as any, [])).toThrow("Input data is invalid, expected an object");
             });
 
             it("Passing array as an input data, should throw an error", () => {
-                expect(() => allowFields([] as any, [])).toThrow(GenericValidationError);
+                expect(() => allowFields([] as any, [])).toThrow(GenericError);
                 expect(() => allowFields([] as any, [])).toThrow("Input data is invalid, expected an object");
             });
 
             it("Passing undefined for fields input, should throw an error", () => {
-                expect(() => allowFields({}, undefined as any)).toThrow(GenericValidationError);
+                expect(() => allowFields({}, undefined as any)).toThrow(GenericError);
                 expect(() => allowFields({}, undefined as any)).toThrow("Fields input is invalid, expected an array of strings");
             });
 
             it("Passing other than array of strings for fields input, should throw an error", () => {
-                expect(() => allowFields({}, [9 as any, 10 as any])).toThrow(GenericValidationError);
+                expect(() => allowFields({}, [9 as any, 10 as any])).toThrow(GenericError);
                 expect(() => allowFields({}, [9 as any, 10 as any])).toThrow("Fields input is invalid, expected an array of strings");
                 expect(() => allowFields({}, [{} as any, {} as any])).toThrow("Fields input is invalid, expected an array of strings");
                 expect(() => allowFields({}, [{} as any, {} as any])).toThrow("Fields input is invalid, expected an array of strings");
