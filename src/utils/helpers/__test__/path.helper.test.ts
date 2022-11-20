@@ -22,6 +22,13 @@ describe("Helper Module", () => {
                 });
 
             });
+
+            describe("Happy Path", () => {
+                it("Passing array of strings as an input, should return a string", () => {
+                    const mergedPath = mergePath(["/", "test", "test.png"]);
+                    expect(mergedPath).toBe("/test/test.png");
+                });
+            });
         });
     });
 });
