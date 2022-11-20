@@ -1,7 +1,6 @@
-import { UserPipe } from '../../../users';
-import { PipeFactory } from '../pipe.factory';
+import { pipeFactory } from "../../../global-config";
+import { UserPipe } from "../../../users";
 
-const pipeFactory = PipeFactory.getInstance();
 
 describe("Factory Module", () => {
     describe("Pipe Factory", () => {
