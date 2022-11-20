@@ -6,7 +6,6 @@ import { loader } from "./utils";
 beforeAll(async () => {
     // Setting up process environment secrets:
     //* Example: process.env['STORAGE_ACCESS_KEY'] = 'some_storage_access_key';
-    console.log("beforeAll method called :");
     await loader(app, server);
 });
 
