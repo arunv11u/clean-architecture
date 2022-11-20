@@ -27,6 +27,7 @@ const loader = async (app: Express, server: http.Server) => {
     const routes = Routes.getInstance();
     routes.listen(app);
 
+    return true;
 };
 
 export {
