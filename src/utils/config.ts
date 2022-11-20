@@ -23,15 +23,12 @@ export class Config extends BaseConfig {
 
     private static _instance: BaseConfig;
     private _nconf: NCONF = nconf;
-    private isRequired: boolean = false;
 
     private constructor() {
         super();
     };
 
     get nconf() {
-        if (!this.isRequired) throw new GenericError({ error: new Error(`Cannot get nconf if not required`), errorCode: 500 });
-
         return this._nconf;
     };
 
@@ -42,33 +39,28 @@ export class Config extends BaseConfig {
     };
 
     set(environment: Environment, config: DefaultConfig) {
-        try {
-            this.isRequired = true;
-            let data = {};
-            if (environment === Environment.PRODUCTION)
-                data = {
-                    ...config.prodConfig
-                };
-            else if (environment === Environment.STAGING)
-                data = {
-                    ...config.stagingConfig
-                };
-            else if (environment === Environment.DEV)
-                data = {
-                    ...config.devConfig
-                };
-            else if (environment === Environment.TEST)
-                data = {
-                    ...config.testConfig
-                };
-            else
-                data = {
-                    ...config.devConfig,
-                };
+        let data = {};
+        if (environment === Environment.PRODUCTION)
+            data = {
+                ...config.prodConfig
+            };
+        else if (environment === Environment.STAGING)
+            data = {
+                ...config.stagingConfig
+            };
+        else if (environment === Environment.DEV)
+            data = {
+                ...config.devConfig
+            };
+        else if (environment === Environment.TEST)
+            data = {
+                ...config.testConfig
+            };
+        else
+            data = {
+                ...config.devConfig,
+            };
 
-            this._nconf.argv().env().add('data', { type: 'literal', store: data });
-        } catch (error) {
-            throw error;
-        };
+        this._nconf.argv().env().add('data', { type: 'literal', store: data });
     };
 };
