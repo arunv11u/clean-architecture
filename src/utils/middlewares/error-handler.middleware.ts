@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CustomError } from "../errors";
 import { FormattedError } from "../types";
 
-export const errorHandler = async (err: Error,
+export const errorHandler = (err: Error,
     req: Request,
     res: Response,
     next: NextFunction) => {
