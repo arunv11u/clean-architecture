@@ -3,7 +3,7 @@ import express from 'express';
 import { server, app } from '../server';
 
 describe("Server Module", () => {
-    describe("Create Server fn", () => {
+    describe(`"createServer" fn`, () => {
         describe("Happy Path", () => {
             it("Needed Http Server, server should be Http Server", () => {
                 expect(server).toStrictEqual(http.createServer(app));

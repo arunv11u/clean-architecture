@@ -34,5 +34,3 @@ function startServer() {
 };
 
 startServer();
-
-export { startServer };
