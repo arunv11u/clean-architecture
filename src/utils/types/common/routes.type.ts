@@ -16,7 +16,7 @@ enum RouteMethods {
 };
 
 interface BaseRoutes {
-    listen(app: Express): void;
+    listen(app: Express): boolean;
 };
 
 export {
