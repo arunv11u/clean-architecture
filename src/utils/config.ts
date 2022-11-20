@@ -8,6 +8,7 @@ export interface DefaultConfig {
     prodConfig: Record<string, any>;
     stagingConfig?: Record<string, any>;
     devConfig?: Record<string, any>;
+    testConfig?: Record<string, any>;
 };
 
 
@@ -54,6 +55,10 @@ export class Config extends BaseConfig {
             else if (environment === Environment.DEV)
                 data = {
                     ...config.devConfig
+                };
+            else if (environment === Environment.TEST)
+                data = {
+                    ...config.testConfig
                 };
             else
                 data = {

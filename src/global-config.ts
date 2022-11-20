@@ -1,10 +1,5 @@
-import {
-    HelperFactory,
-    MiddlewareFactory,
-    PipeFactory,
-    ServiceFactory,
-    ValidationFactory
-} from './utils/factories';
+import { HelperFactory, MiddlewareFactory, PipeFactory, ServiceFactory, ValidationFactory } from "./utils";
+
 
 const helperFactory = HelperFactory.getInstance();
 const middlewareFactory = MiddlewareFactory.getInstance();
