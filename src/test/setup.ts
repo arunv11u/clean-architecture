@@ -6,7 +6,7 @@ import { loader } from "./utils";
 beforeAll(async () => {
     // Setting up process environment secrets:
     //* Example: process.env['STORAGE_ACCESS_KEY'] = 'some_storage_access_key';
-    await loader(app, server);
+    
 });
 
 beforeEach(async () => {
@@ -15,6 +15,8 @@ beforeEach(async () => {
     // for (let collection of collections) {
     //     await collection.deleteMany({});
     // };
+
+    await loader(app, server);
 });
 
 afterAll(async () => {

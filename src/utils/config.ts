@@ -30,7 +30,8 @@ export class Config extends BaseConfig {
     };
 
     get nconf() {
-        if (!this.isRequired) throw new GenericError({ error: new Error(`Cannot get nconf without setting it up`), errorCode: 500 });
+        if (!this.isRequired) throw new GenericError({ error: new Error(`Cannot get nconf if not required`), errorCode: 500 });
+
         return this._nconf;
     };
 
