@@ -2,7 +2,7 @@ import http from 'node:http';
 import express from 'express';
 import { server, app } from '../server';
 
-describe("Server Module", () => {
+describe(`"Server" Module`, () => {
     describe("Create Server fn", () => {
         describe("Happy Path", () => {
             it("Needed Http Server, server should be Http Server", () => {
