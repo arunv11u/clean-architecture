@@ -3,16 +3,14 @@ import { Environment } from "../utils";
 export const corsOptions = function (req: any, callback: any) {
     const whitelist: string[] = [];
 
-    if (process.env.NODE_ENV === Environment.PRODUCTION) {
+    if (process.env.NODE_ENV === Environment.PRODUCTION)
         whitelist.push();
-    } else if (process.env.NODE_ENV === Environment.STAGING) {
+    else if (process.env.NODE_ENV === Environment.STAGING)
         whitelist.push();
-    } else if (process.env.NODE_ENV === Environment.DEV) {
+    else if (process.env.NODE_ENV === Environment.DEV)
         whitelist.push('http://localhost:4200');
-    } else if (process.env.NODE_ENV === Environment.TEST) {
+    else if (process.env.NODE_ENV === Environment.TEST)
         whitelist.push('http://localhost:4200');
-    }
-
 
     let corsOptions = {
         origin: function (origin: any, callback: any) {
@@ -22,8 +20,9 @@ export const corsOptions = function (req: any, callback: any) {
                 callback(new Error('Not allowed by CORS'));
             }
         },
-        exposedHeaders: ['x-auth-token', 'x-auth-refresh-token'],
+        exposedHeaders: [],
     };
     callback(null, corsOptions);
-};
 
+    return true;
+};
