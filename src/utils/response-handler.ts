@@ -1,71 +1,88 @@
-import express from 'express';
-import { GenericError } from './errors';
-import { BaseResponse, BaseUtilResponseHandler, TypedResponse } from './types';
-
+import express from "express";
+import { GenericError } from "./errors";
+import { BaseResponse, BaseUtilResponseHandler, TypedResponse } from "./types";
 
 class ResponseHandler implements BaseUtilResponseHandler {
+  private static _instance: BaseUtilResponseHandler;
 
-    private static _instance: BaseUtilResponseHandler;
+  constructor() {}
 
-    constructor() { };
+  static getInstance(): BaseUtilResponseHandler {
+    if (!ResponseHandler._instance)
+      ResponseHandler._instance = new ResponseHandler();
 
-    static getInstance(): BaseUtilResponseHandler {
-        if (!ResponseHandler._instance) ResponseHandler._instance = new ResponseHandler();
+    return ResponseHandler._instance;
+  }
 
-        return ResponseHandler._instance;
-    };
+  ok<ResBody, Locals>(
+    response: TypedResponse<BaseResponse<ResBody>, Locals>,
+    data?: ResBody
+  ): express.Response<BaseResponse<ResBody>> {
+    if (!response)
+      throw new GenericError({
+        error: new Error(
+          "Response object is undefined, expected express response object"
+        ),
+        errorCode: 500,
+      });
 
-    ok<ResBody, Locals>(response: TypedResponse<BaseResponse<ResBody>, Locals>, data?: ResBody): express.Response<BaseResponse<ResBody>> {
-        try {
-            if (!data) return response.status(200).send({ data: null });
+    response.type("application/json");
 
-            response.type('application/json');
-            return response.status(200).send({ data });
-        } catch (error) {
-            throw error;
-        };
-    };
+    if (!data) return response.status(200).send({ data: null });
+    
+    return response.status(200).send({ data });
+  }
 
-    created<ResBody, Locals>(response: TypedResponse<BaseResponse<ResBody>, Locals>, data?: ResBody): express.Response<BaseResponse<ResBody>> {
-        if (!data) return response.status(201).send({ data: null });
+  created<ResBody, Locals>(
+    response: TypedResponse<BaseResponse<ResBody>, Locals>,
+    data?: ResBody
+  ): express.Response<BaseResponse<ResBody>> {
+    if (!response)
+      throw new GenericError({
+        error: new Error(
+          "Response object is undefined, expected express response object"
+        ),
+        errorCode: 500,
+    });
 
-        response.type('application/json');
-        return response.status(201).send({ data });
-    };
+    response.type("application/json");
+    
+    if (!data) return response.status(201).send({ data: null });
 
-    clientError(message: string = "Bad Request"): GenericError {
-        return new GenericError({ error: new Error(message), errorCode: 400 });
-    };
+    return response.status(201).send({ data });
+  }
 
-    unauthorized(message: string = "Unauthorized"): GenericError {
-        return new GenericError({ error: new Error(message), errorCode: 401 });
-    };
+  clientError(message: string = "Bad Request"): GenericError {
+    return new GenericError({ error: new Error(message), errorCode: 400 });
+  }
 
-    paymentRequired(message: string = "Payment required"): GenericError {
-        return new GenericError({ error: new Error(message), errorCode: 402 });
-    };
+  unauthorized(message: string = "Unauthorized"): GenericError {
+    return new GenericError({ error: new Error(message), errorCode: 401 });
+  }
 
-    forbidden(message: string = "Forbidden"): GenericError {
-        return new GenericError({ error: new Error(message), errorCode: 403 });
-    };
+  paymentRequired(message: string = "Payment required"): GenericError {
+    return new GenericError({ error: new Error(message), errorCode: 402 });
+  }
 
-    notFound(message: string = "Not found"): GenericError {
-        return new GenericError({ error: new Error(message), errorCode: 404 });
-    };
+  forbidden(message: string = "Forbidden"): GenericError {
+    return new GenericError({ error: new Error(message), errorCode: 403 });
+  }
 
-    conflict(message: string = "Conflict"): GenericError {
-        return new GenericError({ error: new Error(message), errorCode: 409 });
-    };
+  notFound(message: string = "Not found"): GenericError {
+    return new GenericError({ error: new Error(message), errorCode: 404 });
+  }
 
-    tooMany(message: string = "Too many requests"): GenericError {
-        return new GenericError({ error: new Error(message), errorCode: 429 });
-    };
+  conflict(message: string = "Conflict"): GenericError {
+    return new GenericError({ error: new Error(message), errorCode: 409 });
+  }
 
-    internalError(message: string = "Internal server error"): GenericError {
-        return new GenericError({ error: new Error(message), errorCode: 500 });
-    };
-};
+  tooManyRequests(message: string = "Too many requests"): GenericError {
+    return new GenericError({ error: new Error(message), errorCode: 429 });
+  }
 
-export {
-    ResponseHandler
-};
+  internalError(message: string = "Internal server error"): GenericError {
+    return new GenericError({ error: new Error(message), errorCode: 500 });
+  }
+}
+
+export { ResponseHandler };
