@@ -13,7 +13,7 @@ import {
   PipeFactory,
   TypedRequest,
   UserDTO,
-} from "../utils";
+} from "../../utils";
 
 const validationFactory: BaseValidationFactory =
   ValidationFactory.getInstance();
