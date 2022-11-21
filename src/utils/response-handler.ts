@@ -3,16 +3,16 @@ import { GenericError } from './errors';
 import { BaseResponse, BaseUtilResponseHandler, TypedResponse } from './types';
 
 
-class UtilResponseHandler implements BaseUtilResponseHandler {
+class ResponseHandler implements BaseUtilResponseHandler {
 
     private static _instance: BaseUtilResponseHandler;
 
     constructor() { };
 
     static getInstance(): BaseUtilResponseHandler {
-        if (!UtilResponseHandler._instance) UtilResponseHandler._instance = new UtilResponseHandler();
+        if (!ResponseHandler._instance) ResponseHandler._instance = new ResponseHandler();
 
-        return UtilResponseHandler._instance;
+        return ResponseHandler._instance;
     };
 
     ok<ResBody, Locals>(response: TypedResponse<BaseResponse<ResBody>, Locals>, data?: ResBody): express.Response<BaseResponse<ResBody>> {
@@ -67,5 +67,5 @@ class UtilResponseHandler implements BaseUtilResponseHandler {
 };
 
 export {
-    UtilResponseHandler
+    ResponseHandler
 };
