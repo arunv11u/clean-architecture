@@ -1,5 +1,5 @@
-import { GenericError } from "../../errors";
-import { trimString } from "../string.helper";
+import { GenericError } from "../errors";
+import { trimString } from "./string.helper";
 
 describe("Helper Module", () => {
     describe("String Helper", () => {

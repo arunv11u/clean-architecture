@@ -1,5 +1,5 @@
-import { validationFactory } from '../../../global-config';
-import { UserValidation } from '../../../users';
+import { validationFactory } from '../../global-config';
+import { UserValidation } from '../../users';
 
 
 describe("Factory Module", () => {

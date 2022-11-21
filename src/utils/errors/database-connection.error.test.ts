@@ -1,5 +1,5 @@
-import { CustomError } from "../custom.error";
-import { DatabaseConnectionError } from "../database-connection.error";
+import { CustomError } from "./custom.error";
+import { DatabaseConnectionError } from "./database-connection.error";
 
 
 

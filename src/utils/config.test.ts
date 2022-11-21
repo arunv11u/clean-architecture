@@ -1,6 +1,6 @@
 import nconf from 'nconf';
-import { Config } from "../config";
-import { Environment } from "../types";
+import { Config } from "./config";
+import { Environment } from "./types";
 
 
 describe("Config Module", () => {

@@ -1,5 +1,5 @@
-import { CustomError } from "../custom.error";
-import { StorageConnectionError } from "../storage-connection.error";
+import { CustomError } from "./custom.error";
+import { StorageConnectionError } from "./storage-connection.error";
 
 
 

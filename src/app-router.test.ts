@@ -1,5 +1,5 @@
 import express from "express";
-import { AppRouter } from "../app-router";
+import { AppRouter } from "./app-router";
 
 
 describe("App Router Class", () => {

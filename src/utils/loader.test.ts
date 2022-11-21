@@ -1,5 +1,5 @@
-import { loader } from "../loader";
-import { app, server } from "../../server";
+import { loader } from "./loader";
+import { app, server } from "../server";
 
 describe("Loader Module", () => {
   describe(`"loader" fn`, () => {

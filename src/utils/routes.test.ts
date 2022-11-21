@@ -1,5 +1,5 @@
-import { Routes } from "../routes";
-import { app } from '../../server';
+import { Routes } from "./routes";
+import { app } from "../server";
 
 const routes = Routes.getInstance();
 

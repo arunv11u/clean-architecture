@@ -1,5 +1,5 @@
-import { CustomError } from "../custom.error";
-import { GenericError } from "../generic.error";
+import { CustomError } from "./custom.error";
+import { GenericError } from "./generic.error";
 
 
 

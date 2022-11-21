@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { corsOptions } from "../cors";
-import { Environment } from '../types';
+import { corsOptions } from "./cors";
+import { Environment } from './types';
 
 
 describe("Config Module", () => {

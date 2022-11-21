@@ -1,5 +1,5 @@
-import { serviceFactory } from '../../../global-config';
-import { UserService } from '../../../users';
+import { serviceFactory } from '../../global-config';
+import { UserService } from '../../users';
 
 
 describe("Factory Module", () => {

@@ -1,5 +1,5 @@
-import { pipeFactory } from "../../../global-config";
-import { UserPipe } from "../../../users";
+import { pipeFactory } from "../../global-config";
+import { UserPipe } from "../../users";
 
 
 describe("Factory Module", () => {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { GenericError } from "../../errors";
-import { GenericErrorObject } from "../../types";
-import { errorHandler } from "../error-handler.middleware";
+import { GenericError } from "../errors";
+import { GenericErrorObject } from "../types";
+import { errorHandler } from "./error-handler.middleware";
 
 describe("Middleware Module", () => {
     describe("Error Handling Middleware", () => {

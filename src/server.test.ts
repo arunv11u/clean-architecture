@@ -1,6 +1,6 @@
 import http from 'node:http';
 import express from 'express';
-import { server, app } from '../server';
+import { server, app } from './server';
 
 describe(`"Server" Module`, () => {
     describe("Create Server fn", () => {

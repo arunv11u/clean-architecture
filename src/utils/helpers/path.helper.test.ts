@@ -1,5 +1,5 @@
-import { GenericError } from "../../errors";
-import { mergePath } from "../path.helper";
+import { GenericError } from "../errors";
+import { mergePath } from "./path.helper";
 
 
 describe("Helper Module", () => {
