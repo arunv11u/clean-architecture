@@ -27,7 +27,6 @@ describe("Route Module", () => {
       it("Request to an unavailable API, should return no route error", async () => {
         const response = await request(app).get("/api/sample");
         expect(response.statusCode).toBe(404);
-        console.log("response.body ::", response.body);
         expect(response.body).toStrictEqual({errors: [{message: "There is no route to process your request."}]});
       });
     });

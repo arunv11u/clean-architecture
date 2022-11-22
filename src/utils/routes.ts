@@ -6,6 +6,7 @@ import { GenericError } from "./errors";
 import { errorHandler } from "./middlewares";
 import { BaseRoutes } from "./types";
 import { AppRouter } from "../app-router";
+import { limitRequests } from './rate-limiter';
 
 // Import controller files here
 import "../auth/controllers/auth.controller";
@@ -34,6 +35,9 @@ export class Routes implements BaseRoutes {
       next();
     });
 
+    // Rate limiter
+    app.use(limitRequests());
+
     // Health check route.
     app.use(
       "/health-check",
@@ -48,6 +52,7 @@ export class Routes implements BaseRoutes {
     // Base URL for all following routes
     app.use(this._defaultRoutePath, AppRouter.getInstance());
 
+    
     // If the requested URL doesn't match a route, then the below route will be processed.
     app.use("/**", function (req: Request, res: Response, next: NextFunction) {
       throw new GenericError({
