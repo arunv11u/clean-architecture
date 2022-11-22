@@ -6,7 +6,7 @@ import { Config, DefaultConfig, Environment } from "../../utils";
 const testConfig = {
   memory: true,
   ip: "localhost",
-  dataBase: "lifeverse",
+  dataBase: "lifeverse"
 };
 
 const loader = async (app: Express, server: http.Server | https.Server) => {
@@ -14,6 +14,9 @@ const loader = async (app: Express, server: http.Server | https.Server) => {
   let _config: DefaultConfig = { testConfig: {}, prodConfig: {} };
 
   // configuring process variables.
+  process.env.rateLimiterWindowMs = (5 * 60 * 1000).toString();
+  process.env.rateLimiterMaxRequests = (50).toString();
+
   const config = Config.getInstance();
   config.set(_environment, _config);
 

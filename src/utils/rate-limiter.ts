@@ -1,22 +1,23 @@
-import { Request, Response } from "express";
 import rateLimit from "express-rate-limit";
 import { Config } from "./config";
+import { GenericError } from "./errors";
 
 const config = Config.getInstance();
 const nconf = config.nconf;
 
 export function limitRequests() {
   return rateLimit({
-    windowMs: nconf.get("rateLimiterWindowMs"),
-    max: nconf.get("rateLimiterMaxRequests"),
+    windowMs: parseInt(nconf.get("rateLimiterWindowMs")),
+    max: parseInt(nconf.get("rateLimiterMaxRequests")),
     standardHeaders: true,
     legacyHeaders: false,
     handler: (request, response, next, options) => {
-      response
-        .status(429)
-        .send({
-          errors: [{ message: "Too many requests, please try again later." }],
-        });
+      next(
+        new GenericError({
+          error: new Error("Too many requests, please try again later."),
+          errorCode: 429,
+        })
+      );
     },
   });
 }
