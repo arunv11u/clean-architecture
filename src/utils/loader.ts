@@ -4,7 +4,7 @@ import { devConfig, prodConfig, stagingConfig } from './configs';
 import { Environment } from './types';
 import { Config, DefaultConfig } from './config';
 import { Routes } from './routes';
-import unhandledError from './unhandledError';
+import unhandledError from './unHandledErrorHandler';
 
 
 const loader = async (app: Express, server: http.Server) => {

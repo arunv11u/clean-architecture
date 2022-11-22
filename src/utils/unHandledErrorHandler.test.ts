@@ -1,11 +1,11 @@
-import unhandledError from "./unhandledError";
+import unhandledError from "./unHandledErrorHandler";
 
 describe(`"Unhandled Errors" Module`, () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  // Only run this test case after removing process.exit(1) from the unHandledErrors module.
+  // Only run this test case after removing process.exit(1) from the unHandledErrorHandler module.
   // Make sure to undo the changes before commiting it to Version Control System(Git)
   it.skip("should handle uncaughtException", () => {
     const mockError = new Error("Server internal error");
