@@ -8,6 +8,7 @@ import { BaseRoutes } from "./types";
 import { AppRouter } from "../app-router";
 
 // Import controller files here
+import "../auth/controllers/auth.controller";
 import "../users/controllers/user.controller";
 
 export class Routes implements BaseRoutes {

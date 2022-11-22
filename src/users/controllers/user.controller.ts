@@ -32,8 +32,8 @@ class UserController implements BaseUserController {
       next();
     }
   )
-  register(
-    request: TypedRequest<{}, {}, UserDTO.Register>,
+  sample(
+    request: TypedRequest<{}, {}, {}>,
     response: Response<any, Record<string, any>>,
     next: NextFunction
   ): void {}

@@ -1,24 +1,26 @@
+import { AuthService } from "../../auth";
 import { UserService } from "../../users";
-import { BaseUserService, BaseServiceFactory } from "../types";
+import { BaseUserService, BaseServiceFactory, BaseAuthService } from "../types";
 
 class ServiceFactory implements BaseServiceFactory {
+  private static _instance: BaseServiceFactory;
 
-    private static _instance: BaseServiceFactory;
+  private constructor() {}
 
-    private constructor() { };
+  static getInstance(): BaseServiceFactory {
+    if (!ServiceFactory._instance)
+      ServiceFactory._instance = new ServiceFactory();
 
-    static getInstance(): BaseServiceFactory {
-        if (!ServiceFactory._instance) ServiceFactory._instance = new ServiceFactory();
+    return ServiceFactory._instance;
+  }
 
-        return ServiceFactory._instance;
-    };
+  getUserService(): BaseUserService {
+    return UserService.getInstance();
+  }
 
-    getUserService(): BaseUserService {
-        return UserService.getInstance();
-    };
+  getAuthService(): BaseAuthService {
+    return AuthService.getInstance();
+  }
+}
 
-};
-
-export {
-    ServiceFactory
-};
+export { ServiceFactory };
