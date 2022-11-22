@@ -2,7 +2,6 @@ import { Express, Request, Response, NextFunction } from "express";
 import http from "http";
 import https from "https";
 import { Config, DefaultConfig, Environment } from "../../utils";
-import { app } from "../../server";
 
 const testConfig = {
   memory: true,
@@ -20,12 +19,6 @@ const loader = async (app: Express, server: http.Server | https.Server) => {
 
   // Registering routes
   // Health check route.
-  app.use(
-    "/health-check",
-    (req: Request, res: Response, next: NextFunction) => {
-      return res.status(200).send();
-    }
-  );
 };
 
 export { testConfig, loader };

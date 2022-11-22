@@ -4,14 +4,17 @@ import { Request, Response, NextFunction } from "express";
 import { app } from "../server";
 import { limitRequests } from "./rate-limiter";
 
-app.use(limitRequests());
-
-app.use("/health-check", (req: Request, res: Response, next: NextFunction) => {
-  return res.status(200).send();
-});
-
 describe("Rate Limiter Module", () => {
   describe(`"limitRequests" method`, () => {
+    app.use(limitRequests());
+
+    app.use(
+      "/health-check",
+      (req: Request, res: Response, next: NextFunction) => {
+        return res.status(200).send();
+      }
+    );
+
     describe("Happy Path", () => {
       it.skip("If more than 50 requests comes from the same IP, should send 429 error response to the client", async () => {
         const startServerPromise = new Promise((resolve, reject) => {
