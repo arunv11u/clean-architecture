@@ -1,4 +1,4 @@
-import http from 'node:http';
+import { Server as HttpServer } from 'node:http';
 import express from 'express';
 import { server, app } from './server';
 
@@ -6,7 +6,7 @@ describe(`"Server" Module`, () => {
     describe("Create Server fn", () => {
         describe("Happy Path", () => {
             it("Needed Http Server, server should be Http Server", () => {
-                expect(server).toStrictEqual(http.createServer(app));
+                expect(server).toBeInstanceOf(HttpServer);
             });
 
             it("Needed Express Application, app should be express app", () => {
