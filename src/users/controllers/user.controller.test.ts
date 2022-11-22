@@ -1,6 +1,6 @@
 describe("User Component", () => {
   describe("Controller Module", () => {
-    describe(`"register" method`, () => {
+    describe(`"getUser" method`, () => {
       it("Sample Test case", () => {
         expect(true).toBe(true);
       });

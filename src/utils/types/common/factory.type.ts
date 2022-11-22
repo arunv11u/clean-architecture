@@ -1,3 +1,4 @@
+import { BaseAuthService } from "../auth";
 import { BaseUserPipe, BaseUserService, BaseUserValidation } from "../users";
 
 
@@ -10,6 +11,7 @@ interface BaseValidationFactory {
 
 interface BaseServiceFactory {
     getUserService(): BaseUserService;
+    getAuthService(): BaseAuthService;
 };
 
 interface BasePipeFactory {
