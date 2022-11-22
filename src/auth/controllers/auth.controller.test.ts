@@ -34,5 +34,33 @@ describe("Auth Component", () => {
         );
       });
     });
+
+    describe(`"guestLogin" method`, () => {
+      let mockRequest: Partial<Request>;
+      let mockResponse: Partial<Response>;
+      const mockNextFunction: NextFunction = jest.fn();
+
+      beforeEach(() => {
+        mockRequest = {};
+        mockResponse = {
+          status: jest.fn(
+            () =>
+              ({
+                send: jest.fn(),
+              } as any)
+          ),
+        };
+      });
+
+      it("Express request, response and next are passed as arguments, should trigger register method in Auth Service", async () => {
+        const authService = serviceFactory.getAuthService();
+
+        await authController.guestLogin(
+          mockRequest as Request,
+          mockResponse as Response,
+          mockNextFunction
+        );
+      });
+    });
   });
 });
