@@ -1,50 +1,104 @@
 import { GenericError } from "../errors";
+import { BaseArrayValidation } from "../types";
 
-const checkArrMaxLen = (inputData: Array<any>, length: number) => {
-    if (!inputData || (Object(inputData).constructor.name !== "Array")) throw new GenericError({ error: new Error("Input data is invalid, expected an array"), errorCode: 500 });
-    if (!length || (typeof length !== "number")) throw new GenericError({ error: new Error("Maximum length input is invalid, expected a number"), errorCode: 500 });
+export class ArrayValidation implements BaseArrayValidation {
+  private static _instance: BaseArrayValidation;
+
+  private constructor() {}
+
+  static getInstance(): BaseArrayValidation {
+    if (!ArrayValidation._instance)
+      ArrayValidation._instance = new ArrayValidation();
+
+    return ArrayValidation._instance;
+  }
+
+  checkMaxLen(inputData: Array<any>, length: number) {
+    if (!inputData || Object(inputData).constructor.name !== "Array")
+      throw new GenericError({
+        error: new Error("Input data is invalid, expected an array"),
+        errorCode: 500,
+      });
+    if (!length || typeof length !== "number")
+      throw new GenericError({
+        error: new Error("Maximum length input is invalid, expected a number"),
+        errorCode: 500,
+      });
 
     return inputData.length <= length;
-};
+  }
 
-const checkArrMinLen = (inputData: Array<any>, length: number) => {
-    if (!inputData || (Object(inputData).constructor.name !== "Array")) throw new GenericError({ error: new Error("Input data is invalid, expected an array"), errorCode: 500 });
-    if (!length || (typeof length !== "number")) throw new GenericError({ error: new Error("Minimum length input is invalid, expected a number"), errorCode: 500 });
+  checkMinLen(inputData: Array<any>, length: number) {
+    if (!inputData || Object(inputData).constructor.name !== "Array")
+      throw new GenericError({
+        error: new Error("Input data is invalid, expected an array"),
+        errorCode: 500,
+      });
+    if (!length || typeof length !== "number")
+      throw new GenericError({
+        error: new Error("Minimum length input is invalid, expected a number"),
+        errorCode: 500,
+      });
 
     return inputData.length >= length;
-};
+  }
 
-const checkArrOfStr = (inputData: Array<string>) => {
-    if (!inputData || (Object(inputData).constructor.name !== "Array")) throw new GenericError({ error: new Error("Input data is invalid, expected an array of strings"), errorCode: 500 });
-
-    for (let ele of inputData)
-        if (typeof ele !== "string") throw new GenericError({ error: new Error("Input data is invalid, expected an array of strings"), errorCode: 500 });
-
-    return true;
-};
-
-const checkArrOfNum = (inputData: Array<number>) => {
-    if (!inputData || (Object(inputData).constructor.name !== "Array")) throw new GenericError({ error: new Error("Input data is invalid, expected an array of numbers"), errorCode: 500 });
+  checkArrOfStr(inputData: Array<string>) {
+    if (!inputData || Object(inputData).constructor.name !== "Array")
+      throw new GenericError({
+        error: new Error("Input data is invalid, expected an array of strings"),
+        errorCode: 500,
+      });
 
     for (let ele of inputData)
-        if (typeof ele !== "number") throw new GenericError({ error: new Error("Input data is invalid, expected an array of numbers"), errorCode: 500 });
+      if (typeof ele !== "string")
+        throw new GenericError({
+          error: new Error(
+            "Input data is invalid, expected an array of strings"
+          ),
+          errorCode: 500,
+        });
 
     return true;
-};
+  }
 
-const checkArrOfBool = (inputData: Array<boolean>) => {
-    if (!inputData || (Object(inputData).constructor.name !== "Array")) throw new GenericError({ error: new Error("Input data is invalid, expected an array of booleans"), errorCode: 500 });
+  checkArrOfNum(inputData: Array<number>) {
+    if (!inputData || Object(inputData).constructor.name !== "Array")
+      throw new GenericError({
+        error: new Error("Input data is invalid, expected an array of numbers"),
+        errorCode: 500,
+      });
 
     for (let ele of inputData)
-        if (typeof ele !== "boolean") throw new GenericError({ error: new Error("Input data is invalid, expected an array of booleans"), errorCode: 500 });
+      if (typeof ele !== "number")
+        throw new GenericError({
+          error: new Error(
+            "Input data is invalid, expected an array of numbers"
+          ),
+          errorCode: 500,
+        });
 
     return true;
-};
+  }
 
-export {
-    checkArrMaxLen,
-    checkArrMinLen,
-    checkArrOfStr,
-    checkArrOfNum,
-    checkArrOfBool
-};
+  checkArrOfBool = (inputData: Array<boolean>) => {
+    if (!inputData || Object(inputData).constructor.name !== "Array")
+      throw new GenericError({
+        error: new Error(
+          "Input data is invalid, expected an array of booleans"
+        ),
+        errorCode: 500,
+      });
+
+    for (let ele of inputData)
+      if (typeof ele !== "boolean")
+        throw new GenericError({
+          error: new Error(
+            "Input data is invalid, expected an array of booleans"
+          ),
+          errorCode: 500,
+        });
+
+    return true;
+  };
+}

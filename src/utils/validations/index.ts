@@ -7,4 +7,4 @@ export * from './object.validation';
 
 export * from './string.validation';
 
-export * from './type-check.validation';
+export * from './data-type.validation';

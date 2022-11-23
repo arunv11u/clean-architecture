@@ -1,44 +1,46 @@
 import { GenericError } from "../../errors";
-import { allowEmptyStr, checkStrMaxLen, checkStrMinLen, checkValidEmail } from '../string.validation';
+import { StringValidation } from '../string.validation';
 
 
 describe("Basic Input Validation", () => {
+    const stringValidation = StringValidation.getInstance();
+
     describe(`"checkStrMaxLen" fn`, () => {
         describe("Exception Path", () => {
             it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkStrMaxLen(undefined as any, 9)).toThrow(GenericError);
-                expect(() => checkStrMaxLen(undefined as any, 9)).toThrow("Input data is invalid, expected a string");
+                expect(() => stringValidation.checkStrMaxLen(undefined as any, 9)).toThrow(GenericError);
+                expect(() => stringValidation.checkStrMaxLen(undefined as any, 9)).toThrow("Input data is invalid, expected a string");
             });
 
             it("Passing array as an input data, should throw an error", () => {
-                expect(() => checkStrMaxLen([] as any, 0)).toThrow(GenericError);
-                expect(() => checkStrMaxLen([] as any, 0)).toThrow("Input data is invalid, expected a string");
+                expect(() => stringValidation.checkStrMaxLen([] as any, 0)).toThrow(GenericError);
+                expect(() => stringValidation.checkStrMaxLen([] as any, 0)).toThrow("Input data is invalid, expected a string");
             });
 
             it("Passing undefined as an input to maximum limit, should throw an error", () => {
-                expect(() => checkStrMaxLen("Hello World!", undefined as any)).toThrow(GenericError);
-                expect(() => checkStrMaxLen("Hello World!", undefined as any)).toThrow("Maximum length input is invalid, expected a number");
+                expect(() => stringValidation.checkStrMaxLen("Hello World!", undefined as any)).toThrow(GenericError);
+                expect(() => stringValidation.checkStrMaxLen("Hello World!", undefined as any)).toThrow("Maximum length input is invalid, expected a number");
             });
 
             it("Passing array as an input to maximum limit, should throw an error", () => {
-                expect(() => checkStrMaxLen("Hello World!", [] as any)).toThrow(GenericError);
-                expect(() => checkStrMaxLen("Hello World!", [] as any)).toThrow("Maximum length input is invalid, expected a number");
+                expect(() => stringValidation.checkStrMaxLen("Hello World!", [] as any)).toThrow(GenericError);
+                expect(() => stringValidation.checkStrMaxLen("Hello World!", [] as any)).toThrow("Maximum length input is invalid, expected a number");
             });
         });
 
         describe("Happy Path", () => {
             it("Input string length is below the maximum string length, should return true", () => {
-                const isMaxValidStr = checkStrMaxLen("Hello", 6);
+                const isMaxValidStr = stringValidation.checkStrMaxLen("Hello", 6);
                 expect(isMaxValidStr).toBe(true);
             });
 
             it("Input string length is same as the maximum string length, should return true", () => {
-                const isMaxValidStr = checkStrMaxLen("Hello", 5);
+                const isMaxValidStr = stringValidation.checkStrMaxLen("Hello", 5);
                 expect(isMaxValidStr).toBe(true);
             });
 
             it("Input string length is above the maximum string length, should return false", () => {
-                const isMaxValidStr = checkStrMaxLen("Hello There!", 6);
+                const isMaxValidStr = stringValidation.checkStrMaxLen("Hello There!", 6);
                 expect(isMaxValidStr).toBe(false);
             });
         });
@@ -47,39 +49,39 @@ describe("Basic Input Validation", () => {
     describe(`"checkStrMinLen" fn`, () => {
         describe("Exception Path", () => {
             it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkStrMinLen(undefined as any, 9)).toThrow(GenericError);
-                expect(() => checkStrMinLen(undefined as any, 9)).toThrow("Input data is invalid, expected a string");
+                expect(() => stringValidation.checkStrMinLen(undefined as any, 9)).toThrow(GenericError);
+                expect(() => stringValidation.checkStrMinLen(undefined as any, 9)).toThrow("Input data is invalid, expected a string");
             });
 
             it("Passing array as an input data, should throw an error", () => {
-                expect(() => checkStrMinLen([] as any, 0)).toThrow(GenericError);
-                expect(() => checkStrMinLen([] as any, 0)).toThrow("Input data is invalid, expected a string");
+                expect(() => stringValidation.checkStrMinLen([] as any, 0)).toThrow(GenericError);
+                expect(() => stringValidation.checkStrMinLen([] as any, 0)).toThrow("Input data is invalid, expected a string");
             });
 
             it("Passing undefined as an input to minimum limit, should throw an error", () => {
-                expect(() => checkStrMinLen("Hello World!", undefined as any)).toThrow(GenericError);
-                expect(() => checkStrMinLen("Hello World!", undefined as any)).toThrow("Minimum length input is invalid, expected a number");
+                expect(() => stringValidation.checkStrMinLen("Hello World!", undefined as any)).toThrow(GenericError);
+                expect(() => stringValidation.checkStrMinLen("Hello World!", undefined as any)).toThrow("Minimum length input is invalid, expected a number");
             });
 
             it("Passing array as an input to minimum limit, should throw an error", () => {
-                expect(() => checkStrMinLen("Hello World!", [] as any)).toThrow(GenericError);
-                expect(() => checkStrMinLen("Hello World!", [] as any)).toThrow("Minimum length input is invalid, expected a number");
+                expect(() => stringValidation.checkStrMinLen("Hello World!", [] as any)).toThrow(GenericError);
+                expect(() => stringValidation.checkStrMinLen("Hello World!", [] as any)).toThrow("Minimum length input is invalid, expected a number");
             });
         });
 
         describe("Happy Path", () => {
             it("Input string length is above the minimum string length, should return true", () => {
-                const isMinValidStr = checkStrMinLen("Hello", 4);
+                const isMinValidStr = stringValidation.checkStrMinLen("Hello", 4);
                 expect(isMinValidStr).toBe(true);
             });
 
             it("Input string length is same as the minimum string length, should return true", () => {
-                const isMinValidStr = checkStrMinLen("Hello", 5);
+                const isMinValidStr = stringValidation.checkStrMinLen("Hello", 5);
                 expect(isMinValidStr).toBe(true);
             });
 
             it("Input string length is below the minimum string length, should return false", () => {
-                const isMinValidStr = checkStrMinLen("Hi", 5);
+                const isMinValidStr = stringValidation.checkStrMinLen("Hi", 5);
                 expect(isMinValidStr).toBe(false);
             });
         });
@@ -88,29 +90,29 @@ describe("Basic Input Validation", () => {
     describe(`"checkValidEmail" fn`, () => {
         describe("Exception Path", () => {
             it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkValidEmail(undefined as any)).toThrow(GenericError);
-                expect(() => checkValidEmail(undefined as any)).toThrow("Input data is invalid, expected a string");
+                expect(() => stringValidation.checkValidEmail(undefined as any)).toThrow(GenericError);
+                expect(() => stringValidation.checkValidEmail(undefined as any)).toThrow("Input data is invalid, expected a string");
             });
 
             it("Passing array as an input data, should throw an error", () => {
-                expect(() => checkValidEmail([] as any)).toThrow(GenericError);
-                expect(() => checkValidEmail([] as any)).toThrow("Input data is invalid, expected a string");
+                expect(() => stringValidation.checkValidEmail([] as any)).toThrow(GenericError);
+                expect(() => stringValidation.checkValidEmail([] as any)).toThrow("Input data is invalid, expected a string");
             });
         });
 
         describe("Happy Path", () => {
             it("Input string is valid email address, should return true", () => {
-                const isValidEmail = checkValidEmail("test@gmail.com");
+                const isValidEmail = stringValidation.checkValidEmail("test@gmail.com");
                 expect(isValidEmail).toBe(true);
             });
 
             it("Input string is invalid email address, should return false", () => {
-                expect(checkValidEmail("test@.com.")).toBe(false);
-                expect(checkValidEmail("test@")).toBe(false);
-                expect(checkValidEmail("test@gmail.com.")).toBe(false);
-                expect(checkValidEmail("test")).toBe(false);
-                expect(checkValidEmail("test@gmail")).toBe(false);
-                expect(checkValidEmail("TEST@GMAIL>COM")).toBe(false);
+                expect(stringValidation.checkValidEmail("test@.com.")).toBe(false);
+                expect(stringValidation.checkValidEmail("test@")).toBe(false);
+                expect(stringValidation.checkValidEmail("test@gmail.com.")).toBe(false);
+                expect(stringValidation.checkValidEmail("test")).toBe(false);
+                expect(stringValidation.checkValidEmail("test@gmail")).toBe(false);
+                expect(stringValidation.checkValidEmail("TEST@GMAIL>COM")).toBe(false);
             });
         });
     });
@@ -118,23 +120,23 @@ describe("Basic Input Validation", () => {
     describe(`"allowEmptyStr" fn`, () => {
         describe("Exception Path", () => {
             it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => allowEmptyStr(undefined as any)).toThrow(GenericError);
-                expect(() => allowEmptyStr(undefined as any)).toThrow("Input data is invalid, expected a string");
+                expect(() => stringValidation.allowEmptyStr(undefined as any)).toThrow(GenericError);
+                expect(() => stringValidation.allowEmptyStr(undefined as any)).toThrow("Input data is invalid, expected a string");
             });
 
             it("Passing array as an input data, should throw an error", () => {
-                expect(() => allowEmptyStr([] as any)).toThrow(GenericError);
-                expect(() => allowEmptyStr([] as any)).toThrow("Input data is invalid, expected a string");
+                expect(() => stringValidation.allowEmptyStr([] as any)).toThrow(GenericError);
+                expect(() => stringValidation.allowEmptyStr([] as any)).toThrow("Input data is invalid, expected a string");
             });
         });
 
         describe("Happy Path", () => {
             it("Input is an empty string, should return true", () => {
-                expect(allowEmptyStr("")).toBe(true);
+                expect(stringValidation.allowEmptyStr("")).toBe(true);
             });
 
             it("Input is a string, should return true", () => {
-                expect(allowEmptyStr("Hello World!")).toBe(true);
+                expect(stringValidation.allowEmptyStr("Hello World!")).toBe(true);
             });
         });
     })

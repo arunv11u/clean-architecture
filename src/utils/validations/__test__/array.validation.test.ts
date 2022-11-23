@@ -1,148 +1,185 @@
 import { GenericError } from "../../errors";
-import { checkArrMaxLen, checkArrMinLen, checkArrOfBool, checkArrOfNum, checkArrOfStr } from '../array.validation';
-
+import { ArrayValidation } from "../array.validation";
+// import { checkArrMaxLen, checkArrMinLen, checkArrOfBool, checkArrOfNum, checkArrOfStr } from '../array.validation';
 
 describe("Basic Input Validation", () => {
-    describe(`"checkArrMaxLen" fn`, () => {
-        describe("Exception Path", () => {
-            it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkArrMaxLen(undefined as any, 9)).toThrow(GenericError);
-                expect(() => checkArrMaxLen(undefined as any, 9)).toThrow("Input data is invalid, expected an array");
-            });
+  const arrayValidation = ArrayValidation.getInstance();
 
-            it("Passing object as an input data, should throw an error", () => {
-                expect(() => checkArrMaxLen({} as any, 0)).toThrow(GenericError);
-                expect(() => checkArrMaxLen({} as any, 0)).toThrow("Input data is invalid, expected an array");
-            });
+  describe(`"checkArrMaxLen" fn`, () => {
+    describe("Exception Path", () => {
+      it("Passing undefined as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkMaxLen(undefined as any, 9)).toThrow(
+          GenericError
+        );
+        expect(() => arrayValidation.checkMaxLen(undefined as any, 9)).toThrow(
+          "Input data is invalid, expected an array"
+        );
+      });
 
-            it("Passing undefined as an input to maximum limit, should throw an error", () => {
-                expect(() => checkArrMaxLen([], undefined as any)).toThrow(GenericError);
-                expect(() => checkArrMaxLen([], undefined as any)).toThrow("Maximum length input is invalid, expected a number");
-            });
+      it("Passing object as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkMaxLen({} as any, 0)).toThrow(
+          GenericError
+        );
+        expect(() => arrayValidation.checkMaxLen({} as any, 0)).toThrow(
+          "Input data is invalid, expected an array"
+        );
+      });
 
-            it("Passing array as an input to maximum limit, should throw an error", () => {
-                expect(() => checkArrMaxLen([], [] as any)).toThrow(GenericError);
-                expect(() => checkArrMaxLen([], [] as any)).toThrow("Maximum length input is invalid, expected a number");
-            });
-        });
+      it("Passing undefined as an input to maximum limit, should throw an error", () => {
+        expect(() => arrayValidation.checkMaxLen([], undefined as any)).toThrow(
+          GenericError
+        );
+        expect(() => arrayValidation.checkMaxLen([], undefined as any)).toThrow(
+          "Maximum length input is invalid, expected a number"
+        );
+      });
 
-        describe("Happy Path", () => {
-            it("Input array length is below the maximum length, should return true", () => {
-                const isValidArr = checkArrMaxLen([4], 6);
-                expect(isValidArr).toBe(true);
-            });
-
-            it("Input array length is same as the maximum length, should return true", () => {
-                const isValidArr = checkArrMaxLen([4, 5], 2);
-                expect(isValidArr).toBe(true);
-            });
-
-            it("Input array length is above the maximum length, should return false", () => {
-                const isValidArr = checkArrMaxLen([4, 5, 6], 2);
-                expect(isValidArr).toBe(false);
-            });
-        });
+      it("Passing array as an input to maximum limit, should throw an error", () => {
+        expect(() => arrayValidation.checkMaxLen([], [] as any)).toThrow(GenericError);
+        expect(() => arrayValidation.checkMaxLen([], [] as any)).toThrow(
+          "Maximum length input is invalid, expected a number"
+        );
+      });
     });
 
-    describe(`"checkArrMinLen" fn`, () => {
-        describe("Exception Path", () => {
-            it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkArrMinLen(undefined as any, 9)).toThrow(GenericError);
-                expect(() => checkArrMinLen(undefined as any, 9)).toThrow("Input data is invalid, expected an array");
-            });
+    describe("Happy Path", () => {
+      it("Input array length is below the maximum length, should return true", () => {
+        const isValidArr = arrayValidation.checkMaxLen([4], 6);
+        expect(isValidArr).toBe(true);
+      });
 
-            it("Passing object as an input data, should throw an error", () => {
-                expect(() => checkArrMinLen({} as any, 0)).toThrow(GenericError);
-                expect(() => checkArrMinLen({} as any, 0)).toThrow("Input data is invalid, expected an array");
-            });
+      it("Input array length is same as the maximum length, should return true", () => {
+        const isValidArr = arrayValidation.checkMaxLen([4, 5], 2);
+        expect(isValidArr).toBe(true);
+      });
 
-            it("Passing undefined as an input to minimum length, should throw an error", () => {
-                expect(() => checkArrMinLen([], undefined as any)).toThrow(GenericError);
-                expect(() => checkArrMinLen([], undefined as any)).toThrow("Minimum length input is invalid, expected a number");
-            });
+      it("Input array length is above the maximum length, should return false", () => {
+        const isValidArr = arrayValidation.checkMaxLen([4, 5, 6], 2);
+        expect(isValidArr).toBe(false);
+      });
+    });
+  });
 
-            it("Passing array as an input to minimum length, should throw an error", () => {
-                expect(() => checkArrMinLen([], [] as any)).toThrow(GenericError);
-                expect(() => checkArrMinLen([], [] as any)).toThrow("Minimum length input is invalid, expected a number");
-            });
-        });
+  describe(`"checkArrMinLen" fn`, () => {
+    describe("Exception Path", () => {
+      it("Passing undefined as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkMinLen(undefined as any, 9)).toThrow(GenericError);
+        expect(() => arrayValidation.checkMinLen(undefined as any, 9)).toThrow(
+          "Input data is invalid, expected an array"
+        );
+      });
 
-        describe("Happy Path", () => {
-            it("Input array length is above the minimum length, should return true", () => {
-                const isValidArr = checkArrMinLen([2, 3, 4], 2);
-                expect(isValidArr).toBe(true);
-            });
+      it("Passing object as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkMinLen({} as any, 0)).toThrow(GenericError);
+        expect(() => arrayValidation.checkMinLen({} as any, 0)).toThrow(
+          "Input data is invalid, expected an array"
+        );
+      });
 
-            it("Input array length is same as the minimum length, should return true", () => {
-                const isValidArr = checkArrMinLen([2, 3], 2);
-                expect(isValidArr).toBe(true);
-            });
+      it("Passing undefined as an input to minimum length, should throw an error", () => {
+        expect(() => arrayValidation.checkMinLen([], undefined as any)).toThrow(
+          GenericError
+        );
+        expect(() => arrayValidation.checkMinLen([], undefined as any)).toThrow(
+          "Minimum length input is invalid, expected a number"
+        );
+      });
 
-            it("Input array length is below the minimum length, should return false", () => {
-                const isValidArr = checkArrMinLen([2, 3], 5);
-                expect(isValidArr).toBe(false);
-            });
-        });
+      it("Passing array as an input to minimum length, should throw an error", () => {
+        expect(() => arrayValidation.checkMinLen([], [] as any)).toThrow(GenericError);
+        expect(() => arrayValidation.checkMinLen([], [] as any)).toThrow(
+          "Minimum length input is invalid, expected a number"
+        );
+      });
     });
 
-    describe(`"checkArrOfStr" fn`, () => {
-        describe("Exception Path", () => {
-            it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkArrOfStr(undefined as any)).toThrow(GenericError);
-                expect(() => checkArrOfStr(undefined as any)).toThrow("Input data is invalid, expected an array of strings");
-            });
+    describe("Happy Path", () => {
+      it("Input array length is above the minimum length, should return true", () => {
+        const isValidArr = arrayValidation.checkMinLen([2, 3, 4], 2);
+        expect(isValidArr).toBe(true);
+      });
 
-            it("Passing array of numbers as an input data, should throw an error", () => {
-                expect(() => checkArrOfStr([9 as any])).toThrow(GenericError);
-                expect(() => checkArrOfStr([10 as any])).toThrow("Input data is invalid, expected an array of strings");
-            });
-        });
+      it("Input array length is same as the minimum length, should return true", () => {
+        const isValidArr = arrayValidation.checkMinLen([2, 3], 2);
+        expect(isValidArr).toBe(true);
+      });
 
-        describe("Happy Path", () => {
-            it("Passing array of strings as an input data, should return true", () => {
-                expect(checkArrOfStr(["data", "car"])).toBe(true);
-            });
-        });
+      it("Input array length is below the minimum length, should return false", () => {
+        const isValidArr = arrayValidation.checkMinLen([2, 3], 5);
+        expect(isValidArr).toBe(false);
+      });
+    });
+  });
+
+  describe(`"checkArrOfStr" fn`, () => {
+    describe("Exception Path", () => {
+      it("Passing undefined as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkArrOfStr(undefined as any)).toThrow(GenericError);
+        expect(() => arrayValidation.checkArrOfStr(undefined as any)).toThrow(
+          "Input data is invalid, expected an array of strings"
+        );
+      });
+
+      it("Passing array of numbers as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkArrOfStr([9 as any])).toThrow(GenericError);
+        expect(() => arrayValidation.checkArrOfStr([10 as any])).toThrow(
+          "Input data is invalid, expected an array of strings"
+        );
+      });
     });
 
-    describe(`"checkArrOfNum" fn`, () => {
-        describe("Exception Path", () => {
-            it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkArrOfNum(undefined as any)).toThrow(GenericError);
-                expect(() => checkArrOfNum(undefined as any)).toThrow("Input data is invalid, expected an array of numbers");
-            });
+    describe("Happy Path", () => {
+      it("Passing array of strings as an input data, should return true", () => {
+        expect(arrayValidation.checkArrOfStr(["data", "car"])).toBe(true);
+      });
+    });
+  });
 
-            it("Passing array of strings as an input data, should throw an error", () => {
-                expect(() => checkArrOfNum(["data" as any])).toThrow(GenericError);
-                expect(() => checkArrOfNum(["data" as any])).toThrow("Input data is invalid, expected an array of numbers");
-            });
-        });
+  describe(`"checkArrOfNum" fn`, () => {
+    describe("Exception Path", () => {
+      it("Passing undefined as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkArrOfNum(undefined as any)).toThrow(GenericError);
+        expect(() => arrayValidation.checkArrOfNum(undefined as any)).toThrow(
+          "Input data is invalid, expected an array of numbers"
+        );
+      });
 
-        describe("Happy Path", () => {
-            it("Passing array of numbers as an input data, should return true", () => {
-                expect(checkArrOfNum([3, 4])).toBe(true);
-            });
-        });
+      it("Passing array of strings as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkArrOfNum(["data" as any])).toThrow(GenericError);
+        expect(() => arrayValidation.checkArrOfNum(["data" as any])).toThrow(
+          "Input data is invalid, expected an array of numbers"
+        );
+      });
     });
 
-    describe(`"checkArrOfBool" fn`, () => {
-        describe("Exception Path", () => {
-            it("Passing undefined as an input data, should throw an error", () => {
-                expect(() => checkArrOfBool(undefined as any)).toThrow(GenericError);
-                expect(() => checkArrOfBool(undefined as any)).toThrow("Input data is invalid, expected an array of booleans");
-            });
+    describe("Happy Path", () => {
+      it("Passing array of numbers as an input data, should return true", () => {
+        expect(arrayValidation.checkArrOfNum([3, 4])).toBe(true);
+      });
+    });
+  });
 
-            it("Passing array of numbers as an input data, should throw an error", () => {
-                expect(() => checkArrOfBool([9 as any])).toThrow(GenericError);
-                expect(() => checkArrOfBool([9 as any])).toThrow("Input data is invalid, expected an array of booleans");
-            });
-        });
+  describe(`"checkArrOfBool" fn`, () => {
+    describe("Exception Path", () => {
+      it("Passing undefined as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkArrOfBool(undefined as any)).toThrow(GenericError);
+        expect(() => arrayValidation.checkArrOfBool(undefined as any)).toThrow(
+          "Input data is invalid, expected an array of booleans"
+        );
+      });
 
-        describe("Happy Path", () => {
-            it("Passing array of booleans as an input data, should return true", () => {
-                expect(checkArrOfBool([true, false, true])).toBe(true);
-            });
-        });
+      it("Passing array of numbers as an input data, should throw an error", () => {
+        expect(() => arrayValidation.checkArrOfBool([9 as any])).toThrow(GenericError);
+        expect(() => arrayValidation.checkArrOfBool([9 as any])).toThrow(
+          "Input data is invalid, expected an array of booleans"
+        );
+      });
     });
 
+    describe("Happy Path", () => {
+      it("Passing array of booleans as an input data, should return true", () => {
+        expect(arrayValidation.checkArrOfBool([true, false, true])).toBe(true);
+      });
+    });
+  });
 });

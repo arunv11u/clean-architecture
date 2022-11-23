@@ -1,41 +1,43 @@
 import { GenericError } from '../../errors';
-import { checkFieldIsNumber, checkFieldIsString, checkFieldIsBoolean, checkFieldIsObject, checkFieldIsArray } from '../type-check.validation';
+import { DataTypeValidation } from '../data-type.validation';
 
 describe("Basic Input Validation", () => {
+    const dataTypeValidation = DataTypeValidation.getInstance();
+    
     describe("Type check module", () => {
 
         describe(`"checkFieldIsString" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsString(undefined as any)).toThrow(GenericError);
-                    expect(() => checkFieldIsString(undefined as any)).toThrow("Input data is invalid, expected a string");
-                    expect(() => checkFieldIsString("")).toThrow("Input data is invalid, expected a string");
+                    expect(() => dataTypeValidation.checkFieldIsString(undefined as any)).toThrow(GenericError);
+                    expect(() => dataTypeValidation.checkFieldIsString(undefined as any)).toThrow("Input data is invalid, expected a string");
+                    expect(() => dataTypeValidation.checkFieldIsString("")).toThrow("Input data is invalid, expected a string");
                 });
             });
 
             describe("Happy Path", () => {
                 it("Input is a string, should return true", () => {
-                    const isString = checkFieldIsString("Hello World!");
+                    const isString = dataTypeValidation.checkFieldIsString("Hello World!");
                     expect(isString).toBe(true);
                 });
 
                 it("Input is a number, should return false", () => {
-                    const isString = checkFieldIsString(9 as any);
+                    const isString = dataTypeValidation.checkFieldIsString(9 as any);
                     expect(isString).toBe(false);
                 });
 
                 it("Input is a boolean, should return false", () => {
-                    const isString = checkFieldIsString(true as any);
+                    const isString = dataTypeValidation.checkFieldIsString(true as any);
                     expect(isString).toBe(false);
                 });
 
                 it("Input is an object, should return false", () => {
-                    const isString = checkFieldIsString({} as any);
+                    const isString = dataTypeValidation.checkFieldIsString({} as any);
                     expect(isString).toBe(false);
                 });
 
                 it("Input is an array, should return false", () => {
-                    const isString = checkFieldIsString([] as any);
+                    const isString = dataTypeValidation.checkFieldIsString([] as any);
                     expect(isString).toBe(false);
                 });
             });
@@ -44,39 +46,39 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsNumber" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsNumber(undefined as any)).toThrow(GenericError);
-                    expect(() => checkFieldIsNumber(undefined as any)).toThrow("Input data is invalid, expected a number");
+                    expect(() => dataTypeValidation.checkFieldIsNumber(undefined as any)).toThrow(GenericError);
+                    expect(() => dataTypeValidation.checkFieldIsNumber(undefined as any)).toThrow("Input data is invalid, expected a number");
                 });
             });
 
             describe("Happy Path", () => {
                 it("Input is a number, should return true", () => {
-                    const isNumber = checkFieldIsNumber(9);
+                    const isNumber = dataTypeValidation.checkFieldIsNumber(9);
                     expect(isNumber).toBe(true);
                 });
 
                 it("Input is 0, should return true", () => {
-                    const isNumber = checkFieldIsNumber(0);
+                    const isNumber = dataTypeValidation.checkFieldIsNumber(0);
                     expect(isNumber).toBe(true);
                 });
 
                 it("Input is a string, should return false", () => {
-                    const isNumber = checkFieldIsNumber("Hello World!" as any);
+                    const isNumber = dataTypeValidation.checkFieldIsNumber("Hello World!" as any);
                     expect(isNumber).toBe(false);
                 });
 
                 it("Input is a booelan, should return false", () => {
-                    const isNumber = checkFieldIsNumber(true as any);
+                    const isNumber = dataTypeValidation.checkFieldIsNumber(true as any);
                     expect(isNumber).toBe(false);
                 });
 
                 it("Input is an object, should return false", () => {
-                    const isNumber = checkFieldIsNumber({} as any);
+                    const isNumber = dataTypeValidation.checkFieldIsNumber({} as any);
                     expect(isNumber).toBe(false);
                 });
 
                 it("Input is an array, should return false", () => {
-                    const isNumber = checkFieldIsNumber([] as any);
+                    const isNumber = dataTypeValidation.checkFieldIsNumber([] as any);
                     expect(isNumber).toBe(false);
                 });
             });
@@ -85,39 +87,39 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsBoolean" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsBoolean(undefined as any)).toThrow(GenericError);
-                    expect(() => checkFieldIsBoolean(undefined as any)).toThrow("Input data is invalid, expected a boolean");
+                    expect(() => dataTypeValidation.checkFieldIsBoolean(undefined as any)).toThrow(GenericError);
+                    expect(() => dataTypeValidation.checkFieldIsBoolean(undefined as any)).toThrow("Input data is invalid, expected a boolean");
                 });
             });
 
             describe("Happy Path", () => {
                 it("Input is true, should return true", () => {
-                    const isBoolean = checkFieldIsBoolean(true);
+                    const isBoolean = dataTypeValidation.checkFieldIsBoolean(true);
                     expect(isBoolean).toBe(true);
                 });
 
                 it("Input is false, should return true", () => {
-                    const isBoolean = checkFieldIsBoolean(false);
+                    const isBoolean = dataTypeValidation.checkFieldIsBoolean(false);
                     expect(isBoolean).toBe(true);
                 });
 
                 it("Input is a string, should return false", () => {
-                    const isBoolean = checkFieldIsBoolean("Hello World!" as any);
+                    const isBoolean = dataTypeValidation.checkFieldIsBoolean("Hello World!" as any);
                     expect(isBoolean).toBe(false);
                 });
 
                 it("Input is a number, should return false", () => {
-                    const isBoolean = checkFieldIsBoolean(9 as any);
+                    const isBoolean = dataTypeValidation.checkFieldIsBoolean(9 as any);
                     expect(isBoolean).toBe(false);
                 });
 
                 it("Input is an object, should return false", () => {
-                    const isBoolean = checkFieldIsBoolean({} as any);
+                    const isBoolean = dataTypeValidation.checkFieldIsBoolean({} as any);
                     expect(isBoolean).toBe(false);
                 });
 
                 it("Input is an array, should return false", () => {
-                    const isBoolean = checkFieldIsBoolean([] as any);
+                    const isBoolean = dataTypeValidation.checkFieldIsBoolean([] as any);
                     expect(isBoolean).toBe(false);
                 });
             });
@@ -126,34 +128,34 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsObject" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsObject(undefined as any)).toThrow(GenericError);
-                    expect(() => checkFieldIsObject(undefined as any)).toThrow("Input data is invalid, expected an object");
+                    expect(() => dataTypeValidation.checkFieldIsObject(undefined as any)).toThrow(GenericError);
+                    expect(() => dataTypeValidation.checkFieldIsObject(undefined as any)).toThrow("Input data is invalid, expected an object");
                 });
             });
 
             describe("Happy Path", () => {
                 it("Input is an object, should return true", () => {
-                    const isObject = checkFieldIsObject({});
+                    const isObject = dataTypeValidation.checkFieldIsObject({});
                     expect(isObject).toBe(true);
                 });
 
                 it("Input is a string, should return false", () => {
-                    const isObject = checkFieldIsObject("Hello World!" as any);
+                    const isObject = dataTypeValidation.checkFieldIsObject("Hello World!" as any);
                     expect(isObject).toBe(false);
                 });
 
                 it("Input is a number, should return false", () => {
-                    const isObject = checkFieldIsObject(9 as any);
+                    const isObject = dataTypeValidation.checkFieldIsObject(9 as any);
                     expect(isObject).toBe(false);
                 });
 
                 it("Input is a boolean, should return false", () => {
-                    const isObject = checkFieldIsObject(true as any);
+                    const isObject = dataTypeValidation.checkFieldIsObject(true as any);
                     expect(isObject).toBe(false);
                 });
 
                 it("Input is an array, should return false", () => {
-                    const isObject = checkFieldIsObject([] as any);
+                    const isObject = dataTypeValidation.checkFieldIsObject([] as any);
                     expect(isObject).toBe(false);
                 });
             });
@@ -162,34 +164,34 @@ describe("Basic Input Validation", () => {
         describe(`"checkFieldIsArray" fn`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
-                    expect(() => checkFieldIsArray(undefined as any)).toThrow(GenericError);
-                    expect(() => checkFieldIsArray(undefined as any)).toThrow("Input data is invalid, expected an array");
+                    expect(() => dataTypeValidation.checkFieldIsArray(undefined as any)).toThrow(GenericError);
+                    expect(() => dataTypeValidation.checkFieldIsArray(undefined as any)).toThrow("Input data is invalid, expected an array");
                 });
             });
 
             describe("Happy Path", () => {
                 it("Input is an array, should return true", () => {
-                    const isArray = checkFieldIsArray([]);
+                    const isArray = dataTypeValidation.checkFieldIsArray([]);
                     expect(isArray).toBe(true);
                 });
 
                 it("Input is a string, should return false", () => {
-                    const isArray = checkFieldIsArray("Hello World!" as any);
+                    const isArray = dataTypeValidation.checkFieldIsArray("Hello World!" as any);
                     expect(isArray).toBe(false);
                 });
 
                 it("Input is a number, should return false", () => {
-                    const isArray = checkFieldIsArray(10 as any);
+                    const isArray = dataTypeValidation.checkFieldIsArray(10 as any);
                     expect(isArray).toBe(false);
                 });
 
                 it("Input is a boolean, should return false", () => {
-                    const isArray = checkFieldIsArray(true as any);
+                    const isArray = dataTypeValidation.checkFieldIsArray(true as any);
                     expect(isArray).toBe(false);
                 });
 
                 it("Input is an object, should return false", () => {
-                    const isArray = checkFieldIsArray({} as any);
+                    const isArray = dataTypeValidation.checkFieldIsArray({} as any);
                     expect(isArray).toBe(false);
                 });
             });
