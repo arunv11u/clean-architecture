@@ -1,13 +1,13 @@
 import express from "express";
 import { GenericError } from "./errors";
-import { BaseResponse, BaseUtilResponseHandler, TypedResponse } from "./types";
+import { BaseResponse, BaseResponseHandler, TypedResponse } from "./types";
 
-class ResponseHandler implements BaseUtilResponseHandler {
-  private static _instance: BaseUtilResponseHandler;
+class ResponseHandler implements BaseResponseHandler {
+  private static _instance: BaseResponseHandler;
 
   constructor() {}
 
-  static getInstance(): BaseUtilResponseHandler {
+  static getInstance(): BaseResponseHandler {
     if (!ResponseHandler._instance)
       ResponseHandler._instance = new ResponseHandler();
 
