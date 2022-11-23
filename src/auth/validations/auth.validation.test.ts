@@ -37,8 +37,51 @@ describe("Auth Component", () => {
           mockNext = jest.fn();
 
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
-          // expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Name is required");
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Name is required");
         });
+
+        it("If email is provided and it is not a sting, should throw error", () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: []
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email must be a string");
+        });
+
+        it("If email is provided and its invalid, should throw error", () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: "test@gmail"
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email is invalid");
+        });
+
+        describe("If mobile number is provided and it is not a string, should throw error", () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              mobileNumber: 10
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Mobile Number must be a string");
+        });
+
       });
 
 
