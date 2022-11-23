@@ -13,18 +13,35 @@ describe("Auth Component", () => {
     describe(`"guestLogin" method`, () => {
       const guestLoginValidator = authValidation.guestLogin();
 
-      it("Not requested fields, should throw error", () => {
-        mockRequest = {
-          body: {
-            data: faker.random.words(5)
-          }
-        };
-        mockResponse = {};
-        mockNext = jest.fn();
+      describe("Exception Path", () => {
+        it("Not requested fields in request, should throw error", () => {
+          mockRequest = {
+            body: {
+              data: faker.random.words(5)
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
 
-        expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
-        expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Bad Request");
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("data is forbidden");
+        });
+
+        it("Name not provided, should throw error", () => {
+          mockRequest = {
+            body: {
+              email: faker.internet.email()
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          // expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Name is required");
+        });
       });
+
+
     });
   });
 });
