@@ -1,12 +1,12 @@
-import { GenericError } from '../../errors';
-import { DataTypeValidation } from '../data-type.validation';
+import { GenericError } from '../errors';
+import { DataTypeValidation } from './data-type.validation';
 
 describe("Basic Input Validation", () => {
     const dataTypeValidation = DataTypeValidation.getInstance();
     
-    describe("Type check module", () => {
+    describe(`"Data Type Validation" class`, () => {
 
-        describe(`"checkFieldIsString" fn`, () => {
+        describe(`"checkFieldIsString" method`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
                     expect(() => dataTypeValidation.checkFieldIsString(undefined as any)).toThrow(GenericError);
@@ -43,7 +43,7 @@ describe("Basic Input Validation", () => {
             });
         });
 
-        describe(`"checkFieldIsNumber" fn`, () => {
+        describe(`"checkFieldIsNumber" method`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
                     expect(() => dataTypeValidation.checkFieldIsNumber(undefined as any)).toThrow(GenericError);
@@ -84,7 +84,7 @@ describe("Basic Input Validation", () => {
             });
         });
 
-        describe(`"checkFieldIsBoolean" fn`, () => {
+        describe(`"checkFieldIsBoolean" method`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
                     expect(() => dataTypeValidation.checkFieldIsBoolean(undefined as any)).toThrow(GenericError);
@@ -125,7 +125,7 @@ describe("Basic Input Validation", () => {
             });
         });
 
-        describe(`"checkFieldIsObject" fn`, () => {
+        describe(`"checkFieldIsObject" method`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
                     expect(() => dataTypeValidation.checkFieldIsObject(undefined as any)).toThrow(GenericError);
@@ -161,7 +161,7 @@ describe("Basic Input Validation", () => {
             });
         });
 
-        describe(`"checkFieldIsArray" fn`, () => {
+        describe(`"checkFieldIsArray" method`, () => {
             describe("Exception Path", () => {
                 it("Input is not defined, should throw an error", () => {
                     expect(() => dataTypeValidation.checkFieldIsArray(undefined as any)).toThrow(GenericError);
