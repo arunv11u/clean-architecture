@@ -115,15 +115,15 @@ describe("Basic Input Validation", () => {
               "car",
               "bike",
             ])
-          ).toBe(true);
+          ).toStrictEqual({isValid: true});
         });
 
         it("Passing extra fields to an input data, should return false", () => {
           expect(
             objectValidation.allowFields({ car: "honda", bike: "Hero" }, [
-              "car",
+              "car"
             ])
-          ).toBe(false);
+          ).toStrictEqual({isValid: false, message: "bike is forbidden"});
         });
       });
     });

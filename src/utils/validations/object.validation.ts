@@ -4,7 +4,7 @@ import { BaseObjectValidation } from "../types";
 export class ObjectValidation implements BaseObjectValidation {
   private static _instance: BaseObjectValidation;
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): BaseObjectValidation {
     if (!ObjectValidation._instance)
@@ -58,11 +58,19 @@ export class ObjectValidation implements BaseObjectValidation {
     });
 
     let forbiddenFields: string[] = [];
-    for (let key in inputData)
-      if (!fields.some((field) => field === key)) forbiddenFields.push(key);
+    for (let key in inputData){
+      if (!fields.some((field) => field === key)) {
+        forbiddenFields.push(key);
+        break;
+      };
+    }
 
-    if (forbiddenFields.length) return false;
+    const validationRes: { isValid: boolean, message?: string } = { isValid: true };
+    if (forbiddenFields.length) {
+      validationRes.isValid = false;
+      validationRes.message = `${forbiddenFields[0]} is forbidden`;
+    }
 
-    return true;
+    return validationRes;
   }
 }
