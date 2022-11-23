@@ -15,6 +15,12 @@ export class AuthService implements BaseAuthService {
     request: TypedRequest<{}, {}, AuthDTO.Register>,
     response: Response<any, Record<string, any>>,
     next: NextFunction
+  ): void {}
+
+  guestLogin(
+    request: TypedRequest<{}, {}, AuthDTO.GuestLogin>,
+    response: Response<any, Record<string, any>>,
+    next: NextFunction
   ): void {
     
   }

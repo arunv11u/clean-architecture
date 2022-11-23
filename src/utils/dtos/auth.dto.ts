@@ -7,4 +7,10 @@ export namespace AuthDTO {
     mobileNumber?: string;
     password: string;
   }
+
+  export interface GuestLogin {
+    name: string;
+    email?: string;
+    mobileNumber?: string;
+  }
 }
