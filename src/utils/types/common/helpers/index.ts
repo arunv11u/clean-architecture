@@ -1,2 +1,3 @@
+export * from './path.helper.type';
 
-export {};
+export * from './string.helper.type';
