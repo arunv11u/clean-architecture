@@ -9,7 +9,8 @@ describe("Auth Component", () => {
         describe(`"create" method`, () => {
             describe("Exception Path", () => {
                 it("If undefined passed as an argument, should throw error", () => {
-                    expect(() => userDAO.create()).rejects.toThrow(GenericError);
+                    expect(() => userDAO.create(undefined as any)).rejects.toThrow(GenericError);
+                    expect(() => userDAO.create(undefined as any)).rejects.toThrow("User details is undefined in create user DAO, expected user details");
                 });
             });
         });

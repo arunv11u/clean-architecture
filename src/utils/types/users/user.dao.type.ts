@@ -1,9 +1,15 @@
 
+interface CreateUserInput {
+    name: string;
+    email?: string;
+    mobileNumber?: string;
+};
 
 interface BaseUserDAO {
-    create(): Promise<void>;
+    create(userDetails: CreateUserInput): Promise<void>;
 };
 
 export {
-    BaseUserDAO
+    BaseUserDAO,
+    CreateUserInput
 };

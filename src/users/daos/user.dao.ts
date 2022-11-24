@@ -1,4 +1,4 @@
-import { BaseResponseHandler, BaseUserDAO, ResponseHandler } from "../../utils";
+import { BaseResponseHandler, BaseUserDAO, CreateUserInput, ResponseHandler } from "../../utils";
 
 
 export class UserDAO implements BaseUserDAO {
@@ -15,7 +15,9 @@ export class UserDAO implements BaseUserDAO {
         return UserDAO._instance;
     };
 
-    async create(): Promise<void> {
-        throw this._responseHandler.internalError("Something went wrong!");
+    async create(userDetails: CreateUserInput): Promise<void> {
+        if (!userDetails) throw this._responseHandler.internalError("User details is undefined in create user DAO, expected user details");
+
+
     };
 };
