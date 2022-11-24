@@ -1,6 +1,8 @@
 
 export * from './user.controller.type';
 
+export * from './user.dao.type';
+
 export * from './user.pipe.type';
 
 export * from './user.repository.type';
