@@ -196,5 +196,38 @@ describe("Basic Input Validation", () => {
         });
       });
     });
+
+    describe(`"checkRegexMatch" method`, () => {
+      describe("Exception Path", () => {
+        it("Passing undefined as an input data, should throw an error", () => {
+          expect(() =>
+            stringValidation.checkRegexMatch(undefined as any, new RegExp(""))
+          ).toThrow(GenericError);
+          expect(() =>
+            stringValidation.checkRegexMatch(undefined as any, new RegExp(""))
+          ).toThrow("Input data is invalid, expected a string");
+        });
+
+        it("Passing array as an input data, should throw an error", () => {
+          expect(() => stringValidation.checkRegexMatch([] as any, new RegExp(""))).toThrow(
+            GenericError
+          );
+          expect(() => stringValidation.checkRegexMatch([] as any, new RegExp(""))).toThrow(
+            "Input data is invalid, expected a string"
+          );
+        });
+      });
+
+      describe("Happy Path", () => {
+        const regexPattern = new RegExp(/^\d+$/);
+        it(`Invalid string that does not match regex, should return false`, () => {
+          expect(stringValidation.checkRegexMatch("4345a", regexPattern)).toBe(false)
+        });
+
+        it("Valid string that matches string, should return true", () => {
+          expect(stringValidation.checkRegexMatch("98765", regexPattern)).toBe(true);
+        });
+      });
+    });
   });
 });
