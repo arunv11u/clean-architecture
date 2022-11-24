@@ -12,6 +12,12 @@ describe("Auth Component", () => {
 
     describe(`"guestLogin" method`, () => {
       const guestLoginValidator = authValidation.guestLogin();
+      const nameMinLen = 1;
+      const nameMaxLen = 50;
+      const emailMinLen = 5;
+      const emailMaxLen = 50;
+      const mobileNumberMinLen = 8;
+      const mobileNumberMaxLen = 12;
 
       describe("Exception Path", () => {
         it("Not requested fields in request, should throw error", () => {
@@ -40,7 +46,35 @@ describe("Auth Component", () => {
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Name is required");
         });
 
-        it("If email is provided and it is not a sting, should throw error", () => {
+        it(`If name is less than ${nameMinLen} character, should throw error`, () => {
+          mockRequest = {
+            body: {
+              name: "",
+              email: faker.internet.email()
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Name should be minimum ${nameMinLen} character`);
+        });
+
+        it(`If name is greater than ${nameMaxLen} characters, should throw error`, () => {
+          mockRequest = {
+            body: {
+              name: faker.random.alpha(nameMaxLen+1),
+              email: faker.internet.email()
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Name should not exceeds ${nameMaxLen} characters`);
+        });
+
+        it("If email is provided and it is not a string, should throw error", () => {
           mockRequest = {
             body: {
               name: faker.name.fullName(),
@@ -51,10 +85,38 @@ describe("Auth Component", () => {
           mockNext = jest.fn();
 
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
-          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email must be a string");
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email Address must be a string");
         });
 
-        it("If email is provided and its invalid, should throw error", () => {
+        it(`If email is less than ${emailMinLen} character, should throw error`, () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: "a@g."
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Email Address should be minimum ${emailMinLen} characters`);
+        });
+
+        it(`If email is greater than ${emailMaxLen} characters, should throw error`, () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: faker.random.alpha(emailMaxLen+1)
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Email Address should not exceeds ${emailMaxLen} characters`);
+        });
+
+        it("If email is provided and it is invalid, should throw error", () => {
           mockRequest = {
             body: {
               name: faker.name.fullName(),
@@ -65,10 +127,10 @@ describe("Auth Component", () => {
           mockNext = jest.fn();
 
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
-          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email is invalid");
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email Address is invalid");
         });
 
-        describe("If mobile number is provided and it is not a string, should throw error", () => {
+        it("If mobile number is provided and it is not a string, should throw error", () => {
           mockRequest = {
             body: {
               name: faker.name.fullName(),
@@ -82,7 +144,36 @@ describe("Auth Component", () => {
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Mobile Number must be a string");
         });
 
+        it(`If mobile number is less than ${mobileNumberMinLen} character, should throw error`, () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              mobileNumber: "1234567"
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Mobile Number should be minimum ${mobileNumberMinLen} characters`);
+        });
+        
+        it(`If mobile number is greater than ${mobileNumberMaxLen} characters, should throw error`, () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              mobileNumber: faker.random.numeric(mobileNumberMaxLen+1),
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Mobile Number should not exceeds ${mobileNumberMaxLen} characters`);
+        });
+
       });
+
 
 
     });
