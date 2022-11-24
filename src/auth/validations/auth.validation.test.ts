@@ -17,7 +17,7 @@ describe("Auth Component", () => {
       const emailMinLen = 5;
       const emailMaxLen = 50;
       const mobileNumberMinLen = 8;
-      const mobileNumberMaxLen = 12;
+      const mobileNumberMaxLen = 16;
 
       describe("Exception Path", () => {
         it("Not requested fields in request, should throw error", () => {
@@ -63,7 +63,7 @@ describe("Auth Component", () => {
         it(`If name is greater than ${nameMaxLen} characters, should throw error`, () => {
           mockRequest = {
             body: {
-              name: faker.random.alpha(nameMaxLen+1),
+              name: faker.random.alpha(nameMaxLen + 1),
               email: faker.internet.email()
             }
           };
@@ -106,7 +106,7 @@ describe("Auth Component", () => {
           mockRequest = {
             body: {
               name: faker.name.fullName(),
-              email: faker.random.alpha(emailMaxLen+1)
+              email: faker.random.alpha(emailMaxLen + 1)
             }
           };
           mockResponse = {};
@@ -157,12 +157,12 @@ describe("Auth Component", () => {
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Mobile Number should be minimum ${mobileNumberMinLen} characters`);
         });
-        
+
         it(`If mobile number is greater than ${mobileNumberMaxLen} characters, should throw error`, () => {
           mockRequest = {
             body: {
               name: faker.name.fullName(),
-              mobileNumber: faker.random.numeric(mobileNumberMaxLen+1),
+              mobileNumber: faker.random.numeric(mobileNumberMaxLen + 1),
             }
           };
           mockResponse = {};
@@ -172,10 +172,38 @@ describe("Auth Component", () => {
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Mobile Number should not exceeds ${mobileNumberMaxLen} characters`);
         });
 
+        it(`If mobile number has invalid characters, should throw error`, () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              mobileNumber: "+91987654321a",
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Mobile Number is invalid");
+        });
+
       });
 
+      describe("Happy Path", () => {
+        it("Valid values are provided, should trigger next function", () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: faker.internet.email(),
+              mobileNumber: "+919876543210"
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
 
-
+          guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext);
+          expect(mockNext).toHaveBeenCalled();
+        });
+      });
     });
   });
 });
