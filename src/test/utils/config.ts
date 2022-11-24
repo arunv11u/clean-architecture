@@ -4,9 +4,12 @@ import https from "https";
 import { Config, DefaultConfig, Environment } from "../../utils";
 
 const testConfig = {
-  memory: true,
-  ip: "localhost",
-  dataBase: "lifeverse"
+  mongodb: {
+    memory: true,
+    ip: "localhost",
+    port: 27017,
+    dataBase: "lifeverse"
+  }
 };
 
 const loader = async (app: Express, server: http.Server | https.Server) => {
