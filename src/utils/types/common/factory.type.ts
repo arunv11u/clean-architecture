@@ -1,5 +1,5 @@
-import { BaseAuthService } from "../auth";
-import { BaseUserPipe, BaseUserService, BaseUserValidation } from "../users";
+import { BaseAuthRepository, BaseAuthService } from "../auth";
+import { BaseUserDAO, BaseUserPipe, BaseUserService, BaseUserValidation } from "../users";
 
 
 interface BaseMiddlewareFactory {
@@ -21,10 +21,20 @@ interface BasePipeFactory {
 interface BaseHelperFactory {
 };
 
+interface BaseDAOFactory {
+    getUserDAO(): BaseUserDAO;
+};
+
+interface BaseRepositoryFactory {
+    getAuthRepository(): BaseAuthRepository;
+};
+
 export {
     BaseMiddlewareFactory,
     BaseValidationFactory,
     BaseServiceFactory,
     BasePipeFactory,
-    BaseHelperFactory
+    BaseHelperFactory,
+    BaseDAOFactory,
+    BaseRepositoryFactory
 };

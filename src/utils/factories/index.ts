@@ -1,17 +1,14 @@
 
-// Factory
+export * from './dao.factory';
 
-// Helper
 export * from './helper.factory';
 
-// Middleware
 export * from './middleware.factory';
 
-// Pipe
 export * from './pipe.factory';
 
-// Service
+export * from './repository.factory';
+
 export * from './service.factory';
 
-// Validation
 export * from './validation.factory';
