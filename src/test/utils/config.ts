@@ -1,4 +1,4 @@
-import { Express, Request, Response, NextFunction } from "express";
+import { Express } from "express";
 import http from "http";
 import https from "https";
 import { Config, DefaultConfig, Environment } from "../../utils";
@@ -8,7 +8,7 @@ const testConfig = {
     memory: true,
     ip: "localhost",
     port: 27017,
-    dataBase: "lifeverse"
+    dataBase: "lifeverse-test"
   }
 };
 
@@ -24,7 +24,7 @@ const loader = async (app: Express, server: http.Server | https.Server) => {
   config.set(_environment, _config);
 
   // Registering routes
-  // Health check route.
+
 };
 
 export { testConfig, loader };

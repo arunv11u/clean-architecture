@@ -5,8 +5,6 @@ import { Environment } from "../utils";
 import { loader } from "./utils";
 import { disconnect } from './utils/db-connect';
 
-// Jest set timeout = 40 seconds, default 5 seconds overridden.
-// jest.setTimeout(10000);
 
 beforeAll(async () => { 
   await mongoose.connect(process.env.MONGO_URI as string);
