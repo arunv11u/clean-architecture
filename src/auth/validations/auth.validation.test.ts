@@ -203,6 +203,33 @@ describe("Auth Component", () => {
           guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext);
           expect(mockNext).toHaveBeenCalled();
         });
+
+        it("Valid values are provided, should trigger next function", () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: faker.internet.email()
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext);
+          expect(mockNext).toHaveBeenCalled();
+        });
+
+        it("Valid values are provided, should trigger next function", () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName()
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext);
+          expect(mockNext).toHaveBeenCalled();
+        });
       });
     });
   });
