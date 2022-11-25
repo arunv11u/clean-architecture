@@ -4,6 +4,8 @@ export * from "./services";
 
 export * from "./validations";
 
+export * from "./db-connect";
+
 export * from "./environment.type";
 
 export * from "./error.type";
