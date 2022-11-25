@@ -62,8 +62,8 @@ describe("Mongoose Schema Service Module", () => {
             it("Stringified Object Id passed as an input, should return the same string as Object Id", () => {
                 const objectId = new mongoose.Types.ObjectId();
 
-                expect(new mongoose.Types.ObjectId(objectId.toString())).toBeInstanceOf(Types.ObjectId);
-                expect(new mongoose.Types.ObjectId(objectId.toString())).toStrictEqual(objectId);
+                expect(mongooseSchemaService.getDocId(objectId.toString())).toBeInstanceOf(Types.ObjectId);
+                expect(mongooseSchemaService.getDocId(objectId.toString())).toStrictEqual(objectId);
             });
         });
     });
