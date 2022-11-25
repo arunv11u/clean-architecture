@@ -52,7 +52,7 @@ describe("Mongoose Service Module", () => {
                     _id: new mongoose.Types.ObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
-                    phone: { code: "+91", number: "9876543210" }
+                    phone: { code: "+91", number: "9876543210" },
                 };
                 const newUser = new User(userData);
 
