@@ -11,7 +11,7 @@ export = async function globalSetup() {
             // it's needed in global space, because we don't want to create a new instance every test-suite
             const replSet = await MongoMemoryReplSet.create({
                 replSet: {
-                    count: 1,
+                    count: 3,
                     storageEngine: 'wiredTiger',
                 }
             });

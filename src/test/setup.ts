@@ -5,6 +5,7 @@ import { Environment } from "../utils";
 import { loader } from "./utils";
 import { disconnect } from './utils/db-connect';
 
+jest.setTimeout(40000);
 
 beforeAll(async () => { 
   await mongoose.connect(process.env.MONGO_URI as string);
@@ -19,6 +20,9 @@ beforeEach(async () => {
   for (let collection of collections) {
     await collection.deleteMany({});
   };
+
+  // Create collection before hand here because mongoose transaction expects the collection namespace.
+  // await mongoose.connection.db.createCollection('users');
 
   await loader(app, server);
 });
