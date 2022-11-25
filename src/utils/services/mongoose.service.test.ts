@@ -88,7 +88,7 @@ describe("Mongoose Service Module", () => {
                 expect((User as any).jsonObj(insertManyRes)).toStrictEqual([{ ...inputData, __v: 0 }]);
             });
 
-            it.only("If all required inputs passed with options, should save and return documents", async () => {
+            it("If all required inputs passed with options, should save and return documents", async () => {
                 const inputData = {
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
