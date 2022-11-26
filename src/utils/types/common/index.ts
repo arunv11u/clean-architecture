@@ -16,8 +16,6 @@ export * from "./factory.type";
 
 export * from "./metadata.type";
 
-export * from "./request-validation-middleware.type";
-
 export * from "./response-handler.type";
 
 export * from "./routes.type";

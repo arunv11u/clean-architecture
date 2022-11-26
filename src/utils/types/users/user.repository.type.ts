@@ -1,8 +1,0 @@
-
-interface UserRepository {
-
-};
-
-export {
-    UserRepository
-};

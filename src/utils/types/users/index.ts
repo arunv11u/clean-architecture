@@ -1,10 +1,9 @@
 
-
 export * from './user.dao.type';
 
-export * from './user.pipe.type';
+export * from './user.factory.type';
 
-export * from './user.repository.type';
+export * from './user.pipe.type';
 
 export * from './user.service.type';
 

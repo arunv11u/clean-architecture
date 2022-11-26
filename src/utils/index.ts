@@ -8,8 +8,6 @@ export * from './dtos';
 
 export * from './errors';
 
-export * from './factories';
-
 export * from './helpers';
 
 export * from './middlewares';

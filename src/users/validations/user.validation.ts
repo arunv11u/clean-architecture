@@ -1,4 +1,3 @@
-import Joi from 'joi';
 import { RequestHandler } from "express";
 import { UserValidation } from "../../utils";
 
