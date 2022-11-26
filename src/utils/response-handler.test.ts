@@ -1,9 +1,10 @@
 import { Response } from "express";
+import { responseHandler } from "../global-config";
 import { GenericError } from "./errors";
-import { ResponseHandlerImpl } from "./response-handler";
+import { ResponseHandler } from "./types";
 
 describe("Response Handler Module", () => {
-  const responseHandler = new ResponseHandlerImpl();
+  const _responseHandler: ResponseHandler = responseHandler;
 
   describe(`"ok" method`, () => {
     let mockResponse: Partial<Response>;
@@ -20,10 +21,10 @@ describe("Response Handler Module", () => {
     describe("Exception Path", () => {
       it("If response object is undefined, should throw an error", () => {
 
-        expect(() => responseHandler.ok(undefined as any)).toThrow(
+        expect(() => _responseHandler.ok(undefined as any)).toThrow(
           GenericError
         );
-        expect(() => responseHandler.ok(undefined as any)).toThrow(
+        expect(() => _responseHandler.ok(undefined as any)).toThrow(
           "Response object is undefined, expected express response object"
         );
       });
@@ -32,7 +33,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Response object and null response data has passed as arguments, should send success response and null data to the client", () => {
         const _code = 200;
-        responseHandler.ok(mockResponse as Response);
+        _responseHandler.ok(mockResponse as Response);
 
         expect(mockResponse.status).toBeCalledWith(_code);
         expect(mockResponse.type).toBeCalledWith("application/json");
@@ -42,7 +43,7 @@ describe("Response Handler Module", () => {
       it("Response object and some response data has passed as arguments, should send success response and also the data to the client", () => {
         const _code = 200;
         const _data = "Sample data";
-        responseHandler.ok<string, any>(mockResponse as Response, _data);
+        _responseHandler.ok<string, any>(mockResponse as Response, _data);
 
         expect(mockResponse.status).toBeCalledWith(_code);
         expect(mockResponse.type).toBeCalledWith("application/json");
@@ -66,10 +67,10 @@ describe("Response Handler Module", () => {
     describe("Exception Path", () => {
       it("If response object is undefined, should throw an error", () => {
 
-        expect(() => responseHandler.created(undefined as any)).toThrow(
+        expect(() => _responseHandler.created(undefined as any)).toThrow(
           GenericError
         );
-        expect(() => responseHandler.created(undefined as any)).toThrow(
+        expect(() => _responseHandler.created(undefined as any)).toThrow(
           "Response object is undefined, expected express response object"
         );
       });
@@ -78,7 +79,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Response object and null response data has passed as arguments, should send success response and null data to the client", () => {
         const _code = 201;
-        responseHandler.created(mockResponse as Response);
+        _responseHandler.created(mockResponse as Response);
 
         expect(mockResponse.status).toBeCalledWith(_code);
         expect(mockResponse.type).toBeCalledWith("application/json");
@@ -88,7 +89,7 @@ describe("Response Handler Module", () => {
       it("Response object and some response data has passed as arguments, should send success response and also the data to the client", () => {
         const _code = 201;
         const _data = "Sample data";
-        responseHandler.created<string, any>(mockResponse as Response, _data);
+        _responseHandler.created<string, any>(mockResponse as Response, _data);
 
         expect(mockResponse.status).toBeCalledWith(_code);
         expect(mockResponse.type).toBeCalledWith("application/json");
@@ -101,7 +102,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Message is passed as undefined, should send default bad request error to the client", () => {
         const _code = 400;
-        const error = responseHandler.clientError(undefined as any);
+        const error = _responseHandler.clientError(undefined as any);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -111,7 +112,7 @@ describe("Response Handler Module", () => {
       it("Some string is provided through message argument, should send the provided error message to the client", () => {
         const _code = 400;
         const _errorMessage = "Name is required";
-        const error = responseHandler.clientError(_errorMessage);
+        const error = _responseHandler.clientError(_errorMessage);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -124,7 +125,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Message is passed as undefined, should send default unauthorized error to the client", () => {
         const _code = 401;
-        const error = responseHandler.unauthorized(undefined as any);
+        const error = _responseHandler.unauthorized(undefined as any);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -134,7 +135,7 @@ describe("Response Handler Module", () => {
       it("Some string is provided through message argument, should send the provided error message to the client", () => {
         const _code = 401;
         const _errorMessage = "Token is invalid";
-        const error = responseHandler.unauthorized(_errorMessage);
+        const error = _responseHandler.unauthorized(_errorMessage);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -147,7 +148,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Message is passed as undefined, should send default payment required error to the client", () => {
         const _code = 402;
-        const error = responseHandler.paymentRequired(undefined as any);
+        const error = _responseHandler.paymentRequired(undefined as any);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -157,7 +158,7 @@ describe("Response Handler Module", () => {
       it("Some string is provided through message argument, should send the provided error message to the client", () => {
         const _code = 402;
         const _errorMessage = "Payment not done";
-        const error = responseHandler.paymentRequired(_errorMessage);
+        const error = _responseHandler.paymentRequired(_errorMessage);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -170,7 +171,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Message is passed as undefined, should send default forbidden error to the client", () => {
         const _code = 403;
-        const error = responseHandler.forbidden(undefined as any);
+        const error = _responseHandler.forbidden(undefined as any);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -180,7 +181,7 @@ describe("Response Handler Module", () => {
       it("Some string is provided through message argument, should send the provided error message to the client", () => {
         const _code = 403;
         const _errorMessage = "You don't have enough access";
-        const error = responseHandler.forbidden(_errorMessage);
+        const error = _responseHandler.forbidden(_errorMessage);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -193,7 +194,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Message is passed as undefined, should send default not found error to the client", () => {
         const _code = 404;
-        const error = responseHandler.notFound(undefined as any);
+        const error = _responseHandler.notFound(undefined as any);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -203,7 +204,7 @@ describe("Response Handler Module", () => {
       it("Some string is provided through message argument, should send the provided error message to the client", () => {
         const _code = 404;
         const _errorMessage = "User not found";
-        const error = responseHandler.notFound(_errorMessage);
+        const error = _responseHandler.notFound(_errorMessage);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -216,7 +217,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Message is passed as undefined, should send default conflict error to the client", () => {
         const _code = 409;
-        const error = responseHandler.conflict(undefined as any);
+        const error = _responseHandler.conflict(undefined as any);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -226,7 +227,7 @@ describe("Response Handler Module", () => {
       it("Some string is provided through message argument, should send the provided error message to the client", () => {
         const _code = 409;
         const _errorMessage = "Name must be a string, but got number";
-        const error = responseHandler.conflict(_errorMessage);
+        const error = _responseHandler.conflict(_errorMessage);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -239,7 +240,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Message is passed as undefined, should send default too many requests error to the client", () => {
         const _code = 429;
-        const error = responseHandler.tooManyRequests(undefined as any);
+        const error = _responseHandler.tooManyRequests(undefined as any);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -249,7 +250,7 @@ describe("Response Handler Module", () => {
       it("Some string is provided through message argument, should send the provided error message to the client", () => {
         const _code = 429;
         const _errorMessage = "Received too many requests";
-        const error = responseHandler.tooManyRequests(_errorMessage);
+        const error = _responseHandler.tooManyRequests(_errorMessage);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -262,7 +263,7 @@ describe("Response Handler Module", () => {
     describe("Happy Path", () => {
       it("Message is passed as undefined, should send default Internal server error to the client", () => {
         const _code = 500;
-        const error = responseHandler.internalError(undefined as any);
+        const error = _responseHandler.internalError(undefined as any);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);
@@ -272,7 +273,7 @@ describe("Response Handler Module", () => {
       it("Some string is provided through message argument, should send the provided error message to the client", () => {
         const _code = 500;
         const _errorMessage = "Something went wrong!";
-        const error = responseHandler.internalError(_errorMessage);
+        const error = _responseHandler.internalError(_errorMessage);
 
         expect(error).toBeInstanceOf(GenericError);
         expect(error.statusCode).toBe(_code);

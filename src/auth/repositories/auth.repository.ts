@@ -1,11 +1,12 @@
-import { AuthRepository, ResponseHandler, ResponseHandlerImpl } from "../../utils";
+import { responseHandler } from "../../global-config";
+import { AuthRepository, ResponseHandler } from "../../utils";
 
 
 export class AuthRepoMongooseImpl implements AuthRepository {
     private _responseHandler: ResponseHandler;
 
     constructor() {
-        this._responseHandler = new ResponseHandlerImpl();
+        this._responseHandler = responseHandler;
     };
 
     async guestLogin(): Promise<void> {

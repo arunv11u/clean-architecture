@@ -1,11 +1,12 @@
-import { ResponseHandlerImpl, UserDAO, CreateUserInput, ResponseHandler } from "../../utils";
+import { responseHandler } from "../../global-config";
+import { UserDAO, CreateUserInput, ResponseHandler } from "../../utils";
 
 
 export class UserDAOMongooseImpl implements UserDAO {
     private _responseHandler: ResponseHandler
 
     constructor() {
-        this._responseHandler = new ResponseHandlerImpl();
+        this._responseHandler = responseHandler;
     };
 
     async save(userDetails: CreateUserInput): Promise<void> {
