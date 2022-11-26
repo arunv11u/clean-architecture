@@ -1,6 +1,14 @@
 
 import { GenericError } from "../../utils";
-import { UserDAO } from './user.dao';
+import { UserDAO } from "./user.dao";
+
+
+jest.mock("../../utils/services/mongoose.service", () => {
+    const originalModule =
+    jest.requireActual<typeof import('../../utils/services/mongoose.service')>('../../utils/services/mongoose.service').MongooseService;
+
+    return {};
+});
 
 describe("Auth Component", () => {
     describe("Repository Module", () => {
