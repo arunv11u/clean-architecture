@@ -1,20 +1,7 @@
-import { BaseMiddlewareFactory } from "../types";
+import { MiddlewareFactory } from "../types";
 
-class MiddlewareFactory implements BaseMiddlewareFactory {
+export class MiddlewareFactoryImpl implements MiddlewareFactory {
 
-    private static _instance: BaseMiddlewareFactory;
+    constructor() { };
 
-    private constructor() { };
-
-    static getInstance(): BaseMiddlewareFactory {
-        if (!MiddlewareFactory._instance) MiddlewareFactory._instance = new MiddlewareFactory();
-
-        return MiddlewareFactory._instance;
-    };
-
-
-};
-
-export {
-    MiddlewareFactory
 };

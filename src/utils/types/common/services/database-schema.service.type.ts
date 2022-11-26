@@ -1,6 +1,6 @@
 import { Aggregate, CallbackError, Document, Query, Types } from "mongoose";
 
-abstract class BaseMongooseSchemaService {
+export abstract class DatabaseSchemaService {
     abstract get transform(): (doc: any, ret: any) => any;
     abstract schemaOptions(): Function;
     abstract getDocId(): Types.ObjectId;
@@ -9,8 +9,4 @@ abstract class BaseMongooseSchemaService {
     abstract versionUpdate(): (this: Query<any, any, {}, any>, next: (err: CallbackError | undefined) => void) => void;
     abstract excludeDeleteMiddleware(): (this: Query<any, any, {}, any>, next: (err: CallbackError | undefined) => void) => void;
     abstract excludeDeleteAggregateMiddleware(): (this: Aggregate<any>, next: (err: CallbackError | undefined) => void) => void;
-};
-
-export {
-    BaseMongooseSchemaService
 };

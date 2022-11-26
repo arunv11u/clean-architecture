@@ -1,17 +1,9 @@
 import { GenericError } from "../errors";
-import { BaseStringValidation } from "../types";
+import { StringValidation } from "../types";
 
-export class StringValidation implements BaseStringValidation {
-  private static _instance: BaseStringValidation;
+export class StringValidationImpl implements StringValidation {
 
-  private constructor() { };
-
-  static getInstance(): BaseStringValidation {
-    if (!StringValidation._instance)
-      StringValidation._instance = new StringValidation();
-
-    return StringValidation._instance;
-  };
+  constructor() { };
 
   checkStrMaxLen(inputData: string, length: number): boolean {
     if (!inputData || typeof inputData !== "string")
@@ -80,4 +72,4 @@ export class StringValidation implements BaseStringValidation {
 
     return !!String(inputData).match(regexPattern);
   };
-}
+};

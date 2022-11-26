@@ -1,14 +1,13 @@
 import { Response, NextFunction } from "express";
 import {
   AuthDTO,
-  BaseAuthController,
   Controller,
   Post,
   TypedRequest,
 } from "../../utils";
 
 @Controller("/auth")
-class AuthController implements BaseAuthController {
+export class AuthController {
   @Post("/guest/login")
   async guestLogin(
     request: TypedRequest<{}, {}, AuthDTO.Register>,
@@ -26,6 +25,4 @@ class AuthController implements BaseAuthController {
   ): Promise<void> {
     response.status(200).send({ data: "OK" });
   }
-}
-
-export { AuthController };
+};

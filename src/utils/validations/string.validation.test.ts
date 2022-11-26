@@ -1,8 +1,8 @@
 import { GenericError } from "../errors";
-import { StringValidation } from "./string.validation";
+import { StringValidationImpl } from "./string.validation";
 
 describe("Basic Input Validation", () => {
-  const stringValidation = StringValidation.getInstance();
+  const stringValidation = new StringValidationImpl();
 
   describe(`"String Validation" class`, () => {
     describe(`"checkStrMaxLen" method`, () => {

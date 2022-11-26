@@ -1,10 +1,11 @@
 import request from "supertest";
-import { Routes } from "./routes";
+import { RoutesImpl } from "./routes";
 import { app } from "../server";
 
-const routes = Routes.getInstance();
 
 describe("Route Module", () => {
+  const routes = new RoutesImpl();
+
   describe(`"listen" fn`, () => {
     describe("Happy Path", () => {
       it("Express application passed as an argument, should register routes", () => {
@@ -27,7 +28,7 @@ describe("Route Module", () => {
       it("Request to an unavailable API, should return no route error", async () => {
         const response = await request(app).get("/api/sample");
         expect(response.statusCode).toBe(404);
-        expect(response.body).toStrictEqual({errors: [{message: "There is no route to process your request."}]});
+        expect(response.body).toStrictEqual({ errors: [{ message: "There is no route to process your request." }] });
       });
     });
   });

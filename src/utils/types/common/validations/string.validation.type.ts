@@ -1,4 +1,4 @@
-export interface BaseStringValidation {
+export interface StringValidation {
   checkStrMaxLen(inputData: string, length: number): boolean;
   checkStrMinLen(inputData: string, length: number): boolean;
   checkValidEmail(inputData: string): boolean;

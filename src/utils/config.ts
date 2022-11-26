@@ -1,6 +1,5 @@
 import nconf from 'nconf';
 import { Environment } from './types';
-import { GenericError } from './errors';
 
 export type NCONF = typeof nconf;
 

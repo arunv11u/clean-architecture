@@ -15,11 +15,11 @@ enum RouteMethods {
     PROPFIND = "propfind"
 };
 
-interface BaseRoutes {
+interface Routes {
     listen(app: Express): boolean;
 };
 
 export {
     RouteMethods,
-    BaseRoutes
+    Routes
 };

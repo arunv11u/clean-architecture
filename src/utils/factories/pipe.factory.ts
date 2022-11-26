@@ -1,24 +1,12 @@
-import { UserPipe } from "../../users";
-import { BaseUserPipe, BasePipeFactory } from "../types";
+import { UserPipeImpl } from "../../users";
+import { PipeFactory, UserPipe } from "../types";
 
 
-class PipeFactory implements BasePipeFactory {
+export class PipeFactoryImpl implements PipeFactory {
 
-    private static _instance: BasePipeFactory;
+    constructor() { };
 
-    private constructor() { };
-
-    static getInstance(): BasePipeFactory {
-        if (!PipeFactory._instance) PipeFactory._instance = new PipeFactory();
-
-        return PipeFactory._instance;
+    getUserPipe(): UserPipe {
+        return new UserPipeImpl();
     };
-
-    getUserPipe(): BaseUserPipe {
-        return UserPipe.getInstance();
-    };
-};
-
-export {
-    PipeFactory
 };

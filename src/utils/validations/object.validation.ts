@@ -1,17 +1,9 @@
 import { GenericError } from "../errors";
-import { BaseObjectValidation } from "../types";
+import { ObjectValidation } from "../types";
 
-export class ObjectValidation implements BaseObjectValidation {
-  private static _instance: BaseObjectValidation;
+export class ObjectValidationImpl implements ObjectValidation {
 
-  private constructor() { }
-
-  static getInstance(): BaseObjectValidation {
-    if (!ObjectValidation._instance)
-      ObjectValidation._instance = new ObjectValidation();
-
-    return ObjectValidation._instance;
-  }
+  constructor() { };
 
   checkFieldExist(inputData: Record<string, any>, field: string): boolean {
     if (inputData.constructor.name !== "Object")
@@ -21,11 +13,11 @@ export class ObjectValidation implements BaseObjectValidation {
       });
 
     return Object(inputData).hasOwnProperty(field);
-  }
+  };
 
   allowUndefinedField(inputData: any): boolean {
     return inputData === undefined;
-  }
+  };
 
   allowFields(inputData: Record<string, any>, fields: string[]) {
     if (!inputData)
@@ -58,19 +50,19 @@ export class ObjectValidation implements BaseObjectValidation {
     });
 
     let forbiddenFields: string[] = [];
-    for (let key in inputData){
+    for (let key in inputData) {
       if (!fields.some((field) => field === key)) {
         forbiddenFields.push(key);
         break;
       };
-    }
+    };
 
     const validationRes: { isValid: boolean, message?: string } = { isValid: true };
     if (forbiddenFields.length) {
       validationRes.isValid = false;
       validationRes.message = `${forbiddenFields[0]} is forbidden`;
-    }
+    };
 
     return validationRes;
-  }
-}
+  };
+};

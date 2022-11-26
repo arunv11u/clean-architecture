@@ -1,10 +1,10 @@
 import express from 'express';
 import { GenericError } from '../../errors';
-import { BaseResponse, TypedResponse } from "./express.type";
+import { CustomResponse, TypedResponse } from "./express.type";
 
-interface BaseResponseHandler {
-    ok<ResBody, Locals>(response: TypedResponse<BaseResponse<ResBody>, Locals>, data?: ResBody): express.Response<BaseResponse<ResBody>>;
-    created<ResBody, Locals>(response: TypedResponse<BaseResponse<ResBody>, Locals>, data?: ResBody): express.Response<BaseResponse<ResBody>>;
+interface ResponseHandler {
+    ok<ResBody, Locals>(response: TypedResponse<CustomResponse<ResBody>, Locals>, data?: ResBody): express.Response<CustomResponse<ResBody>>;
+    created<ResBody, Locals>(response: TypedResponse<CustomResponse<ResBody>, Locals>, data?: ResBody): express.Response<CustomResponse<ResBody>>;
     clientError(message?: string): GenericError;
     unauthorized(message?: string): GenericError;
     paymentRequired(message?: string): GenericError;
@@ -16,5 +16,5 @@ interface BaseResponseHandler {
 };
 
 export {
-    BaseResponseHandler
+    ResponseHandler
 };

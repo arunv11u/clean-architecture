@@ -4,7 +4,7 @@ import path from "path";
 import { corsOptions } from "./cors";
 import { GenericError } from "./errors";
 import { errorHandler } from "./middlewares";
-import { BaseRoutes } from "./types";
+import { Routes } from "./types";
 import { AppRouter } from "../app-router";
 import { limitRequests } from './rate-limiter';
 
@@ -12,16 +12,9 @@ import { limitRequests } from './rate-limiter';
 import "../auth/controllers/auth.controller";
 import "../users/controllers/user.controller";
 
-export class Routes implements BaseRoutes {
-  private static _instance: Routes;
+export class RoutesImpl implements Routes {
   private _defaultRoutePath: string = "/api";
-  private constructor() {}
-
-  static getInstance(): Routes {
-    if (!Routes._instance) Routes._instance = new Routes();
-
-    return Routes._instance;
-  }
+  constructor() {};
 
   listen(app: Express): boolean {
     app.use(cors(corsOptions));

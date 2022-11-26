@@ -1,7 +1,5 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { RequestHandler } from "express";
 
-interface BaseAuthValidation {
+export interface AuthValidation {
   guestLogin(): RequestHandler;
-}
-
-export { BaseAuthValidation };
+};

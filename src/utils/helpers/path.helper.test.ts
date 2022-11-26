@@ -1,10 +1,10 @@
 import path from "path";
 import { GenericError } from "../errors";
-import { PathHelper } from "./path.helper";
+import { PathHelperImpl } from "./path.helper";
 
 describe("Helper Module", () => {
   describe("Path Helper", () => {
-    const pathHelper = PathHelper.getInstance();
+    const pathHelper = new PathHelperImpl();
 
     describe(`"mergePath" fn`, () => {
       describe("Exception Path", () => {

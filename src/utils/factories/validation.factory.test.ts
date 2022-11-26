@@ -1,5 +1,5 @@
 import { validationFactory } from '../../global-config';
-import { UserValidation } from '../../users';
+import { UserValidationImpl } from '../../users';
 
 
 describe("Factory Module", () => {
@@ -8,7 +8,7 @@ describe("Factory Module", () => {
             describe("Happy Path", () => {
                 it("No input has passed, should return user validation object", () => { 
                     const userValidation = validationFactory.getUserValidation();
-                    expect(userValidation).toBeInstanceOf(UserValidation);
+                    expect(userValidation).toBeInstanceOf(UserValidationImpl);
                 });
             });
         });

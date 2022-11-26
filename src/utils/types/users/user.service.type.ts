@@ -1,8 +1,7 @@
-import { Response, NextFunction } from 'express';
 
-interface BaseUserService {
+interface UserService {
 };
 
 export {
-    BaseUserService
+    UserService
 };

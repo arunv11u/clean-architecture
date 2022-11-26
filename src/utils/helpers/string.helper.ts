@@ -1,16 +1,9 @@
 import { GenericError } from "../errors";
-import { BaseStringHelper } from "../types";
+import { StringHelper } from "../types";
 
-class StringHelper implements BaseStringHelper {
-    private static _instance: BaseStringHelper;
+export class StringHelperImpl implements StringHelper {
 
-    private constructor() { };
-
-    static getInstance(): BaseStringHelper {
-        if (!StringHelper._instance) StringHelper._instance = new StringHelper();
-
-        return StringHelper._instance;
-    };
+    constructor() { };
 
     trimString(inputData: string): string {
         if (!inputData || (typeof inputData !== "string")) throw new GenericError({ error: new Error("Input data is invalid, expected a string"), errorCode: 500 });
@@ -26,8 +19,4 @@ class StringHelper implements BaseStringHelper {
 
         return finalResult;
     };
-};
-
-export {
-    StringHelper
 };

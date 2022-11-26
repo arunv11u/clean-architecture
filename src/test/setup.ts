@@ -2,13 +2,12 @@ import "reflect-metadata";
 import mongoose from 'mongoose';
 import { app, server } from "../server";
 import { Environment } from "../utils";
-import { loader } from "./utils";
-import { disconnect } from './utils/db-connect';
+import { loader, connect, disconnect } from "./utils";
 
 jest.setTimeout(40000);
 
-beforeAll(async () => { 
-  await mongoose.connect(process.env.MONGO_URI as string);
+beforeAll(async () => {
+  await connect();
 });
 
 beforeEach(async () => {
@@ -22,12 +21,11 @@ beforeEach(async () => {
   };
 
   // Create collection before hand here because mongoose transaction expects the collection namespace.
-  // await mongoose.connection.db.createCollection('users');
 
   await loader(app, server);
 });
 
-afterEach(() => {});
+afterEach(() => { });
 
 afterAll(async () => {
   await disconnect();

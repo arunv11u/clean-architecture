@@ -1,9 +1,10 @@
 import { GenericError } from "../errors";
-import { StringHelper } from "./string.helper";
+import { StringHelperImpl } from "./string.helper";
 
 describe("Helper Module", () => {
     describe("String Helper", () => {
-        const stringHelper = StringHelper.getInstance();
+        const stringHelper = new StringHelperImpl();
+
         describe(`"trimString" fn`, () => {
             describe("Exception Path", () => {
                 it("Passing undefined as an input data, should throw an error", () => {

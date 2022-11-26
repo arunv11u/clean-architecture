@@ -1,40 +1,41 @@
-import { BaseAuthRepository, BaseAuthService } from "../auth";
-import { BaseUserDAO, BaseUserPipe, BaseUserService, BaseUserValidation } from "../users";
+import { AuthRepository, AuthService } from "../auth";
+import { UserDAO, UserPipe, UserService, UserValidation } from "../users";
 
 
-interface BaseMiddlewareFactory {
+
+interface MiddlewareFactory {
 };
 
-interface BaseValidationFactory {
-    getUserValidation(): BaseUserValidation;
+interface ValidationFactory {
+    getUserValidation(): UserValidation;
 };
 
-interface BaseServiceFactory {
-    getUserService(): BaseUserService;
-    getAuthService(): BaseAuthService;
+interface ServiceFactory {
+    getUserService(): UserService;
+    getAuthService(): AuthService;
 };
 
-interface BasePipeFactory {
-    getUserPipe(): BaseUserPipe;
+interface PipeFactory {
+    getUserPipe(): UserPipe;
 };
 
-interface BaseHelperFactory {
+interface HelperFactory {
 };
 
-interface BaseDAOFactory {
-    getUserDAO(): BaseUserDAO;
+interface DAOFactory {
+    getUserDAO(): UserDAO;
 };
 
-interface BaseRepositoryFactory {
-    getAuthRepository(): BaseAuthRepository;
+interface RepositoryFactory {
+    getAuthRepository(): AuthRepository;
 };
 
 export {
-    BaseMiddlewareFactory,
-    BaseValidationFactory,
-    BaseServiceFactory,
-    BasePipeFactory,
-    BaseHelperFactory,
-    BaseDAOFactory,
-    BaseRepositoryFactory
+    MiddlewareFactory,
+    ValidationFactory,
+    ServiceFactory,
+    PipeFactory,
+    HelperFactory,
+    DAOFactory,
+    RepositoryFactory
 };

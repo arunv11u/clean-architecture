@@ -1,4 +1,4 @@
-export interface BaseDataTypeValidation {
+export interface DataTypeValidation {
   checkFieldIsString(inputData: string): boolean;
   checkFieldIsNumber(inputData: number): boolean;
   checkFieldIsBoolean(inputData: boolean): boolean;

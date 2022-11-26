@@ -1,13 +1,14 @@
-import { DAOFactory, HelperFactory, MiddlewareFactory, PipeFactory, RepositoryFactory, ServiceFactory, ValidationFactory } from "./utils";
+import { DAOFactoryImpl, HelperFactoryImpl, MiddlewareFactoryImpl, PipeFactoryImpl, RepositoryFactoryImpl, ServiceFactoryImpl, ValidationFactoryImpl } from "./utils";
 
 
-const helperFactory = HelperFactory.getInstance();
-const middlewareFactory = MiddlewareFactory.getInstance();
-const pipeFactory = PipeFactory.getInstance();
-const serviceFactory = ServiceFactory.getInstance();
-const validationFactory = ValidationFactory.getInstance();
-const daoFactory = DAOFactory.getInstance();
-const repositoryFactory = RepositoryFactory.getInstance();
+const helperFactory = new HelperFactoryImpl();
+const middlewareFactory = new MiddlewareFactoryImpl();
+const pipeFactory = new PipeFactoryImpl();
+const serviceFactory = new ServiceFactoryImpl();
+const validationFactory = new ValidationFactoryImpl();
+const daoFactory = new DAOFactoryImpl();
+const repositoryFactory = new RepositoryFactoryImpl();
+
 
 export {
     helperFactory,

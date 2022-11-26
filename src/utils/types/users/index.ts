@@ -1,5 +1,4 @@
 
-export * from './user.controller.type';
 
 export * from './user.dao.type';
 

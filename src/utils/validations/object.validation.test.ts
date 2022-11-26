@@ -1,8 +1,8 @@
-import { ObjectValidation } from "./object.validation";
 import { GenericError } from "./../errors";
+import { ObjectValidationImpl } from "./object.validation";
 
 describe("Basic Input Validation", () => {
-  const objectValidation = ObjectValidation.getInstance();
+  const objectValidation = new ObjectValidationImpl();
 
   describe(`"Object Validation" class`, () => {
     describe(`"checkFieldExist" method`, () => {
@@ -115,7 +115,7 @@ describe("Basic Input Validation", () => {
               "car",
               "bike",
             ])
-          ).toStrictEqual({isValid: true});
+          ).toStrictEqual({ isValid: true });
         });
 
         it("Passing extra fields to an input data, should return false", () => {
@@ -123,7 +123,7 @@ describe("Basic Input Validation", () => {
             objectValidation.allowFields({ car: "honda", bike: "Hero" }, [
               "car"
             ])
-          ).toStrictEqual({isValid: false, message: "bike is forbidden"});
+          ).toStrictEqual({ isValid: false, message: "bike is forbidden" });
         });
       });
     });

@@ -1,9 +1,5 @@
 
 
-interface BaseAuthRepository {
+export interface AuthRepository {
     guestLogin(): Promise<void>;
-};
-
-export {
-    BaseAuthRepository
 };

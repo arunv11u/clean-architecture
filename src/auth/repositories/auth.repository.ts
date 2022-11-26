@@ -1,18 +1,11 @@
-import { BaseAuthRepository, BaseResponseHandler, ResponseHandler } from "../../utils";
+import { AuthRepository, ResponseHandler, ResponseHandlerImpl } from "../../utils";
 
 
-export class AuthRepository implements BaseAuthRepository {
-    private static _instance: BaseAuthRepository;
-    private _responseHandler: BaseResponseHandler;
+export class AuthRepoMongooseImpl implements AuthRepository {
+    private _responseHandler: ResponseHandler;
 
-    private constructor() { 
-        this._responseHandler = ResponseHandler.getInstance();
-    };
-
-    static getInstance(): BaseAuthRepository {
-        if (!AuthRepository._instance) AuthRepository._instance = new AuthRepository();
-
-        return AuthRepository._instance;
+    constructor() {
+        this._responseHandler = new ResponseHandlerImpl();
     };
 
     async guestLogin(): Promise<void> {

@@ -26,7 +26,7 @@ export = async function globalSetup() {
         // The following is to make sure the database is clean before an test starts
         process.env.MONGO_URI = `${process.env.MONGO_URI}/${testConfig.mongodb.dataBase}?replicaSet=testset`;
 
-        await mongoose.connect(process.env.MONGO_URI); // /${config.dataBase}
+        await mongoose.connect(process.env.MONGO_URI);
         await mongoose.connection.db.dropDatabase();
         await mongoose.disconnect();
 

@@ -18,6 +18,6 @@ export function limitRequests() {
           errorCode: 429,
         })
       );
-    },
+    }
   });
 }

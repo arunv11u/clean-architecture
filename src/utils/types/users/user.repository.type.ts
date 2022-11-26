@@ -1,8 +1,8 @@
 
-interface BaseUserRepository {
+interface UserRepository {
 
 };
 
 export {
-    BaseUserRepository
+    UserRepository
 };

@@ -1,25 +1,13 @@
-import { AuthRepository } from "../../auth";
-import { BaseAuthRepository, BaseRepositoryFactory } from "../types";
+import { AuthRepoMongooseImpl } from "../../auth";
+import { AuthRepository, RepositoryFactory } from "../types";
 
 
-class RepositoryFactory implements BaseRepositoryFactory {
+export class RepositoryFactoryImpl implements RepositoryFactory {
 
-    private static _instance: BaseRepositoryFactory;
+    constructor() { };
 
-    private constructor() { };
-
-    static getInstance(): BaseRepositoryFactory {
-        if (!RepositoryFactory._instance) RepositoryFactory._instance = new RepositoryFactory();
-
-        return RepositoryFactory._instance;
+    getAuthRepository(): AuthRepository {
+        return new AuthRepoMongooseImpl();
     };
 
-    getAuthRepository(): BaseAuthRepository {
-        return AuthRepository.getInstance();
-    };
-
-};
-
-export {
-    RepositoryFactory
 };

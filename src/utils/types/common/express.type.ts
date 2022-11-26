@@ -1,11 +1,6 @@
-import { Express, NextFunction, Response } from "express";
+import { Express, Response } from "express";
 import { Query, Params } from 'express-serve-static-core';
 
-
-
-interface InputValidations {
-    validate: (request: Express.Request, response: Express.Response, next: NextFunction) => {};
-};
 
 interface TypedRequest<P extends Params, Q extends Query, U> extends Express.Request {
     params: P;
@@ -25,14 +20,13 @@ interface TypedMulterRequest<P extends Params, Q extends Query, U, F extends Exp
 
 interface TypedResponse<ResBody, Locals> extends Response { };
 
-interface BaseResponse<T> {
+interface CustomResponse<T> {
     data: T;
 };
 
 export {
-    InputValidations,
     TypedRequest,
     TypedMulterRequest,
     TypedResponse,
-    BaseResponse
+    CustomResponse
 };

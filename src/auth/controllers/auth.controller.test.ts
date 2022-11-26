@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { ServiceFactory } from "../../utils";
+import { ServiceFactoryImpl } from "../../utils";
 import { AuthController } from "./auth.controller";
 
 const authController = new AuthController();
-const serviceFactory = ServiceFactory.getInstance();
+const serviceFactory = new ServiceFactoryImpl();
 
 describe("Auth Component", () => {
   describe("Controller Module", () => {

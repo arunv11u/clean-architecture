@@ -1,8 +1,8 @@
 import { GenericError } from "../errors";
-import { NumberValidation } from "./number.validation";
+import { NumberValidationImpl } from "./number.validation";
 
 describe("Basic Input Validation", () => {
-  const numberValidation = NumberValidation.getInstance();
+  const numberValidation = new NumberValidationImpl();
 
   describe(`"Number Validation" class`, () => {
     describe(`"checkNumMaxVal" method`, () => {

@@ -1,9 +1,8 @@
 import { GenericError } from "../errors";
-import { ArrayValidation } from "./array.validation";
-// import { checkArrMaxLen, checkArrMinLen, checkArrOfBool, checkArrOfNum, checkArrOfStr } from '../array.validation';
+import { ArrayValidationImpl } from "./array.validation";
 
 describe("Basic Input Validation", () => {
-  const arrayValidation = ArrayValidation.getInstance();
+  const arrayValidation = new ArrayValidationImpl();
 
   describe(`"Array Validation" class`, () => {
     describe(`"checkArrMaxLen" method`, () => {

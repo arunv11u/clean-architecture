@@ -1,24 +1,12 @@
-import { UserValidation } from "../../users";
-import { BaseUserValidation, BaseValidationFactory } from "../types";
+import { UserValidationImpl } from "../../users";
+import { UserValidation, ValidationFactory } from "../types";
 
 
-class ValidationFactory implements BaseValidationFactory {
+export class ValidationFactoryImpl implements ValidationFactory {
 
-    private static _instance: BaseValidationFactory;
+    constructor() { };
 
-    private constructor() { };
-
-    static getInstance(): BaseValidationFactory {
-        if (!ValidationFactory._instance) ValidationFactory._instance = new ValidationFactory();
-
-        return ValidationFactory._instance;
+    getUserValidation(): UserValidation {
+        return new UserValidationImpl();
     };
-
-    getUserValidation(): BaseUserValidation {
-        return UserValidation.getInstance();
-    };
-};
-
-export {
-    ValidationFactory
 };

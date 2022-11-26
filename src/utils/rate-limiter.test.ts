@@ -4,16 +4,12 @@ import { Request, Response, NextFunction } from "express";
 import { app } from "../server";
 import { limitRequests } from "./rate-limiter";
 import { errorHandler } from "./middlewares";
-import { Config } from "./config";
 
-const config = Config.getInstance();
-const nconf = config.nconf;
 
 describe("Rate Limiter Module", () => {
   describe(`"limitRequests" method`, () => {
     describe("Happy Path", () => {
       it.skip("If more than 50 requests comes from the same IP, should send 429 error response to the client", async () => {
-        // console.log(nconf.get("rateLimiterWindowMs"), nconf.get("rateLimiterMaxRequests"));
 
         app.use(limitRequests());
 
@@ -33,8 +29,6 @@ describe("Rate Limiter Module", () => {
         });
         await startServerPromise;
 
-        // rateLimiter.resetKey("some key 4");
-
         const requestLimit = 51;
         for (let index = 1; index <= requestLimit; index++) {
           try {
@@ -43,11 +37,11 @@ describe("Rate Limiter Module", () => {
             expect(error.response.statusCode).toBe(429);
             expect(error.response.body).toStrictEqual({
               errors: [
-                { message: "Too many requests, please try again later." },
-              ],
+                { message: "Too many requests, please try again later." }
+              ]
             });
-          }
-        }
+          };
+        };
       });
     });
   });

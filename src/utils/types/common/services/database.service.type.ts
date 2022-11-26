@@ -1,7 +1,7 @@
 import { FilterQuery, HydratedDocument, Model, QueryOptions, SaveOptions, Document, Types, UpdateQuery, UpdateWithAggregationPipeline, PipelineStage, InsertManyOptions, MergeType, Require_id } from "mongoose";
 import { AggregateOptions, UpdateResult } from 'mongodb';
 
-interface BaseMongooseService {
+export interface DatabaseService {
     save<DocType>(docRef: HydratedDocument<DocType>, options?: SaveOptions): Promise<DocType | (Document<unknown, any, DocType> & { _id?: unknown; } & Required<{ _id: unknown; }>)>;
     insertMany<DocType>(collRef: Model<DocType>, docs: DocType[], options?: InsertManyOptions & { lean: true }): Promise<HydratedDocument<MergeType<MergeType<DocType, DocType>, Require_id<DocType>>, {}, {}>[] | MergeType<MergeType<DocType, DocType>, Require_id<DocType>>[]>;
     findById<DocType>(collRef: Model<DocType>, id: string | Types.ObjectId, options?: QueryOptions): Promise<HydratedDocument<DocType> | null>;
@@ -14,8 +14,4 @@ interface BaseMongooseService {
     updateOne<DocType>(collRef: Model<DocType>, query: FilterQuery<DocType>, updateQuery: UpdateWithAggregationPipeline | UpdateQuery<DocType>, options?: QueryOptions): Promise<UpdateResult>;
     updateMany<DocType>(collRef: Model<DocType>, query: FilterQuery<DocType>, updateQuery: UpdateWithAggregationPipeline | UpdateQuery<DocType>, options?: QueryOptions): Promise<UpdateResult>;
     findOneAndDelete<DocType>(collRef: Model<DocType>, query: FilterQuery<DocType>, options?: QueryOptions): Promise<HydratedDocument<DocType> | null>;
-};
-
-export {
-    BaseMongooseService
 };

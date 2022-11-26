@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { faker } from "@faker-js/faker";
-import { AuthValidation } from "./auth.validation";
 import { GenericError } from "../../utils";
+import { AuthValidationImpl } from "./auth.validation";
 
 describe("Auth Component", () => {
   describe("Validation Module", () => {
-    const authValidation = AuthValidation.getInstance();
+    const authValidation = new AuthValidationImpl();
     let mockRequest: Partial<Request>;
     let mockResponse: Partial<Response>;
     let mockNext: NextFunction;

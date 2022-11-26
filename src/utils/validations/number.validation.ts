@@ -1,17 +1,9 @@
 import { GenericError } from "../errors";
-import { BaseNumberValidation } from "../types";
+import { NumberValidation } from "../types";
 
-export class NumberValidation implements BaseNumberValidation {
-  private static _instance: BaseNumberValidation;
+export class NumberValidationImpl implements NumberValidation {
 
-  private constructor() {}
-
-  static getInstance(): BaseNumberValidation {
-    if (!NumberValidation._instance)
-      NumberValidation._instance = new NumberValidation();
-
-    return NumberValidation._instance;
-  }
+  constructor() { };
 
   checkNumMaxVal = (inputData: number, maxValue: number) => {
     if ((inputData !== 0 && !inputData) || typeof inputData !== "number")
@@ -42,4 +34,4 @@ export class NumberValidation implements BaseNumberValidation {
 
     return inputData >= minValue;
   };
-}
+};

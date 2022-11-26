@@ -5,11 +5,11 @@ interface CreateUserInput {
     mobileNumber?: string;
 };
 
-interface BaseUserDAO {
-    create(userDetails: CreateUserInput): Promise<void>;
+interface UserDAO {
+    save(userDetails: CreateUserInput): Promise<void>;
 };
 
 export {
-    BaseUserDAO,
+    UserDAO,
     CreateUserInput
 };

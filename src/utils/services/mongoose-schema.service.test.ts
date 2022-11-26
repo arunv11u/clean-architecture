@@ -1,17 +1,10 @@
 import { faker } from "@faker-js/faker";
 import mongoose, { Types } from "mongoose";
 import { GenericError } from "../errors";
-import { MongooseSchemaService } from "./mongoose-schema.service";
+import { MongooseSchemaServiceImpl } from "./mongoose-schema.service";
 
 describe("Mongoose Schema Service Module", () => {
-    const mongooseSchemaService = MongooseSchemaService.getInstance();
-    describe(`"getInstance" method`, () => {
-        describe("Happy Path", () => {
-            it("No inputs passed, should return mongoose schema service object", () => {
-                expect(mongooseSchemaService).toBeInstanceOf(MongooseSchemaService);
-            });
-        });
-    });
+    const mongooseSchemaService = new MongooseSchemaServiceImpl();
 
     describe(`"transform" getter`, () => {
         describe("Happy Path", () => {
@@ -269,7 +262,7 @@ describe("Mongoose Schema Service Module", () => {
         beforeEach(() => {
             mockAggregateQuery = {
                 options: {},
-                pipeline: jest.fn(() => ({unshift: mockUnshiftFn} as any))
+                pipeline: jest.fn(() => ({ unshift: mockUnshiftFn } as any))
             };
             mockNextFn = jest.fn();
         });

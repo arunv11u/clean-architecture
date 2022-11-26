@@ -1,17 +1,9 @@
 import { GenericError } from "../errors";
-import { BaseDataTypeValidation } from "../types";
+import { DataTypeValidation } from "../types";
 
-export class DataTypeValidation implements BaseDataTypeValidation {
-  private static _instance: BaseDataTypeValidation;
+export class DataTypeValidationImpl implements DataTypeValidation {
 
-  private constructor() {}
-
-  static getInstance(): BaseDataTypeValidation {
-    if (!DataTypeValidation._instance)
-      DataTypeValidation._instance = new DataTypeValidation();
-
-    return DataTypeValidation._instance;
-  }
+  constructor() { };
 
   checkFieldIsString(inputData: string): boolean {
     if (!inputData)
@@ -21,7 +13,7 @@ export class DataTypeValidation implements BaseDataTypeValidation {
       });
 
     return typeof inputData === "string";
-  }
+  };
 
   checkFieldIsNumber(inputData: number): boolean {
     if (inputData !== 0 && !inputData)
@@ -31,7 +23,7 @@ export class DataTypeValidation implements BaseDataTypeValidation {
       });
 
     return typeof inputData === "number";
-  }
+  };
 
   checkFieldIsBoolean(inputData: boolean): boolean {
     if (inputData !== false && !inputData)
@@ -41,7 +33,7 @@ export class DataTypeValidation implements BaseDataTypeValidation {
       });
 
     return typeof inputData === "boolean";
-  }
+  };
 
   checkFieldIsObject(inputData: Record<string, any>): boolean {
     if (!inputData)
@@ -51,7 +43,7 @@ export class DataTypeValidation implements BaseDataTypeValidation {
       });
 
     return Object(inputData).constructor.name === "Object";
-  }
+  };
 
   checkFieldIsArray(inputData: Array<any>): boolean {
     if (!inputData)
@@ -61,5 +53,5 @@ export class DataTypeValidation implements BaseDataTypeValidation {
       });
 
     return Object(inputData).constructor.name === "Array";
-  }
-}
+  };
+};

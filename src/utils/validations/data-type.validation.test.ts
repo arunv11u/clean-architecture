@@ -1,8 +1,8 @@
 import { GenericError } from '../errors';
-import { DataTypeValidation } from './data-type.validation';
+import { DataTypeValidationImpl } from './data-type.validation';
 
 describe("Basic Input Validation", () => {
-    const dataTypeValidation = DataTypeValidation.getInstance();
+    const dataTypeValidation = new DataTypeValidationImpl();
     
     describe(`"Data Type Validation" class`, () => {
 

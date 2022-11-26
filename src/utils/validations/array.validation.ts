@@ -1,17 +1,9 @@
 import { GenericError } from "../errors";
-import { BaseArrayValidation } from "../types";
+import { ArrayValidation } from "../types";
 
-export class ArrayValidation implements BaseArrayValidation {
-  private static _instance: BaseArrayValidation;
+export class ArrayValidationImpl implements ArrayValidation {
 
-  private constructor() {}
-
-  static getInstance(): BaseArrayValidation {
-    if (!ArrayValidation._instance)
-      ArrayValidation._instance = new ArrayValidation();
-
-    return ArrayValidation._instance;
-  }
+  constructor() { };
 
   checkMaxLen(inputData: Array<any>, length: number) {
     if (!inputData || Object(inputData).constructor.name !== "Array")
@@ -26,7 +18,7 @@ export class ArrayValidation implements BaseArrayValidation {
       });
 
     return inputData.length <= length;
-  }
+  };
 
   checkMinLen(inputData: Array<any>, length: number) {
     if (!inputData || Object(inputData).constructor.name !== "Array")
@@ -41,7 +33,7 @@ export class ArrayValidation implements BaseArrayValidation {
       });
 
     return inputData.length >= length;
-  }
+  };
 
   checkArrOfStr(inputData: Array<string>) {
     if (!inputData || Object(inputData).constructor.name !== "Array")
@@ -60,7 +52,7 @@ export class ArrayValidation implements BaseArrayValidation {
         });
 
     return true;
-  }
+  };
 
   checkArrOfNum(inputData: Array<number>) {
     if (!inputData || Object(inputData).constructor.name !== "Array")
@@ -79,7 +71,7 @@ export class ArrayValidation implements BaseArrayValidation {
         });
 
     return true;
-  }
+  };
 
   checkArrOfBool = (inputData: Array<boolean>) => {
     if (!inputData || Object(inputData).constructor.name !== "Array")
@@ -101,4 +93,4 @@ export class ArrayValidation implements BaseArrayValidation {
 
     return true;
   };
-}
+};

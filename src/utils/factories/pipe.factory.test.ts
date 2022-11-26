@@ -1,5 +1,5 @@
 import { pipeFactory } from "../../global-config";
-import { UserPipe } from "../../users";
+import { UserPipeImpl } from "../../users";
 
 
 describe("Factory Module", () => {
@@ -8,7 +8,7 @@ describe("Factory Module", () => {
             describe("Happy Path", () => {
                 it("No input has passed, should return user pipe object", () => { 
                     const userPipe = pipeFactory.getUserPipe();
-                    expect(userPipe).toBeInstanceOf(UserPipe);
+                    expect(userPipe).toBeInstanceOf(UserPipeImpl);
                 });
             });
         });

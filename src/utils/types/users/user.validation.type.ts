@@ -1,8 +1,7 @@
-import { RequestHandler } from 'express';
 
-interface BaseUserValidation {
+interface UserValidation {
 };
 
 export {
-    BaseUserValidation
+    UserValidation
 };

@@ -1,21 +1,27 @@
 import { AggregateOptions } from "mongodb";
-import mongoose, { Model, QueryOptions, HydratedDocument, FilterQuery, PipelineStage, Document, Types, SaveOptions, InsertManyOptions, MergeType, Require_id, UpdateQuery, UpdateWithAggregationPipeline } from "mongoose";
+import mongoose, {
+    Model,
+    QueryOptions,
+    HydratedDocument,
+    FilterQuery,
+    PipelineStage,
+    Document,
+    Types,
+    SaveOptions,
+    InsertManyOptions,
+    MergeType,
+    Require_id,
+    UpdateQuery,
+    UpdateWithAggregationPipeline
+} from "mongoose";
 import { UpdateResult } from 'mongodb';
 import { MongooseConnect } from "../mongoose-connect";
-import { BaseMongooseService } from "../types";
+import { DatabaseService } from "../types";
 import { GenericError } from "../errors";
 
-export class MongooseService implements BaseMongooseService {
+export class MongooseServiceImpl implements DatabaseService {
 
-    private static _instance: BaseMongooseService;
-
-    private constructor() { };
-
-    static getInstance(): BaseMongooseService {
-        if (!MongooseService._instance) MongooseService._instance = new MongooseService();
-
-        return MongooseService._instance;
-    };
+    constructor() { };
 
     private async _reconnectIfDisconnected(): Promise<void> {
         if (mongoose.connection.readyState === 1) return;
@@ -155,7 +161,7 @@ export class MongooseService implements BaseMongooseService {
     async findOneAndDelete<DocType>(collRef: Model<DocType>, query: FilterQuery<DocType>, options?: QueryOptions): Promise<HydratedDocument<DocType> | null> {
         if (!collRef) throw new GenericError({ error: new Error(`Expected collection reference, but got ${typeof collRef}`), errorCode: 500 });
         if (!query) throw new GenericError({ error: new Error(`Expected query object, but got ${typeof query}`), errorCode: 500 });
-        
+
         await this._reconnectIfDisconnected();
 
         const _query = collRef.findOneAndDelete(query, options);

@@ -1,5 +1,5 @@
 import { daoFactory } from "../../global-config";
-import { UserDAO } from "../../users";
+import { UserDAOMongooseImpl } from "../../users";
 
 
 describe("Factory Module", () => {
@@ -8,7 +8,7 @@ describe("Factory Module", () => {
             describe("Happy Path", () => {
                 it("No input has passed, should return user DAO object", () => { 
                     const userDAO = daoFactory.getUserDAO();
-                    expect(userDAO).toBeInstanceOf(UserDAO);
+                    expect(userDAO).toBeInstanceOf(UserDAOMongooseImpl);
                 });
             });
         });

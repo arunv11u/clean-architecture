@@ -1,12 +1,11 @@
 import mongoose, { CallbackError } from 'mongoose';
 import { GenericError } from '../errors';
-import { BaseMongooseSchemaService } from '../types';
+import { DatabaseSchemaService } from '../types';
 
-export class MongooseSchemaService extends BaseMongooseSchemaService {
+export class MongooseSchemaServiceImpl extends DatabaseSchemaService {
 
-    private static _instance: MongooseSchemaService;
     private _transform: (doc: any, ret: any) => any;
-    private constructor() {
+    constructor() {
         super();
 
         this._transform = (doc: any, ret: any) => {
@@ -18,12 +17,6 @@ export class MongooseSchemaService extends BaseMongooseSchemaService {
 
             return ret;
         };
-    };
-
-    static getInstance(): MongooseSchemaService {
-        if (!MongooseSchemaService._instance) MongooseSchemaService._instance = new MongooseSchemaService();
-
-        return MongooseSchemaService._instance;
     };
 
     get transform() {

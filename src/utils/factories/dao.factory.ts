@@ -1,25 +1,14 @@
-import { UserDAO } from "../../users";
-import { BaseDAOFactory, BaseUserDAO } from "../types";
+import { UserDAOMongooseImpl } from "../../users";
+import { DAOFactory, UserDAO } from "../types";
 
 
-class DAOFactory implements BaseDAOFactory {
 
-    private static _instance: BaseDAOFactory;
+export class DAOFactoryImpl implements DAOFactory {
 
-    private constructor() { };
+    constructor() { };
 
-    static getInstance(): BaseDAOFactory {
-        if (!DAOFactory._instance) DAOFactory._instance = new DAOFactory();
-
-        return DAOFactory._instance;
+    getUserDAO(): UserDAO {
+        return new UserDAOMongooseImpl();
     };
 
-    getUserDAO(): BaseUserDAO {
-        return UserDAO.getInstance();
-    };
-
-};
-
-export {
-    DAOFactory
 };

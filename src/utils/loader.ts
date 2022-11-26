@@ -3,7 +3,7 @@ import http from 'http';
 import { devConfig, prodConfig, stagingConfig } from './configs';
 import { Environment } from './types';
 import { Config, DefaultConfig } from './config';
-import { Routes } from './routes';
+import { RoutesImpl } from './routes';
 import unhandledError from './unHandledErrorHandler';
 
 
@@ -20,7 +20,7 @@ const loader = async (app: Express, server: http.Server) => {
     config.set(_environment, _config);
 
     // Registering routes
-    const routes = Routes.getInstance();
+    const routes = new RoutesImpl();
     routes.listen(app);
 
     return true;

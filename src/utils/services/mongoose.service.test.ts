@@ -2,10 +2,10 @@ import { faker } from "@faker-js/faker";
 import { InsertManyResult } from "mongodb";
 import mongoose from "mongoose";
 import { GenericError } from "../errors";
-import { MongooseService } from "./mongoose.service";
+import { MongooseServiceImpl } from "./mongoose.service";
 
 describe("Mongoose Service Module", () => {
-    const mongooseService = MongooseService.getInstance();
+    const mongooseService = new MongooseServiceImpl();
 
     const userSchema = new mongoose.Schema({
         name: { type: String },
@@ -30,13 +30,6 @@ describe("Mongoose Service Module", () => {
     };
 
     const User = mongoose.model("users", userSchema);
-
-
-    describe(`"getInstance" method`, () => {
-        it("No input passed, should return Mongoose Service Object", () => {
-            expect(mongooseService).toBeInstanceOf(MongooseService);
-        });
-    });
 
     describe(`"save" method`, () => {
         describe("Exception Path", () => {

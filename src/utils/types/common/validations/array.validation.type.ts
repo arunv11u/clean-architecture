@@ -1,4 +1,4 @@
-export interface BaseArrayValidation {
+export interface ArrayValidation {
   checkMaxLen(inputData: Array<any>, length: number): boolean;
   checkMinLen(inputData: Array<any>, length: number): boolean;
   checkArrOfStr(inputData: Array<string>): boolean;

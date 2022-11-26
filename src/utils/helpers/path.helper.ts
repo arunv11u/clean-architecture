@@ -1,17 +1,10 @@
 import path from 'path';
 import { GenericError } from '../errors';
-import { BasePathHelper } from '../types';
+import { PathHelper } from '../types';
 
-export class PathHelper implements BasePathHelper {
-    private static _instance: BasePathHelper;
+export class PathHelperImpl implements PathHelper {
 
-    private constructor() { };
-
-    static getInstance() {
-        if (!PathHelper._instance) PathHelper._instance = new PathHelper();
-
-        return PathHelper._instance;
-    };
+    constructor() { };
 
     mergePath(paths: string[]): string {
         if (!paths) throw new GenericError({ error: new Error("Input data is invalid, expected an array of strings"), errorCode: 500 });

@@ -1,30 +1,22 @@
 import { Response, NextFunction, RequestHandler } from "express";
-import { AuthDTO, BaseAuthValidation, BaseDataTypeValidation, BaseObjectValidation, BaseResponseHandler, BaseStringHelper, BaseStringValidation, DataTypeValidation, GenericError, ObjectValidation, ResponseHandler, StringHelper, StringValidation, TypedRequest } from "../../utils";
+import { AuthDTO, AuthValidation, DataTypeValidation, DataTypeValidationImpl, ObjectValidation, ObjectValidationImpl, ResponseHandler, ResponseHandlerImpl, StringHelper, StringHelperImpl, StringValidation, StringValidationImpl, TypedRequest } from "../../utils";
 
-export class AuthValidation implements BaseAuthValidation {
-  private static _instance: BaseAuthValidation;
-  
-  private _responseHandler: BaseResponseHandler;
-  private _objectValidation: BaseObjectValidation;
-  private _stringValidation: BaseStringValidation;
-  private _stringHelper: BaseStringHelper;
-  private _dataTypeValidation: BaseDataTypeValidation;
+export class AuthValidationImpl implements AuthValidation {
+
+  private _responseHandler: ResponseHandler;
+  private _objectValidation: ObjectValidation;
+  private _stringValidation: StringValidation;
+  private _stringHelper: StringHelper;
+  private _dataTypeValidation: DataTypeValidation;
 
 
-  private constructor() { 
-    this._responseHandler = ResponseHandler.getInstance();
-    this._objectValidation = ObjectValidation.getInstance();
-    this._stringValidation = StringValidation.getInstance();
-    this._stringHelper = StringHelper.getInstance();
-    this._dataTypeValidation = DataTypeValidation.getInstance();
-  }
-
-  static getInstance(): BaseAuthValidation {
-    if (!AuthValidation._instance)
-      AuthValidation._instance = new AuthValidation();
-
-    return AuthValidation._instance;
-  }
+  constructor() {
+    this._responseHandler = new ResponseHandlerImpl();
+    this._objectValidation = new ObjectValidationImpl();
+    this._stringValidation = new StringValidationImpl();
+    this._stringHelper = new StringHelperImpl();
+    this._dataTypeValidation = new DataTypeValidationImpl();
+  };
 
   private _guestLogin(request: TypedRequest<{}, {}, AuthDTO.GuestLogin>, response: Response<any, Record<string, any>>, next: NextFunction): void {
     const allowedFields: string[] = ["name", "email", "mobileNumber"];
@@ -39,10 +31,10 @@ export class AuthValidation implements BaseAuthValidation {
     const hasValidFields = this._objectValidation.allowFields(request.body, allowedFields);
     if (!hasValidFields.isValid) throw this._responseHandler.clientError(hasValidFields.message);
 
-    for(let field of requiredFields) {
+    for (let field of requiredFields) {
       const fieldName = this._stringHelper.camelToTitleCase(field);
       const isFieldExist = this._objectValidation.checkFieldExist(request.body, field);
-      
+
       if (!isFieldExist) throw this._responseHandler.clientError(`${fieldName} is required`);
     };
 
