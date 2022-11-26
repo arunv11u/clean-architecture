@@ -1,16 +1,27 @@
 
-import { GenericError } from "../../utils";
+import { faker } from "@faker-js/faker";
+import mockMongooseServiceImpl, { mockSave } from '../../utils/services/__mocks__/mongoose.service';
+import { CreateUserInput, GenericError } from "../../utils";
 import { UserDAOMongooseImpl } from "./user.dao";
 
 
-jest.mock("../../utils/services/mongoose.service", () => {
+jest.mock('../../utils', () => {
     const originalModule =
-    jest.requireActual<typeof import('../../utils/services/mongoose.service')>('../../utils/services/mongoose.service').MongooseServiceImpl;
+        jest.requireActual<typeof import('../../utils')>('../../utils');
 
-    return {};
+    return {
+        __esModule: true,
+        ...originalModule,
+        MongooseServiceImpl: mockMongooseServiceImpl
+    };
 });
 
 describe("Auth Component", () => {
+    beforeEach(() => {
+        mockMongooseServiceImpl.mockClear();
+        mockSave.mockClear();
+    });
+
     describe("Repository Module", () => {
         const userDAO = new UserDAOMongooseImpl();
 
@@ -19,6 +30,21 @@ describe("Auth Component", () => {
                 it("If undefined passed as an argument, should throw error", () => {
                     expect(() => userDAO.save(undefined as any)).rejects.toThrow(GenericError);
                     expect(() => userDAO.save(undefined as any)).rejects.toThrow("User details is undefined in create user DAO, expected user details");
+                });
+            });
+
+            describe("Happy Path", () => {
+                it("User details passed, should save the user and return it", async () => {
+                    const userDAO = new UserDAOMongooseImpl();
+                    const userDetails: CreateUserInput = {
+                        name: faker.name.fullName(),
+                        email: faker.internet.email(),
+                        mobileNumber: faker.phone.number()
+                    };
+
+                    await userDAO.save(userDetails);
+                    expect(mockMongooseServiceImpl).toHaveBeenCalled();
+                    expect(mockSave).toHaveBeenCalled();
                 });
             });
         });
