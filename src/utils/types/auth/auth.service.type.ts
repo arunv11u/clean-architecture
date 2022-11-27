@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
-import { AuthDTO } from '../../dtos';
 import { TypedRequest } from '../common';
+import { AuthDTO } from './auth.dto.type';
 
 export interface AuthService {
     register(request: TypedRequest<{}, {}, AuthDTO.Register>, response: Response, next: NextFunction): void;

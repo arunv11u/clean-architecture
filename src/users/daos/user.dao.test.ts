@@ -30,7 +30,7 @@ describe("Auth Component", () => {
             });
 
             describe("Happy Path", () => {
-                it("User details passed, should save the user and return it", async () => {
+                it("User details passed, should save the user", async () => {
                     const userDAO = new UserDAOMongooseImpl();
                     const userDetails: CreateUserInput = {
                         name: faker.name.fullName(),

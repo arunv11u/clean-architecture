@@ -4,15 +4,11 @@ export * from './configs';
 
 export * from './decorators';
 
-export * from './dtos';
-
 export * from './errors';
 
 export * from './helpers';
 
 export * from './middlewares';
-
-export * from './ros';
 
 export * from './services';
 

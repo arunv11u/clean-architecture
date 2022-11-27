@@ -6,11 +6,11 @@ export namespace AuthDTO {
     email: string;
     mobileNumber?: string;
     password: string;
-  }
+  };
 
   export interface GuestLogin {
     name: string;
     email?: string;
     mobileNumber?: string;
-  }
-}
+  };
+};

@@ -26,7 +26,7 @@ beforeEach(async () => {
 });
 
 afterEach(() => { 
-  jest.clearAllMocks();
+  // jest.clearAllMocks();
 });
 
 afterAll(async () => {

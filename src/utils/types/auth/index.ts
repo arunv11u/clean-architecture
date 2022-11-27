@@ -1,3 +1,5 @@
+export * from './auth.dto.type';
+
 export * from './auth.factory.type';
 
 export * from "./auth.repository.type";

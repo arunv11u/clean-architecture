@@ -18,4 +18,6 @@ export * from "./metadata.type";
 
 export * from "./response-handler.type";
 
+export * from "./response-locals.type";
+
 export * from "./routes.type";
