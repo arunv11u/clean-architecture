@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
 import mockUserDAOMongooseImpl, { mockSave as mockUserSave } from '../../users/daos/__mocks__/user.dao';
+import mockTokenDAOMongooseImpl, { mockSave as mockTokenSave } from '../../tokens/daos/__mocks__/token.dao';
 import { AuthRepository, GuestLoginInput } from '../../utils';
-import { AuthRepoMongooseImpl } from './auth.repository';
+import { AuthRepositoryImpl } from './auth.repository';
 
 jest.mock('../../users/daos/user.dao', () => {
     return {
@@ -9,11 +10,17 @@ jest.mock('../../users/daos/user.dao', () => {
     };
 });
 
+jest.mock('../../tokens/daos/token.dao', () => {
+    return {
+        TokenDAOMongooseImpl: mockTokenDAOMongooseImpl
+    };
+});
+
 describe("Auth Component", () => {
 
     describe("Repository Module", () => {
 
-        const authRepository: AuthRepository = new AuthRepoMongooseImpl();
+        const authRepository: AuthRepository = new AuthRepositoryImpl();
 
         describe(`"guestLogin" method`, () => {
 
@@ -31,8 +38,12 @@ describe("Auth Component", () => {
                     };
 
                     await authRepository.guestLogin(guestLoginData);
+
                     expect(mockUserDAOMongooseImpl).toHaveBeenCalled();
                     expect(mockUserSave).toHaveBeenCalled();
+
+                    expect(mockTokenDAOMongooseImpl).toHaveBeenCalled();
+                    expect(mockTokenSave).toHaveBeenCalled();
                 });
             });
         });

@@ -2,7 +2,7 @@ import { responseHandler } from "../../global-config";
 import { CreateTokenInput, ResponseHandler, TokenDAO, MongooseServiceImpl, DatabaseService } from "../../utils";
 import { Token } from "../models/token.model";
 
-export class TokenDAOImpl implements TokenDAO {
+export class TokenDAOMongooseImpl implements TokenDAO {
     private _responseHandler: ResponseHandler;
     private _mongooseService: DatabaseService;
 

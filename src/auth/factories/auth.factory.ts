@@ -1,6 +1,6 @@
 
 import { AuthFactory, AuthRepository, AuthService, AuthValidation } from "../../utils";
-import { AuthRepoMongooseImpl } from "../repositories/auth.repository";
+import { AuthRepositoryImpl } from "../repositories/auth.repository";
 import { AuthServiceImpl } from "../services/auth.service";
 import { AuthValidationImpl } from "../validations/auth.validation";
 
@@ -19,7 +19,7 @@ export class AuthFactoryImpl implements AuthFactory {
     };
 
     getRepository(): AuthRepository {
-        return new AuthRepoMongooseImpl();
+        return new AuthRepositoryImpl();
     };
 
 };

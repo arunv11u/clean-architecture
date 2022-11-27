@@ -1,6 +1,6 @@
 import { GenericError } from "../../utils/errors";
 import mockMongooseServiceImpl, { mockSave } from '../../utils/services/__mocks__/mongoose.service';
-import { TokenDAOImpl } from "./token.dao";
+import { TokenDAOMongooseImpl } from "./token.dao";
 
 
 jest.mock('../../utils', () => {
@@ -16,7 +16,7 @@ jest.mock('../../utils', () => {
 
 describe("Token Component", () => {
     describe("DAO Module", () => {
-        const tokenDAO = new TokenDAOImpl();
+        const tokenDAO = new TokenDAOMongooseImpl();
 
         describe(`"save" method`, () => {
             describe("Exception Path", () => {

@@ -14,15 +14,11 @@ export class AuthController {
     response: Response<any, Record<string, any>>,
     next: NextFunction
   ): Promise<void> {
-    response.status(200).send({ data: "OK" });
-  }
-
-  @Post("/register")
-  async register(
-    request: TypedRequest<{}, {}, {}>,
-    response: Response<any, Record<string, any>>,
-    next: NextFunction
-  ): Promise<void> {
-    response.status(200).send({ data: "OK" });
-  }
+    try {
+      response.status(200).send({ data: "OK" });
+    } catch (error) {
+      console.error(`Error in guestLogin :`, error);
+      next(error);
+    };
+  };
 };

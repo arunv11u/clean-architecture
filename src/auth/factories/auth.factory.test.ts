@@ -1,4 +1,4 @@
-import { AuthRepoMongooseImpl } from "../repositories/auth.repository";
+import { AuthRepositoryImpl } from "../repositories/auth.repository";
 import { AuthServiceImpl } from "../services/auth.service";
 import { AuthValidationImpl } from "../validations/auth.validation";
 import { AuthFactoryImpl } from "./auth.factory";
@@ -26,7 +26,7 @@ describe("Auth Component", () => {
         describe(`"getRepository" method`, () => {
             describe("Happy Path", () => {
                 it("No inputs passed, should return Auth Service Object", () => {
-                    expect(authFactory.getRepository()).toBeInstanceOf(AuthRepoMongooseImpl);
+                    expect(authFactory.getRepository()).toBeInstanceOf(AuthRepositoryImpl);
                 });
             });
         });
