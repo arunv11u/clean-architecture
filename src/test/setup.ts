@@ -25,7 +25,9 @@ beforeEach(async () => {
   await loader(app, server);
 });
 
-afterEach(() => { });
+afterEach(() => { 
+  jest.clearAllMocks();
+});
 
 afterAll(async () => {
   await disconnect();

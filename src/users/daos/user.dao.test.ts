@@ -17,10 +17,6 @@ jest.mock('../../utils', () => {
 });
 
 describe("Auth Component", () => {
-    beforeEach(() => {
-        mockMongooseServiceImpl.mockClear();
-        mockSave.mockClear();
-    });
 
     describe("Repository Module", () => {
         const userDAO = new UserDAOMongooseImpl();
@@ -46,6 +42,7 @@ describe("Auth Component", () => {
                     expect(mockMongooseServiceImpl).toHaveBeenCalled();
                     expect(mockSave).toHaveBeenCalled();
                 });
+
             });
         });
     });

@@ -1,15 +1,15 @@
-import { responseHandler } from "../../global-config";
-import { AuthRepository, ResponseHandler } from "../../utils";
+import { AuthRepository, GuestLoginInput, UserDAO } from "../../utils";
+import { UserDAOMongooseImpl } from "../../users/daos/user.dao";
 
 
 export class AuthRepoMongooseImpl implements AuthRepository {
-    private _responseHandler: ResponseHandler;
+    private userDAO: UserDAO;
 
     constructor() {
-        this._responseHandler = responseHandler;
+        this.userDAO = new UserDAOMongooseImpl();
     };
 
-    async guestLogin(): Promise<void> {
-        throw this._responseHandler.internalError("Something went wrong!");
+    async guestLogin(data: GuestLoginInput): Promise<void> {
+        await this.userDAO.save(data.user);
     };
 };

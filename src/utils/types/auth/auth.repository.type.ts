@@ -1,4 +1,16 @@
+import { CreateTokenInput } from "../tokens";
+import { CreateUserInput } from "../users";
 
-export interface AuthRepository {
-    guestLogin(): Promise<void>;
+interface GuestLoginInput {
+    user: CreateUserInput;
+    token: CreateTokenInput;
+};
+
+interface AuthRepository {
+    guestLogin(data: GuestLoginInput): Promise<void>;
+};
+
+export {
+    GuestLoginInput,
+    AuthRepository
 };

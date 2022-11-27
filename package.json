@@ -22,8 +22,7 @@
     "globalTeardown": "./src/test/global-teardown.ts",
     "setupFilesAfterEnv": [
       "./src/test/setup.ts"
-    ]
-  },
+    ]  },
   "keywords": [],
   "author": "Ruah Tech Solutions",
   "license": "ISC",
