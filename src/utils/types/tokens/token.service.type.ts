@@ -1,13 +1,17 @@
 
-interface TokenPayload {
+interface UserTokenPayload {
     userId: string;
 };
 
+interface UserDecodedPayload extends UserTokenPayload {};
+
 interface TokenService {
-    get(payload: TokenPayload): Promise<string>;
+    user(payload: UserTokenPayload): Promise<string>;
+    verify(token: string): Promise<UserDecodedPayload>;
 };
 
 export {
-    TokenPayload,
+    UserTokenPayload,
+    UserDecodedPayload,
     TokenService
 };

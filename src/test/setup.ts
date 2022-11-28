@@ -13,6 +13,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   // Setting up process environment secrets:
   process.env.NODE_ENV = Environment.TEST;
+  process.env.jwtSecretKey = "secret-key";
 
   const collections = await mongoose.connection.db.collections();
 

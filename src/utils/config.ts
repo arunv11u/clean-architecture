@@ -1,5 +1,5 @@
 import nconf from 'nconf';
-import { Environment } from './types';
+import { Config, Environment } from './types';
 
 export type NCONF = typeof nconf;
 
@@ -10,31 +10,16 @@ export interface DefaultConfig {
     testConfig?: Record<string, any>;
 };
 
+class ConfigSingleton extends Config {
 
-export abstract class BaseConfig {
-    constructor() { };
-
-    abstract get nconf(): NCONF;
-    abstract set(environment: Environment, config: DefaultConfig): void;
-};
-
-export class Config extends BaseConfig {
-
-    private static _instance: BaseConfig;
     private _nconf: NCONF = nconf;
 
-    private constructor() {
+    constructor() {
         super();
     };
 
     get nconf() {
         return this._nconf;
-    };
-
-    static getInstance(): BaseConfig {
-        if (!Config._instance) Config._instance = new Config();
-
-        return Config._instance;
     };
 
     set(environment: Environment, config: DefaultConfig) {
@@ -62,4 +47,10 @@ export class Config extends BaseConfig {
 
         this._nconf.argv().env().add('data', { type: 'literal', store: data });
     };
+};
+
+const config = new ConfigSingleton();
+
+export {
+    config
 };
