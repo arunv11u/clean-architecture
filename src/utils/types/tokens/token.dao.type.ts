@@ -1,10 +1,11 @@
+import { ClientSession } from "mongoose";
 
 interface CreateTokenInput {
     value: string;
 };
 
 interface TokenDAO {
-    save(tokenDetails: CreateTokenInput): Promise<void>;
+    save(tokenDetails: CreateTokenInput, session?: ClientSession): Promise<void>;
 };
 
 export {

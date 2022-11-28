@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Request, Response, NextFunction } from "express";
+import { AuthService } from "../../utils";
 import mockAuthRepositoryImpl, { mockGuestLogin } from "../repositories/__mocks__/auth.repository";
 import { AuthServiceImpl } from "./auth.service";
 
@@ -10,14 +11,16 @@ jest.mock("../repositories/auth.repository.ts", () => {
 });
 
 describe("Auth Component", () => {
+
   describe("Service Module", () => {
-    const authService = new AuthServiceImpl();
+    let authService: AuthService;
     let mockRequest: Partial<Request>;
     let mockResponse: Partial<Response>;
     const mockNextFunction: NextFunction = jest.fn();
 
     describe(`"guestLogin" method`, () => {
       beforeEach(() => {
+        authService = new AuthServiceImpl();
         mockRequest = {
           body: {
             name: faker.name.fullName(),

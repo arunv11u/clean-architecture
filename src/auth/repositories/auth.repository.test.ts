@@ -17,10 +17,13 @@ jest.mock('../../tokens/daos/token.dao', () => {
 });
 
 describe("Auth Component", () => {
+    let authRepository: AuthRepository;
+
+    beforeEach(() => {
+        authRepository = new AuthRepositoryImpl();
+    });
 
     describe("Repository Module", () => {
-
-        const authRepository: AuthRepository = new AuthRepositoryImpl();
 
         describe(`"guestLogin" method`, () => {
 

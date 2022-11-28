@@ -1,5 +1,5 @@
-import { responseHandler } from "../../global-config";
 import { CreateTokenInput, ResponseHandler, TokenDAO, MongooseServiceImpl, DatabaseService } from "../../utils";
+import { responseHandler } from "../../global-config";
 import { Token } from "../models/token.model";
 
 export class TokenDAOMongooseImpl implements TokenDAO {

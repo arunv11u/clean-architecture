@@ -1,3 +1,4 @@
+import { ClientSession } from "mongoose";
 import { responseHandler } from "../../global-config";
 import { UserDAO, CreateUserInput, ResponseHandler, DatabaseService, MongooseServiceImpl } from "../../utils";
 import { User } from "../models/user.model";
@@ -11,10 +12,10 @@ export class UserDAOMongooseImpl implements UserDAO {
         this._mongooseService = new MongooseServiceImpl();
     };
 
-    async save(userDetails: CreateUserInput): Promise<void> {
+    async save(userDetails: CreateUserInput, session?: ClientSession): Promise<void> {
         if (!userDetails) throw this._responseHandler.internalError("User details is undefined in create user DAO, expected user details");
 
         const user = new User(userDetails);
-        await this._mongooseService.save(user);
+        await this._mongooseService.save(user, { session });
     };
 };

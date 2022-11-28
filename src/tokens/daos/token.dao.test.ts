@@ -1,6 +1,6 @@
-import { GenericError } from "../../utils/errors";
 import mockMongooseServiceImpl, { mockSave } from '../../utils/services/__mocks__/mongoose.service';
-import { TokenDAOMongooseImpl } from "./token.dao";
+import { GenericError, TokenDAO } from '../../utils';
+import { TokenDAOMongooseImpl } from './token.dao';
 
 
 jest.mock('../../utils', () => {
@@ -15,9 +15,12 @@ jest.mock('../../utils', () => {
 });
 
 describe("Token Component", () => {
-    describe("DAO Module", () => {
-        const tokenDAO = new TokenDAOMongooseImpl();
+    let tokenDAO: TokenDAO;
+    beforeEach(() => {
+        tokenDAO = new TokenDAOMongooseImpl();
+    });
 
+    describe("DAO Module", () => {
         describe(`"save" method`, () => {
             describe("Exception Path", () => {
                 it("If undefined passed as an argument, should throw error", () => {

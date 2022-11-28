@@ -1,7 +1,7 @@
 
 import { faker } from "@faker-js/faker";
 import mockMongooseServiceImpl, { mockSave } from '../../utils/services/__mocks__/mongoose.service';
-import { CreateUserInput, GenericError } from "../../utils";
+import { CreateUserInput, GenericError, UserDAO } from "../../utils";
 import { UserDAOMongooseImpl } from "./user.dao";
 
 
@@ -17,9 +17,13 @@ jest.mock('../../utils', () => {
 });
 
 describe("Auth Component", () => {
+    let userDAO: UserDAO;
+
+    beforeEach(() => {
+        userDAO = new UserDAOMongooseImpl();
+    });
 
     describe("Repository Module", () => {
-        const userDAO = new UserDAOMongooseImpl();
 
         describe(`"save" method`, () => {
             describe("Exception Path", () => {

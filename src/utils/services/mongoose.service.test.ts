@@ -29,7 +29,7 @@ describe("Mongoose Service Module", () => {
         return null;
     };
 
-    const User = mongoose.model("users", userSchema);
+    const User = mongoose.model("_users", userSchema);
 
     describe(`"save" method`, () => {
         describe("Exception Path", () => {

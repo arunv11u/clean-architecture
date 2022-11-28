@@ -4,7 +4,6 @@ import { app, server } from "../server";
 import { Environment } from "../utils";
 import { loader, connect, disconnect } from "./utils";
 
-jest.setTimeout(60000);
 
 beforeAll(async () => {
   await connect();
@@ -20,14 +19,11 @@ beforeEach(async () => {
     await collection.deleteMany({});
   };
 
-  // Create collection before hand here because mongoose transaction expects the collection namespace.
 
   await loader(app, server);
 });
 
-afterEach(() => { 
-  // jest.clearAllMocks();
-});
+afterEach(() => {});
 
 afterAll(async () => {
   await disconnect();

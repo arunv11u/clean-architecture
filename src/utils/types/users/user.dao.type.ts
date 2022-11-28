@@ -1,3 +1,4 @@
+import { ClientSession } from "mongoose";
 
 interface CreateUserInput {
     name: string;
@@ -6,7 +7,7 @@ interface CreateUserInput {
 };
 
 interface UserDAO {
-    save(userDetails: CreateUserInput): Promise<void>;
+    save(userDetails: CreateUserInput, session?: ClientSession): Promise<void>;
 };
 
 export {
