@@ -1,6 +1,5 @@
 import { Response, NextFunction, RequestHandler } from "express";
-import { responseHandler } from "../../global-config";
-import { AuthDTO, AuthValidation, DataTypeValidation, DataTypeValidationImpl, ObjectValidation, ObjectValidationImpl, ResponseHandler, StringHelper, StringHelperImpl, StringValidation, StringValidationImpl, TypedRequest } from "../../utils";
+import { AuthDTO, AuthValidation, DataTypeValidation, DataTypeValidationImpl, ObjectValidation, ObjectValidationImpl, ResponseHandler, ResponseHandlerImpl, StringHelper, StringHelperImpl, StringValidation, StringValidationImpl, TypedRequest } from "../../utils";
 
 export class AuthValidationImpl implements AuthValidation {
 
@@ -12,7 +11,7 @@ export class AuthValidationImpl implements AuthValidation {
 
 
   constructor() {
-    this._responseHandler = responseHandler;
+    this._responseHandler = new ResponseHandlerImpl();
     this._objectValidation = new ObjectValidationImpl();
     this._stringValidation = new StringValidationImpl();
     this._stringHelper = new StringHelperImpl();

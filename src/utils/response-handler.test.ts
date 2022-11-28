@@ -1,10 +1,10 @@
 import { Response } from "express";
-import { responseHandler } from "../global-config";
 import { GenericError } from "./errors";
+import { ResponseHandlerImpl } from "./response-handler";
 import { ResponseHandler } from "./types";
 
 describe("Response Handler Module", () => {
-  const _responseHandler: ResponseHandler = responseHandler;
+  const _responseHandler: ResponseHandler = new ResponseHandlerImpl();
 
   describe(`"ok" method`, () => {
     let mockResponse: Partial<Response>;

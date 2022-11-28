@@ -1,5 +1,4 @@
-import { CreateTokenInput, ResponseHandler, TokenDAO, MongooseServiceImpl, DatabaseService } from "../../utils";
-import { responseHandler } from "../../global-config";
+import { CreateTokenInput, ResponseHandler, TokenDAO, MongooseServiceImpl, DatabaseService, ResponseHandlerImpl } from "../../utils";
 import { Token } from "../models/token.model";
 
 export class TokenDAOMongooseImpl implements TokenDAO {
@@ -7,7 +6,7 @@ export class TokenDAOMongooseImpl implements TokenDAO {
     private _mongooseService: DatabaseService;
 
     constructor() { 
-        this._responseHandler = responseHandler;
+        this._responseHandler = new ResponseHandlerImpl();
         this._mongooseService = new MongooseServiceImpl();
     };
 

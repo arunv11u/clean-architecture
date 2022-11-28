@@ -4,6 +4,7 @@ import { app, server } from "../server";
 import { Environment } from "../utils";
 import { loader, connect, disconnect } from "./utils";
 
+jest.setTimeout(3000);
 
 beforeAll(async () => {
   await connect();

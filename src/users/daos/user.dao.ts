@@ -1,6 +1,5 @@
 import { ClientSession } from "mongoose";
-import { responseHandler } from "../../global-config";
-import { UserDAO, CreateUserInput, ResponseHandler, DatabaseService, MongooseServiceImpl } from "../../utils";
+import { UserDAO, CreateUserInput, DatabaseService, MongooseServiceImpl, ResponseHandlerImpl, ResponseHandler } from "../../utils";
 import { User } from "../models/user.model";
 
 export class UserDAOMongooseImpl implements UserDAO {
@@ -8,7 +7,7 @@ export class UserDAOMongooseImpl implements UserDAO {
     private _mongooseService: DatabaseService;
 
     constructor() {
-        this._responseHandler = responseHandler;
+        this._responseHandler = new ResponseHandlerImpl();
         this._mongooseService = new MongooseServiceImpl();
     };
 
@@ -19,3 +18,5 @@ export class UserDAOMongooseImpl implements UserDAO {
         await this._mongooseService.save(user, { session });
     };
 };
+
+// export const userDAO = new UserDAOMongooseImpl();
