@@ -27,6 +27,7 @@ export = async function globalSetup() {
         process.env.MONGO_URI = `${process.env.MONGO_URI}/${testConfig.mongodb.dataBase}?replicaSet=testset`;
 
         await mongoose.connect(process.env.MONGO_URI);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         await mongoose.connection.db.dropDatabase();
         await mongoose.disconnect();
 
