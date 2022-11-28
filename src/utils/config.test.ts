@@ -1,24 +1,13 @@
 import nconf from 'nconf';
-import { Config } from "./config";
+import { config } from "./config";
 import { Environment } from "./types";
 
 
 describe("Config Module", () => {
 
-    describe(`"getInstance" method`, () => {
-        describe("Happy Path", () => {
-            it("No input has passed, should return config object", () => {
-                const _config = Config.getInstance();
-
-                expect(_config).toBeInstanceOf(Config);
-            });
-        });
-    });
-
     describe(`"nconf" getter`, () => {
         describe("Happy Path", () => {
             it("If nconf is required for the process, should return nconf", () => {
-                const config = Config.getInstance();
                 const _nconf = config.nconf;
 
                 expect(_nconf).toStrictEqual(nconf);
@@ -30,7 +19,6 @@ describe("Config Module", () => {
 
         describe("Happy Path", () => {
             it("Testing environment and config passed has arguments, should set the process variables", () => {
-                const config = Config.getInstance();
                 const _nconf = config.nconf;
                 const _envConfig = { port: 8080, secretKey: "secret" };
 
@@ -41,7 +29,6 @@ describe("Config Module", () => {
             });
 
             it("Production environment and config passed has arguments, should set the process variables", () => {
-                const config = Config.getInstance();
                 const _nconf = config.nconf;
                 const _envConfig = { port: 4000, secretKey: "secret1" };
 
@@ -52,7 +39,6 @@ describe("Config Module", () => {
             });
 
             it("Staging environment and config passed has arguments, should set the process variables", () => {
-                const config = Config.getInstance();
                 const _nconf = config.nconf;
                 const _envConfig = { port: 4000, secretKey: "secret1" };
 
@@ -63,7 +49,6 @@ describe("Config Module", () => {
             });
 
             it("Dev environment and config passed has arguments, should set the process variables", () => {
-                const config = Config.getInstance();
                 const _nconf = config.nconf;
                 const _envConfig = { port: 4000, secretKey: "secret1" };
 
@@ -74,7 +59,6 @@ describe("Config Module", () => {
             });
 
             it("Unknown environment and config passed has arguments, should consider the dev environment as default and set the process variables", () => {
-                const config = Config.getInstance();
                 const _nconf = config.nconf;
                 const _envConfig = { port: 4000, secretKey: "secret1" };
 

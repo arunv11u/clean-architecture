@@ -39,6 +39,7 @@ export class TokenServiceImpl implements TokenService {
                 const _decoded: UserDecodedPayload = {
                     userId: (decoded as jwt.JwtPayload).userId
                 };
+
                 resolve(_decoded);
             });
         });
