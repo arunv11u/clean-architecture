@@ -33,7 +33,8 @@ describe("Auth Component", () => {
                         user: {
                             name: faker.name.fullName(),
                             email: faker.internet.email(),
-                            mobileNumber: faker.phone.number()
+                            mobileNumber: faker.phone.number(),
+                            userId: faker.random.alphaNumeric(8)
                         },
                         token: {
                             value: faker.random.alphaNumeric()

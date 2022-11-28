@@ -1,5 +1,13 @@
-import { UserAttrs } from "../../../users/models/user.model";
+
+interface UserPhone {
+    code: string;
+    number: string;
+};
 
 export namespace UserDTO {
-    export type CreateUser = UserAttrs;
+    export interface CreateUser {
+        name: string;
+        email?: string;
+        phone?: UserPhone;
+    };
 };

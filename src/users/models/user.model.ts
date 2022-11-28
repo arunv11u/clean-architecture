@@ -12,6 +12,7 @@ interface UserPhone {
 
 interface UserAttrs {
     name: string;
+    userId: string;
     email?: string;
     phone?: UserPhone;
     isDeleted?: boolean;
@@ -23,6 +24,7 @@ interface UserAttrs {
 
 interface UserDoc extends mongoose.Document {
     name: string;
+    userId: string;
     email?: string;
     phone?: UserPhone;
     isDeleted?: boolean;
@@ -49,6 +51,7 @@ const phoneSchema = new mongoose.Schema<UserPhone, any>({
 const userSchema = new mongoose.Schema<UserDoc, UserModel>(
     {
         name: { type: String, required: [true, 'is a required field'] },
+        userId: { type: String, required: [true, 'is a required field'] },
         email: { type: String },
         phone: { type: phoneSchema },
         isDeleted: { type: Boolean, default: false },
@@ -93,6 +96,7 @@ userSchema.pre<Query<UserDoc, UserDoc>>('update', mongooseSchemaService.excludeD
 userSchema.pre<Aggregate<UserDoc>>('aggregate', mongooseSchemaService.excludeDeleteAggregateMiddleware());
 
 //* indexing here.
+userSchema.index({ "userId": 1 }, { unique: true });
 
 
 //* VirtualTypes here.

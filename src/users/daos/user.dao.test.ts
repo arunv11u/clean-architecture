@@ -39,14 +39,14 @@ describe("Auth Component", () => {
                     const userDetails: CreateUserInput = {
                         name: faker.name.fullName(),
                         email: faker.internet.email(),
-                        mobileNumber: faker.phone.number()
+                        mobileNumber: faker.phone.number(),
+                        userId: faker.random.alphaNumeric(8)
                     };
 
                     await userDAO.save(userDetails);
                     expect(mockMongooseServiceImpl).toHaveBeenCalled();
                     expect(mockSave).toHaveBeenCalled();
                 });
-
             });
         });
     });

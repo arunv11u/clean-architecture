@@ -2,6 +2,7 @@ import { ClientSession } from "mongoose";
 
 interface CreateUserInput {
     name: string;
+    userId: string;
     email?: string;
     mobileNumber?: string;
 };
