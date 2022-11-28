@@ -42,10 +42,8 @@ describe("Auth Component", () => {
 
                     await authRepository.guestLogin(guestLoginData);
 
-                    expect(mockUserDAOMongooseImpl).toHaveBeenCalled();
                     expect(mockUserSave).toHaveBeenCalled();
 
-                    expect(mockTokenDAOMongooseImpl).toHaveBeenCalled();
                     expect(mockTokenSave).toHaveBeenCalled();
                 });
             });

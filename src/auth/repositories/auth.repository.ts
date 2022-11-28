@@ -1,5 +1,4 @@
-import { TokenDAOMongooseImpl } from "../../tokens/daos/token.dao";
-import { UserDAOMongooseImpl } from "../../users/daos/user.dao";
+import { tokenFactory, userFactory } from "../../global-config";
 import { AuthRepository, GuestLoginInput, TokenDAO, UserDAO } from "../../utils";
 
 
@@ -8,8 +7,8 @@ export class AuthRepositoryImpl implements AuthRepository {
     private _tokenDAO: TokenDAO;
 
     constructor() {
-        this._userDAO = new UserDAOMongooseImpl();
-        this._tokenDAO = new TokenDAOMongooseImpl();
+        this._userDAO = userFactory.getDAO();
+        this._tokenDAO = tokenFactory.getDAO();
     };
 
     async guestLogin(data: GuestLoginInput): Promise<void> {
