@@ -6,22 +6,27 @@ import { UserValidationImpl } from "../validations/user.validation";
 
 export class UserFactoryImpl implements UserFactory {
 
-    private _userValidation: UserValidation = new UserValidationImpl();
-    private _userPipe: UserPipe = new UserPipeImpl();
-    private _userService: UserService = new UserServiceImpl();
-    private _userDAO: UserDAO = new UserDAOMongooseImpl();
+    private _userValidation: UserValidation;
+    private _userPipe: UserPipe;
+    private _userService: UserService;
+    private _userDAO: UserDAO;
 
-    constructor() { };
+    constructor() {
+        this._userValidation = new UserValidationImpl();
+        this._userPipe = new UserPipeImpl();
+        this._userService = new UserServiceImpl();
+        this._userDAO = new UserDAOMongooseImpl();
+    };
 
-    getValidation(): any {
+    getValidation(): UserValidation {
         return this._userValidation;
     };
 
-    getPipe(): any {
+    getPipe(): UserPipe {
         return this._userPipe;
     };
 
-    getService(): any {
+    getService(): UserService {
         return this._userService;
     };
 

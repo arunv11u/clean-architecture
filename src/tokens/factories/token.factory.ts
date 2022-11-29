@@ -6,13 +6,20 @@ import { TokenServiceImpl } from "../services/token.service";
 
 export class TokenFactoryImpl implements TokenFactory {
 
-    constructor() { };
+    private _tokenDAO: TokenDAO;
+    private _tokenService: TokenService;
+
+    constructor() {
+        this._tokenDAO = new TokenDAOMongooseImpl();
+        this._tokenService = new TokenServiceImpl();
+    };
 
     getDAO(): TokenDAO {
-        return new TokenDAOMongooseImpl();
+        return this._tokenDAO;
     };
 
     getService(): TokenService {
-        return new TokenServiceImpl();
+        return this._tokenService;
     };
 };
+

@@ -1,11 +1,12 @@
 import 'reflect-metadata';
 import { server, app } from './server';
 import { devConfig, Environment, loader, prodConfig, stagingConfig } from './utils';
+import "./utils/load-controllers";
 
-
-let $PORT = prodConfig.port;
 
 function startServer() {
+    let $PORT = prodConfig.port;
+
     if (process.env['NODE_ENV'] === Environment.STAGING) $PORT = stagingConfig.port;
     else if (process.env['NODE_ENV'] === Environment.DEV) $PORT = devConfig.port;
 

@@ -2,14 +2,20 @@ import { AuthFactoryImpl } from "./auth";
 import { TokenFactoryImpl } from "./tokens";
 import { UserFactoryImpl } from "./users";
 
+const getAuthFactory = () => {
+    return new AuthFactoryImpl();
+};
 
-const authFactory = new AuthFactoryImpl();
-const userFactory = new UserFactoryImpl();
-const tokenFactory = new TokenFactoryImpl();
+const getUserFactory = () => {
+    return new UserFactoryImpl();
+};
 
+const getTokenFactory = () => {
+    return new TokenFactoryImpl();
+};
 
 export {
-    authFactory,
-    userFactory,
-    tokenFactory
+    getAuthFactory,
+    getUserFactory,
+    getTokenFactory
 };

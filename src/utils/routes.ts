@@ -5,16 +5,12 @@ import { corsOptions } from "./cors";
 import { GenericError } from "./errors";
 import { errorHandler } from "./middlewares";
 import { Routes } from "./types";
-import { AppRouter } from "../app-router";
+import { appRouter } from "../app-router";
 import { limitRequests } from './rate-limiter';
 
-// Import controller files here
-import "../auth/controllers/auth.controller";
-import "../users/controllers/user.controller";
-
-export class RoutesImpl implements Routes {
+class RoutesImpl implements Routes {
   private _defaultRoutePath: string = "/api";
-  constructor() {};
+  constructor() { };
 
   listen(app: Express): boolean {
     app.use(cors(corsOptions));
@@ -43,9 +39,9 @@ export class RoutesImpl implements Routes {
     app.use("/images", express.static(path.join(__dirname, "./assets/images")));
 
     // Base URL for all following routes
-    app.use(this._defaultRoutePath, AppRouter.getInstance());
+    app.use(this._defaultRoutePath, appRouter);
 
-    
+
     // If the requested URL doesn't match a route, then the below route will be processed.
     app.use("/**", function (req: Request, res: Response, next: NextFunction) {
       throw new GenericError({
@@ -58,5 +54,7 @@ export class RoutesImpl implements Routes {
     app.use(errorHandler);
 
     return true;
-  }
-}
+  };
+};
+
+export const routes = new RoutesImpl();

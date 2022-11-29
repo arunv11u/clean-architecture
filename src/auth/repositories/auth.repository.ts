@@ -1,5 +1,5 @@
 import { ClientSession } from "mongoose";
-import { tokenFactory, userFactory } from "../../global-config";
+import { getUserFactory, getTokenFactory } from "../../global-config";
 import { AuthRepository, GuestLoginInput, TokenDAO, UserDAO } from "../../utils";
 
 
@@ -8,8 +8,8 @@ export class AuthRepositoryImpl implements AuthRepository {
     private _tokenDAO: TokenDAO;
 
     constructor() {
-        this._userDAO = userFactory.getDAO();
-        this._tokenDAO = tokenFactory.getDAO();
+        this._userDAO = getUserFactory().getDAO();
+        this._tokenDAO = getTokenFactory().getDAO();
     };
 
     async guestLogin(data: GuestLoginInput, session?: ClientSession): Promise<void> {

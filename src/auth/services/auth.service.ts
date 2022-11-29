@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import { tokenFactory, userFactory } from "../../global-config";
+import { getTokenFactory, getUserFactory } from "../../global-config";
 import { AuthDTO, AuthRepository, AuthService, GuestLoginInput, MongooseSessionHelper, MongooseSessionHelperImpl, TokenService, TypedRequest, UserService } from "../../utils";
 import { AuthRepositoryImpl } from "../repositories/auth.repository";
 
@@ -11,8 +11,8 @@ export class AuthServiceImpl implements AuthService {
 
   constructor() {
     this._authRepository = new AuthRepositoryImpl();
-    this._userService = userFactory.getService();
-    this._tokenService = tokenFactory.getService();
+    this._userService = getUserFactory().getService();
+    this._tokenService = getTokenFactory().getService();
     this._mongooseSessionHelper = new MongooseSessionHelperImpl();
   };
 

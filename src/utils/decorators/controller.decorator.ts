@@ -1,11 +1,11 @@
 import { RequestHandler } from 'express';
-import { AppRouter } from '../../app-router';
+import { appRouter } from '../../app-router';
 import { MetadataKeys, RouteMethods } from '../types';
 
 
 function controller(routePrefix: string) {
     return function (target: Function) {
-        const router = AppRouter.getInstance();
+        const router = appRouter;
 
         for (let key in target.prototype) {
             const routeHandler = target.prototype[key];
