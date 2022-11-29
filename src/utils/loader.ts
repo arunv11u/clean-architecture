@@ -5,6 +5,8 @@ import { Environment } from './types';
 import { config, DefaultConfig } from './config';
 import { routes } from './routes';
 import unhandledError from './unHandledErrorHandler';
+import { mongooseConnect } from './mongoose-connect';
+import nconf from 'nconf';
 
 const loader = async (app: Express, server: http.Server) => {
 
@@ -17,7 +19,8 @@ const loader = async (app: Express, server: http.Server) => {
     // configuring process variables.
     config.set(_environment, _config);
 
-    // Registering routes
+    await mongooseConnect.connect(nconf.get("dbConnectionStr"));
+
     routes.listen(app);
 
     return true;

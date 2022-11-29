@@ -20,6 +20,4 @@ export * from './config';
 
 export * from './loader';
 
-export * from './mongoose-connect';
-
 export * from './response-handler';

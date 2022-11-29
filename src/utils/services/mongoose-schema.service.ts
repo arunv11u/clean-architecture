@@ -48,7 +48,6 @@ export class MongooseSchemaServiceImpl extends DatabaseSchemaService {
             next: (err: CallbackError | undefined) => void) {
             const locals: { user: Record<string, any> } = this.get('locals');
             const excludeLocals: boolean = this.get('excludeLocals');
-
             if (excludeLocals) return next(undefined);
 
             if (!locals) return next(new GenericError({ error: new Error(`"locals" is required field for setCreatedByAndUpdatedByOnSave mongoose middleware fn`), errorCode: 500 }));

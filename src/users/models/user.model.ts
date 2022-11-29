@@ -46,7 +46,7 @@ interface UserModel extends mongoose.Model<UserDoc> {
 const phoneSchema = new mongoose.Schema<UserPhone, any>({
     code: { type: String, required: [true, 'is a required field'] },
     number: { type: String, required: [true, 'is a required field'] }
-});
+}, { _id: false, id: false });
 
 const userSchema = new mongoose.Schema<UserDoc, UserModel>(
     {
@@ -101,6 +101,8 @@ userSchema.index({ "userId": 1 }, { unique: true });
 
 //* VirtualTypes here.
 userSchema.virtual('locals');
+userSchema.virtual('excludeLocals');
+
 const User = mongoose.model<UserDoc, UserModel>('users', userSchema);
 
 

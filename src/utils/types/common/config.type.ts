@@ -1,9 +1,6 @@
-import { DefaultConfig, NCONF } from "../../config";
+import { DefaultConfig } from "../../config";
 import { Environment } from "./environment.type";
 
-export abstract class Config {
-    constructor() { };
-
-    abstract get nconf(): NCONF;
-    abstract set(environment: Environment, config: DefaultConfig): void;
+export interface Config {
+    set(environment: Environment, config: DefaultConfig): void;
 };

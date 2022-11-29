@@ -26,7 +26,8 @@ export class AuthController {
     try {
       const _response = await authService.guestLogin(request, response, next);
 
-      responseHandler.ok<string, {}>(response, _response);
+      const responseData = { token: _response };
+      responseHandler.ok<{ token: string }, {}>(response, responseData);
     } catch (error) {
       console.error(`Error in guestLogin :`, error);
       next(error);

@@ -18,8 +18,6 @@ interface TokenDoc extends mongoose.Document {
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
-    createdBy?: mongoose.Types.ObjectId;
-    updatedBy?: mongoose.Types.ObjectId;
 };
 
 type BuildToken = TokenAttrs;
@@ -37,9 +35,7 @@ const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
         user: { type: mongoose.Types.ObjectId, required: [true, 'is a required field'] },
         isDeleted: { type: Boolean, default: false },
         creationDate: { type: Date },
-        lastModifiedDate: { type: Date },
-        createdBy: { type: mongoose.Types.ObjectId, ref: 'users' },
-        updatedBy: { type: mongoose.Types.ObjectId, ref: 'users' },
+        lastModifiedDate: { type: Date }
     },
     schemaOptions()
 );

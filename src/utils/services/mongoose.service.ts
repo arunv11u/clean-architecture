@@ -15,9 +15,9 @@ import mongoose, {
     UpdateWithAggregationPipeline
 } from "mongoose";
 import { UpdateResult } from 'mongodb';
-import { MongooseConnect } from "../mongoose-connect";
 import { DatabaseService } from "../types";
 import { GenericError } from "../errors";
+import nconf from 'nconf';
 
 export class MongooseServiceImpl implements DatabaseService {
 
@@ -26,10 +26,7 @@ export class MongooseServiceImpl implements DatabaseService {
     private async _reconnectIfDisconnected(): Promise<void> {
         if (mongoose.connection.readyState === 1) return;
 
-        const mongooseConnect = MongooseConnect.getInstance();
-        const dbConnectionString = mongooseConnect.dbConnectionString;
-
-        await mongoose.connect(dbConnectionString);
+        await mongoose.connect(nconf.get("dbConnectionStr"));
     };
 
     async save<DocType>(collRef: HydratedDocument<DocType>, options?: SaveOptions | undefined): Promise<DocType | (Document<unknown, any, DocType> & { _id?: unknown; } & Required<{ _id: unknown; }>)> {

@@ -1,4 +1,5 @@
 import { ClientSession } from "mongoose";
+import { UserDoc } from "../../../users/models/user.model";
 
 interface UserPhone {
     code: string;
@@ -13,7 +14,7 @@ interface CreateUserInput {
 };
 
 interface UserDAO {
-    save(userDetails: CreateUserInput, session?: ClientSession): Promise<void>;
+    save(userDetails: CreateUserInput, session?: ClientSession): Promise<UserDoc>;
     checkUserExists(userId: string): Promise<boolean>;
 };
 

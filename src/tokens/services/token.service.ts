@@ -1,21 +1,20 @@
-import { ResponseHandler, ResponseHandlerImpl, UserTokenPayload, TokenService, NCONF, config, UserDecodedPayload } from "../../utils";
 import jwt from "jsonwebtoken";
+import nconf from 'nconf';
+import { ResponseHandler, ResponseHandlerImpl, UserTokenPayload, TokenService, config, UserDecodedPayload } from "../../utils";
 
 export class TokenServiceImpl implements TokenService {
 
     private _reponseHandler: ResponseHandler;
-    private _nconf: NCONF;
 
     constructor() {
         this._reponseHandler = new ResponseHandlerImpl();
-        this._nconf = config.nconf;
     };
 
     async user(payload: UserTokenPayload): Promise<string> {
 
         if (!payload) throw this._reponseHandler.internalError("Payload is invalid");
 
-        const secretKey: string = this._nconf.get("jwtSecretKey");
+        const secretKey: string = nconf.get("jwtSecretKey");
 
         const tokenGeneratePromise = new Promise<string>((resolve, reject) => {
             jwt.sign(payload, secretKey, {}, (err, token) => {
@@ -31,7 +30,7 @@ export class TokenServiceImpl implements TokenService {
     async verify(token: string): Promise<UserDecodedPayload> {
         if (!token) throw this._reponseHandler.internalError("Token is invalid");
 
-        const secretKey: string = this._nconf.get("jwtSecretKey");
+        const secretKey: string = nconf.get("jwtSecretKey");
         const verifyTokenPromise = new Promise<UserDecodedPayload>((resolve, reject) => {
             jwt.verify(token, secretKey, {}, (err, decoded) => {
                 if (err) return reject(this._reponseHandler.internalError("Token is invalid"));
