@@ -32,7 +32,7 @@ export class AuthServiceImpl implements AuthService {
         user: {
           name: request.body.name,
           email: request.body.email,
-          mobileNumber: request.body.mobileNumber,
+          phone: request.body.phone,
           userId
         },
         token: {

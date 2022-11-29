@@ -1,10 +1,15 @@
 import { ClientSession } from "mongoose";
 
+interface UserPhone {
+    code: string;
+    number: string;
+};
+
 interface CreateUserInput {
     name: string;
     userId: string;
     email?: string;
-    mobileNumber?: string;
+    phone?: UserPhone;
 };
 
 interface UserDAO {

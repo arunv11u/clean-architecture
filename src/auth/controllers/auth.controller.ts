@@ -19,7 +19,7 @@ export class AuthController {
   @Post("/guest/login")
   @Use(authValidation.guestLogin())
   async guestLogin(
-    request: TypedRequest<{}, {}, AuthDTO.Register>,
+    request: TypedRequest<{}, {}, AuthDTO.GuestLogin>,
     response: Response<any, Record<string, any>>,
     next: NextFunction
   ): Promise<void> {

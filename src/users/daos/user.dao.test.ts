@@ -42,7 +42,10 @@ describe("Auth Component", () => {
                     const userDetails: CreateUserInput = {
                         name: faker.name.fullName(),
                         email: faker.internet.email(),
-                        mobileNumber: faker.phone.number(),
+                        phone: {
+                            code: "+91",
+                            number: "9876543210"
+                        },
                         userId: faker.random.alphaNumeric(8)
                     };
 
