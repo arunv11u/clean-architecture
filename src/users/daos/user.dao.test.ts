@@ -1,8 +1,9 @@
 
 import { faker } from "@faker-js/faker";
-import mockMongooseServiceImpl, { mockSave } from '../../utils/services/__mocks__/mongoose.service';
+import mockMongooseServiceImpl, { mockFindOne, mockSave } from '../../utils/services/__mocks__/mongoose.service';
 import { CreateUserInput, GenericError, UserDAO } from "../../utils";
 import { UserDAOMongooseImpl } from "./user.dao";
+import { User } from "../models/user.model";
 
 
 jest.mock('../../utils', () => {
@@ -21,6 +22,8 @@ describe("Auth Component", () => {
 
     beforeEach(() => {
         userDAO = new UserDAOMongooseImpl();
+
+        mockFindOne.mockReset();
     });
 
     describe("Repository Module", () => {
@@ -46,6 +49,40 @@ describe("Auth Component", () => {
                     await userDAO.save(userDetails);
                     expect(mockMongooseServiceImpl).toHaveBeenCalled();
                     expect(mockSave).toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe(`"checkUserExists" method`, () => {
+
+            describe("Exception Path", () => {
+                it("If undefined provided as userId, should throw error", () => {
+                    expect(() => userDAO.checkUserExists(undefined as any)).rejects.toThrow(GenericError);
+                });
+            });
+
+            describe("Happy Path", () => {
+                it("If userId already exists, should return false", () => {
+                    mockFindOne.mockImplementation(() => false);
+
+                    const userId = faker.random.alphaNumeric();
+                    const isUserIdExists = userDAO.checkUserExists(userId);
+
+                    expect(mockMongooseServiceImpl).toHaveBeenCalled();
+                    expect(mockFindOne).toHaveBeenCalled();
+                    expect(isUserIdExists).resolves.toBe(false);
+                });
+
+                it("If userId does not exist, should return true", () => {
+                    mockFindOne.mockImplementation(() => true);
+
+                    const userId = faker.random.alphaNumeric();
+                    const isUserIdExists = userDAO.checkUserExists(userId);
+                    const query = { userId };
+
+                    expect(mockMongooseServiceImpl).toHaveBeenCalled();
+                    expect(mockFindOne).toHaveBeenCalledWith(User, query);
+                    expect(isUserIdExists).resolves.toBe(true);
                 });
             });
         });

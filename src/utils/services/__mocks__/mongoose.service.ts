@@ -1,9 +1,11 @@
 
-export const mockSave = jest.fn().mockImplementation();
+export const mockSave = jest.fn();
+export const mockFindOne = jest.fn();
 
 const mock = jest.fn().mockImplementation(() => {
     return {
-        save: mockSave
+        save: mockSave,
+        findOne: mockFindOne
     };
 });
 

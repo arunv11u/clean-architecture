@@ -106,6 +106,7 @@ const User = mongoose.model<UserDoc, UserModel>('users', userSchema);
 
 export {
     UserAttrs,
+    UserDoc,
     BuildUser,
     User
 };

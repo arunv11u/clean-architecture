@@ -1,4 +1,3 @@
-// import nanoid from "nanoid";
 import { IdGeneratorHelper } from "../types";
 import crypto from 'crypto';
 import { GenericError } from "../errors";

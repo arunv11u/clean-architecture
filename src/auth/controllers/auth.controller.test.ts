@@ -1,12 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthServiceImpl } from "../services/auth.service";
+import mockAuthServiceImpl, { mockGuestLogin } from "../services/__mocks__/auth.service";
 import { AuthController } from "./auth.controller";
 
+jest.mock("../services/auth.service", () => {
+  return {
+    AuthServiceImpl: mockAuthServiceImpl
+  };
+});
 
 describe("Auth Component", () => {
   describe("Controller Module", () => {
     const authController = new AuthController();
-    const authService = new AuthServiceImpl();
 
     describe(`"guestLogin" method`, () => {
       let mockRequest: Partial<Request>;
@@ -32,6 +36,8 @@ describe("Auth Component", () => {
           mockResponse as Response,
           mockNextFunction
         );
+
+        // expect(mockGuestLogin).toHaveBeenCalled();
       });
     });
   });

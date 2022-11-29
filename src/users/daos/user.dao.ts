@@ -1,6 +1,6 @@
-import { ClientSession } from "mongoose";
+import { ClientSession, FilterQuery } from "mongoose";
 import { UserDAO, CreateUserInput, DatabaseService, MongooseServiceImpl, ResponseHandlerImpl, ResponseHandler } from "../../utils";
-import { User } from "../models/user.model";
+import { User, UserDoc } from "../models/user.model";
 
 export class UserDAOMongooseImpl implements UserDAO {
     private _responseHandler: ResponseHandler;
@@ -17,6 +17,14 @@ export class UserDAOMongooseImpl implements UserDAO {
         const user = new User(userDetails);
         await this._mongooseService.save(user, { session });
     };
-};
 
-// export const userDAO = new UserDAOMongooseImpl();
+    async checkUserExists(userId: string): Promise<boolean> {
+        if (!userId) throw this._responseHandler.internalError("User Id is invalid");
+
+        const query: FilterQuery<UserDoc> = { userId };
+        const user = await this._mongooseService.findOne(User, query);
+
+        if (user) return true;
+        else return false;
+    };
+};

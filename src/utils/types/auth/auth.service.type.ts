@@ -3,5 +3,5 @@ import { TypedRequest } from '../common';
 import { AuthDTO } from './auth.dto.type';
 
 export interface AuthService {
-    guestLogin(request: TypedRequest<{}, {}, AuthDTO.GuestLogin>, response: Response, next: NextFunction): Promise<void>;
+    guestLogin(request: TypedRequest<{}, {}, AuthDTO.GuestLogin>, response: Response, next: NextFunction): Promise<string>;
 };

@@ -9,6 +9,7 @@ interface CreateUserInput {
 
 interface UserDAO {
     save(userDetails: CreateUserInput, session?: ClientSession): Promise<void>;
+    checkUserExists(userId: string): Promise<boolean>;
 };
 
 export {

@@ -1,3 +1,4 @@
+import { ClientSession } from "mongoose";
 import { CreateTokenInput } from "../tokens";
 import { CreateUserInput } from "../users";
 
@@ -7,7 +8,7 @@ interface GuestLoginInput {
 };
 
 interface AuthRepository {
-    guestLogin(data: GuestLoginInput): Promise<void>;
+    guestLogin(data: GuestLoginInput, session?: ClientSession): Promise<void>;
 };
 
 export {
