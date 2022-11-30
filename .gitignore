@@ -6,3 +6,6 @@ build
 
 #Exclude coverage files
 coverage
+
+# Exclude .env file
+.env
