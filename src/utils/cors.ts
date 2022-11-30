@@ -4,7 +4,7 @@ export const corsOptions = function (req: any, callback: any) {
     const whitelist: string[] = [];
 
     if (process.env.NODE_ENV === Environment.PRODUCTION)
-        whitelist.push();
+        whitelist.push('http://localhost:4200');
     else if (process.env.NODE_ENV === Environment.STAGING)
         whitelist.push();
     else if (process.env.NODE_ENV === Environment.DEV)

@@ -2,8 +2,9 @@ import mongoose from 'mongoose';
 import { DatabaseConnectionError, GenericError } from './errors';
 import { DbConnect } from './types';
 
+console.log("MongooseConnectSingleton file loaded ::");
 
-class MongooseConnectSingleton implements DbConnect {
+class MongooseConnect implements DbConnect {
 
     constructor() { };
 
@@ -24,4 +25,7 @@ class MongooseConnectSingleton implements DbConnect {
     };
 };
 
-export const mongooseConnect = new MongooseConnectSingleton();
+
+export {
+    MongooseConnect
+};

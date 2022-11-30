@@ -74,6 +74,20 @@ describe("Auth Component", () => {
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Name should not exceeds ${nameMaxLen} characters`);
         });
 
+        it(`"If email is empty string, should throw error"`, () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: ""
+            }
+          };
+          mockResponse = {};
+          mockNext = jest.fn();
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(`Email Address should be minimum ${emailMinLen} characters`);
+        });
+
         it("If email is provided and it is not a string, should throw error", () => {
           mockRequest = {
             body: {

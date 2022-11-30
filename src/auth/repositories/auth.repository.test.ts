@@ -3,6 +3,7 @@ import mockUserDAOMongooseImpl, { mockSave as mockUserSave } from '../../users/d
 import mockTokenDAOMongooseImpl, { mockSave as mockTokenSave } from '../../tokens/daos/__mocks__/token.dao';
 import { AuthRepository, GuestLoginInput } from '../../utils';
 import { AuthRepositoryImpl } from './auth.repository';
+import mongoose from 'mongoose';
 
 jest.mock('../../users/daos/user.dao', () => {
     return {
@@ -23,12 +24,18 @@ describe("Auth Component", () => {
         authRepository = new AuthRepositoryImpl();
     });
 
+    afterEach(() => {
+        mockUserSave.mockReset();
+    });
+
     describe("Repository Module", () => {
 
         describe(`"guestLogin" method`, () => {
 
             describe("Happy Path", () => {
                 it("If guest login data passed, should create the user and token document", async () => {
+                    mockUserSave.mockImplementation(() => ({ user: { id: new mongoose.Types.ObjectId() } }));
+
                     const guestLoginData: GuestLoginInput = {
                         user: {
                             name: faker.name.fullName(),

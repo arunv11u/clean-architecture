@@ -16,7 +16,7 @@ const authValidation = new AuthValidationImpl();
 
 @Controller("/auth")
 export class AuthController {
-  @Post("/guest/login")
+  @Post("/guest-login")
   @Use(authValidation.guestLogin())
   async guestLogin(
     request: TypedRequest<{}, {}, AuthDTO.GuestLogin>,
