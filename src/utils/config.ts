@@ -1,7 +1,5 @@
 import nconf from 'nconf';
-import { Environment } from './types';
-
-export type NCONF = typeof nconf;
+import { Config, Environment } from './types';
 
 export interface DefaultConfig {
     prodConfig: Record<string, any>;
@@ -10,32 +8,7 @@ export interface DefaultConfig {
     testConfig?: Record<string, any>;
 };
 
-
-export abstract class BaseConfig {
-    constructor() { };
-
-    abstract get nconf(): NCONF;
-    abstract set(environment: Environment, config: DefaultConfig): void;
-};
-
-export class Config extends BaseConfig {
-
-    private static _instance: BaseConfig;
-    private _nconf: NCONF = nconf;
-
-    private constructor() {
-        super();
-    };
-
-    get nconf() {
-        return this._nconf;
-    };
-
-    static getInstance(): BaseConfig {
-        if (!Config._instance) Config._instance = new Config();
-
-        return Config._instance;
-    };
+class ConfigSingleton implements Config {
 
     set(environment: Environment, config: DefaultConfig) {
         let data = {};
@@ -60,6 +33,8 @@ export class Config extends BaseConfig {
                 ...config.devConfig,
             };
 
-        this._nconf.argv().env().add('data', { type: 'literal', store: data });
+        nconf.argv().env().add('data', { type: 'literal', store: data });
     };
 };
+
+export const config = new ConfigSingleton();

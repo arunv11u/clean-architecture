@@ -1,6 +1,6 @@
 
 
-export const mockSave = jest.fn().mockImplementation();
+export const mockSave = jest.fn();
 
 const mock = jest.fn().mockImplementation(() => {
     return {

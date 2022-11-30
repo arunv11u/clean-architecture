@@ -130,25 +130,29 @@ describe("Auth Component", () => {
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email Address is invalid");
         });
 
-        it("If mobile number is provided and it is not a string, should throw error", () => {
+        it("If mobile number is provided and it is not an object, should throw error", () => {
           mockRequest = {
             body: {
               name: faker.name.fullName(),
-              mobileNumber: 10
+              phone: 10
             }
           };
           mockResponse = {};
           mockNext = jest.fn();
 
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
-          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Mobile Number must be a string");
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Phone field must be an object");
         });
 
         it(`If mobile number is less than ${mobileNumberMinLen} character, should throw error`, () => {
+          const phoneCode = "+91";
           mockRequest = {
             body: {
               name: faker.name.fullName(),
-              mobileNumber: "1234567"
+              phone: {
+                code: phoneCode,
+                number: faker.random.numeric(mobileNumberMinLen - phoneCode.length - 1)
+              }
             }
           };
           mockResponse = {};
@@ -159,10 +163,14 @@ describe("Auth Component", () => {
         });
 
         it(`If mobile number is greater than ${mobileNumberMaxLen} characters, should throw error`, () => {
+          const phoneCode = "+91";
           mockRequest = {
             body: {
               name: faker.name.fullName(),
-              mobileNumber: faker.random.numeric(mobileNumberMaxLen + 1),
+              phone: {
+                code: phoneCode,
+                number: faker.random.numeric((mobileNumberMaxLen - phoneCode.length) + 1)
+              }
             }
           };
           mockResponse = {};
@@ -173,10 +181,14 @@ describe("Auth Component", () => {
         });
 
         it(`If mobile number has invalid characters, should throw error`, () => {
+          const phoneCode = "+91";
           mockRequest = {
             body: {
               name: faker.name.fullName(),
-              mobileNumber: "+91987654321a",
+              phone: {
+                code: phoneCode,
+                number: "+91987654321a"
+              }
             }
           };
           mockResponse = {};
@@ -194,7 +206,10 @@ describe("Auth Component", () => {
             body: {
               name: faker.name.fullName(),
               email: faker.internet.email(),
-              mobileNumber: "+919876543210"
+              phone: {
+                code: "+91",
+                number: "9876543210"
+              }
             }
           };
           mockResponse = {};

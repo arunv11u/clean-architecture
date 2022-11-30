@@ -1,6 +1,6 @@
-import { TokenDAOMongooseImpl } from "../../tokens/daos/token.dao";
-import { UserDAOMongooseImpl } from "../../users/daos/user.dao";
-import { AuthRepository, GuestLoginInput, TokenDAO, UserDAO } from "../../utils";
+import { ClientSession, Types } from "mongoose";
+import { getUserFactory, getTokenFactory } from "../../global-config";
+import { AuthRepository, CreateTokenInput, GuestLoginInput, TokenDAO, UserDAO } from "../../utils";
 
 
 export class AuthRepositoryImpl implements AuthRepository {
@@ -8,13 +8,17 @@ export class AuthRepositoryImpl implements AuthRepository {
     private _tokenDAO: TokenDAO;
 
     constructor() {
-        this._userDAO = new UserDAOMongooseImpl();
-        this._tokenDAO = new TokenDAOMongooseImpl();
+        this._userDAO = getUserFactory().getDAO();
+        this._tokenDAO = getTokenFactory().getDAO();
     };
 
-    async guestLogin(data: GuestLoginInput): Promise<void> {
-        await this._userDAO.save(data.user);
+    async guestLogin(data: GuestLoginInput, session?: ClientSession): Promise<void> {
+        const user = await this._userDAO.save(data.user, session);
 
-        await this._tokenDAO.save(data.token);
+        const tokenData: CreateTokenInput & { user: Types.ObjectId | string } = {
+            ...data.token,
+            user: user.id
+        };
+        await this._tokenDAO.save(tokenData, session);
     };
 };

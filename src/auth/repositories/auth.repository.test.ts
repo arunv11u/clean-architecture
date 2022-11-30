@@ -33,7 +33,11 @@ describe("Auth Component", () => {
                         user: {
                             name: faker.name.fullName(),
                             email: faker.internet.email(),
-                            mobileNumber: faker.phone.number()
+                            phone: {
+                                code: "+91",
+                                number: "9876543210"
+                            },
+                            userId: faker.random.alphaNumeric(8)
                         },
                         token: {
                             value: faker.random.alphaNumeric()
@@ -42,10 +46,8 @@ describe("Auth Component", () => {
 
                     await authRepository.guestLogin(guestLoginData);
 
-                    expect(mockUserDAOMongooseImpl).toHaveBeenCalled();
                     expect(mockUserSave).toHaveBeenCalled();
 
-                    expect(mockTokenDAOMongooseImpl).toHaveBeenCalled();
                     expect(mockTokenSave).toHaveBeenCalled();
                 });
             });

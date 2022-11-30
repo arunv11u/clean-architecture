@@ -1,10 +1,9 @@
 import request from "supertest";
-import { RoutesImpl } from "./routes";
+import { routes } from "./routes";
 import { app } from "../server";
 
 
 describe("Route Module", () => {
-  const routes = new RoutesImpl();
 
   describe(`"listen" fn`, () => {
     describe("Happy Path", () => {

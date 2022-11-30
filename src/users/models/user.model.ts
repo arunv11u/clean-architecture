@@ -12,6 +12,7 @@ interface UserPhone {
 
 interface UserAttrs {
     name: string;
+    userId: string;
     email?: string;
     phone?: UserPhone;
     isDeleted?: boolean;
@@ -23,6 +24,7 @@ interface UserAttrs {
 
 interface UserDoc extends mongoose.Document {
     name: string;
+    userId: string;
     email?: string;
     phone?: UserPhone;
     isDeleted?: boolean;
@@ -44,11 +46,12 @@ interface UserModel extends mongoose.Model<UserDoc> {
 const phoneSchema = new mongoose.Schema<UserPhone, any>({
     code: { type: String, required: [true, 'is a required field'] },
     number: { type: String, required: [true, 'is a required field'] }
-});
+}, { _id: false, id: false });
 
 const userSchema = new mongoose.Schema<UserDoc, UserModel>(
     {
         name: { type: String, required: [true, 'is a required field'] },
+        userId: { type: String, required: [true, 'is a required field'] },
         email: { type: String },
         phone: { type: phoneSchema },
         isDeleted: { type: Boolean, default: false },
@@ -93,15 +96,19 @@ userSchema.pre<Query<UserDoc, UserDoc>>('update', mongooseSchemaService.excludeD
 userSchema.pre<Aggregate<UserDoc>>('aggregate', mongooseSchemaService.excludeDeleteAggregateMiddleware());
 
 //* indexing here.
+userSchema.index({ "userId": 1 }, { unique: true });
 
 
 //* VirtualTypes here.
 userSchema.virtual('locals');
+userSchema.virtual('excludeLocals');
+
 const User = mongoose.model<UserDoc, UserModel>('users', userSchema);
 
 
 export {
     UserAttrs,
+    UserDoc,
     BuildUser,
     User
 };

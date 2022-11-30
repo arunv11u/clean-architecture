@@ -1,7 +1,7 @@
 import { Express } from "express";
 import http from "http";
 import https from "https";
-import { Config, DefaultConfig, Environment } from "../../utils";
+import { config, DefaultConfig, Environment } from "../../utils";
 
 const testConfig = {
   mongodb: {
@@ -20,7 +20,6 @@ const loader = async (app: Express, server: http.Server | https.Server) => {
   process.env.rateLimiterWindowMs = (5 * 60 * 1000).toString();
   process.env.rateLimiterMaxRequests = (50).toString();
 
-  const config = Config.getInstance();
   config.set(_environment, _config);
 
   // Registering routes

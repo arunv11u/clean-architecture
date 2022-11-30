@@ -1,6 +1,6 @@
 
 
-export const mockGuestLogin = jest.fn().mockImplementation();
+export const mockGuestLogin = jest.fn();
 
 const mock = jest.fn().mockImplementation(() => {
     return {

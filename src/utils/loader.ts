@@ -2,10 +2,11 @@ import { Express } from 'express';
 import http from 'http';
 import { devConfig, prodConfig, stagingConfig } from './configs';
 import { Environment } from './types';
-import { Config, DefaultConfig } from './config';
-import { RoutesImpl } from './routes';
+import { config, DefaultConfig } from './config';
+import { routes } from './routes';
 import unhandledError from './unHandledErrorHandler';
-
+import { mongooseConnect } from './mongoose-connect';
+import nconf from 'nconf';
 
 const loader = async (app: Express, server: http.Server) => {
 
@@ -16,11 +17,10 @@ const loader = async (app: Express, server: http.Server) => {
     unhandledError();
 
     // configuring process variables.
-    const config = Config.getInstance();
     config.set(_environment, _config);
 
-    // Registering routes
-    const routes = new RoutesImpl();
+    await mongooseConnect.connect(nconf.get("dbConnectionStr"));
+
     routes.listen(app);
 
     return true;

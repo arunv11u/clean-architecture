@@ -1,9 +1,6 @@
 import rateLimit from "express-rate-limit";
-import { Config } from "./config";
+import nconf from 'nconf';
 import { GenericError } from "./errors";
-
-const config = Config.getInstance();
-const nconf = config.nconf;
 
 export function limitRequests() {
   return rateLimit({

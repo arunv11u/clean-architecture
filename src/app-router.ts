@@ -1,23 +1,16 @@
 import express from "express";
 
-
-class AppRouter {
+class AppRouterSingleton {
     private static _instance: express.Router;
-    private static _router: any = express.Router;
+    private static _router: any = express.Router();
 
     private constructor() { };
 
-    static get router():any {
-        return this._router;
-    };
-
     static getInstance(): express.Router {
-        if (!AppRouter._instance) AppRouter._instance = this._router();
+        if (!AppRouterSingleton._instance) AppRouterSingleton._instance = this._router;
 
-        return AppRouter._instance;
+        return AppRouterSingleton._instance;
     };
 };
 
-export {
-    AppRouter
-};
+export const appRouter = AppRouterSingleton.getInstance();

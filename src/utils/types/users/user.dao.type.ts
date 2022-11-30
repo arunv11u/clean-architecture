@@ -1,13 +1,21 @@
 import { ClientSession } from "mongoose";
+import { UserDoc } from "../../../users/models/user.model";
+
+interface UserPhone {
+    code: string;
+    number: string;
+};
 
 interface CreateUserInput {
     name: string;
+    userId: string;
     email?: string;
-    mobileNumber?: string;
+    phone?: UserPhone;
 };
 
 interface UserDAO {
-    save(userDetails: CreateUserInput, session?: ClientSession): Promise<void>;
+    save(userDetails: CreateUserInput, session?: ClientSession): Promise<UserDoc>;
+    checkUserExists(userId: string): Promise<boolean>;
 };
 
 export {
