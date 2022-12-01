@@ -4,7 +4,6 @@ import mockMongooseConnect, { mockConnect } from "./__mocks__/mongoose-connect";
 import { LoaderImpl } from "./loader";
 
 jest.mock('./mongoose-connect', () => {
-
   return {
     MongooseConnect: mockMongooseConnect
   };
