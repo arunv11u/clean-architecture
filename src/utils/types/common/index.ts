@@ -16,6 +16,8 @@ export * from "./express.type";
 
 export * from "./factory.type";
 
+export * from "./loader.type";
+
 export * from "./metadata.type";
 
 export * from "./response-handler.type";

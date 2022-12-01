@@ -1,7 +1,7 @@
 import { Express } from 'express';
 import http from 'http';
 import { devConfig, prodConfig, stagingConfig } from './configs';
-import { Environment } from './types';
+import { Environment, Loader } from './types';
 import { config, DefaultConfig } from './config';
 import nconf from 'nconf';
 import { routes } from './routes';
@@ -9,7 +9,7 @@ import unhandledError from './unhandled-error-handler';
 import { DbConnect } from './types';
 import { MongooseConnect } from './mongoose-connect';
 
-export class LoaderImpl {
+export class LoaderImpl implements Loader {
 
     private _mongooseConnect: DbConnect;
 

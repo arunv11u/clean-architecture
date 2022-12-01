@@ -1,39 +1,43 @@
 import 'reflect-metadata';
 import { server, app } from './server';
-import { devConfig, Environment, prodConfig, stagingConfig } from './utils';
+import { devConfig, Environment, Loader, prodConfig, stagingConfig } from './utils';
 import { LoaderImpl } from './utils/loader';
 import "./utils/load-controller";
 
+server.on("error", (error: { code: string }) => {
+    if (error.code === "EADDRINUSE") {
+        console.log("Address in use, exiting...");
 
-function startServer() {
-    const loader = new LoaderImpl();
-    let $PORT = prodConfig.port;
+        process.exit(1);
+    };
+});
 
-    if (process.env['NODE_ENV'] === Environment.STAGING) $PORT = stagingConfig.port;
-    else if (process.env['NODE_ENV'] === Environment.DEV) $PORT = devConfig.port;
+class App {
+    private _loader: Loader;
+    private _port: number;
 
-    loader.load(app, server)
-        .then(() => {
+    constructor() {
+        this._loader = new LoaderImpl();
+        this._port = prodConfig.port;
+    };
+
+    async main() {
+        try {
+            if (process.env['NODE_ENV'] === Environment.STAGING) this._port = stagingConfig.port;
+            else if (process.env['NODE_ENV'] === Environment.DEV) this._port = devConfig.port;
+
+            await this._loader.load(app, server);
             console.log(`All modules loaded successfully`);
-        })
-        .catch((err) => {
-            console.error(`Error in loading modules : `, err);
-            process.exit(1);
-        });
 
-    const port = $PORT;
+            server.listen(this._port, () => {
+                console.log(`Listening on port: ${this._port}`);
+            });
 
-    server.on("error", (error: { code: string }) => {
-        if (error.code === "EADDRINUSE") {
-            console.log("Address in use, exiting...");
-
-            process.exit(1);
+        } catch (error) {
+            console.log("Error in loading modules", error);
+            throw (error);
         };
-    });
-
-    server.listen(port, () => {
-        console.log(`Listening on port: ${port}`);
-    });
+    };
 };
 
-startServer();
+new App().main().catch(err => process.exit(1));
