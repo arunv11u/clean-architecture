@@ -1,16 +1,18 @@
 import 'reflect-metadata';
 import { server, app } from './server';
-import { devConfig, Environment, loader, prodConfig, stagingConfig } from './utils';
-import "./utils/load-controllers";
+import { devConfig, Environment, prodConfig, stagingConfig } from './utils';
+import { LoaderImpl } from './utils/loader';
+import "./utils/load-controller";
 
 
 function startServer() {
+    const loader = new LoaderImpl();
     let $PORT = prodConfig.port;
 
     if (process.env['NODE_ENV'] === Environment.STAGING) $PORT = stagingConfig.port;
     else if (process.env['NODE_ENV'] === Environment.DEV) $PORT = devConfig.port;
 
-    loader(app, server)
+    loader.load(app, server)
         .then(() => {
             console.log(`All modules loaded successfully`);
         })

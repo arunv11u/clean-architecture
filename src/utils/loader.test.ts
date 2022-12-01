@@ -1,27 +1,28 @@
-import { loader } from "./loader";
 import { app, server } from "../server";
 import mockMongooseConnect, { mockConnect } from "./__mocks__/mongoose-connect";
-
-console.log("loader test file loaded :");
+import { LoaderImpl } from "./loader";
 
 jest.mock('./mongoose-connect', () => {
+
   return {
     MongooseConnect: mockMongooseConnect
   };
 });
 
-console.log("mockMongooseConnectSingleton ::", mockMongooseConnect);
-
-console.log("mockConnect ::", mockConnect);
-
 describe("Loader Module", () => {
+  let loader: LoaderImpl;
+
+  beforeEach(() => {
+    loader = new LoaderImpl();
+  });
+
   describe(`"loader" fn`, () => {
     describe("Happy Path", () => {
       it(`Express application and Http Server passed as an arguments, 
         should load the necessary modules and return true`, () => {
-        loader(app, server).then((result) => {
+        loader.load(app, server).then((result) => {
 
-          expect(mockConnect).toHaveBeenCalled();
+          expect(mockMongooseConnect).toHaveBeenCalled();
           expect(result).toBe(true);
         });
       });

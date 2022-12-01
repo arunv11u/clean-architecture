@@ -9,3 +9,6 @@ coverage
 
 # Exclude .env file
 .env
+
+# Exclude ts-jest log file
+ts-jest.log

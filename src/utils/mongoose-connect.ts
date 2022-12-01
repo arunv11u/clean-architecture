@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import { DatabaseConnectionError, GenericError } from './errors';
 import { DbConnect } from './types';
 
-console.log("MongooseConnectSingleton file loaded ::");
 
 class MongooseConnect implements DbConnect {
 

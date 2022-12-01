@@ -6,29 +6,32 @@ import { config, DefaultConfig } from './config';
 import nconf from 'nconf';
 import { routes } from './routes';
 import unhandledError from './unHandledErrorHandler';
+import { DbConnect } from './types';
 import { MongooseConnect } from './mongoose-connect';
 
-const loader = async (app: Express, server: http.Server) => {
+export class LoaderImpl {
 
-    const mongooseConnect = new MongooseConnect();
-    console.log("mongooseConnect ::", mongooseConnect);
+    private _mongooseConnect: DbConnect;
 
-    const _environment: Environment = process.env.NODE_ENV as Environment;
-    let _config: DefaultConfig = { devConfig, prodConfig, stagingConfig };
+    constructor() {
+        this._mongooseConnect = new MongooseConnect();
+    };
 
-    // To handle uncaught exceptions and unhandled promise rejections
-    unhandledError();
+    async load(app: Express, server: http.Server) {
 
-    // configuring process variables.
-    config.set(_environment, _config);
+        const _environment: Environment = process.env.NODE_ENV as Environment;
+        let _config: DefaultConfig = { devConfig, prodConfig, stagingConfig };
 
-    await mongooseConnect.connect(nconf.get("dbConnectionStr"));
+        // To handle uncaught exceptions and unhandled promise rejections
+        unhandledError();
 
-    routes.listen(app);
+        // configuring process variables.
+        config.set(_environment, _config);
 
-    return true;
-};
+        await this._mongooseConnect.connect(nconf.get("dbConnectionStr"));
 
-export {
-    loader
+        routes.listen(app);
+
+        return true;
+    };
 };

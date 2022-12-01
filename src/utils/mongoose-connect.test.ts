@@ -1,8 +1,6 @@
 import { DatabaseConnectionError, GenericError } from "./errors";
 import { MongooseConnect } from './mongoose-connect';
 
-console.log("mongoose connect test file loaded :");
-
 
 describe("Mongoose Connect Module", () => {
     const dbConnectionString = "mongodb://localhost:27017";
