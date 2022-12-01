@@ -4,15 +4,8 @@ import { devConfig, Environment, Loader, prodConfig, stagingConfig } from './uti
 import { LoaderImpl } from './utils/loader';
 import "./utils/load-controller";
 
-server.on("error", (error: { code: string }) => {
-    if (error.code === "EADDRINUSE") {
-        console.log("Address in use, exiting...");
 
-        process.exit(1);
-    };
-});
-
-class App {
+export class App {
     private _loader: Loader;
     private _port: number;
 
@@ -29,12 +22,11 @@ class App {
             await this._loader.load(app, server);
             console.log(`All modules loaded successfully`);
 
-            server.listen(this._port, () => {
-                console.log(`Listening on port: ${this._port}`);
-            });
+            server.listen(this._port, () => console.log(`Listening on port: ${this._port}`));
 
         } catch (error) {
             console.log("Error in loading modules", error);
+
             throw (error);
         };
     };

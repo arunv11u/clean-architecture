@@ -1,3 +1,4 @@
+import nconf from 'nconf';
 import { app, server } from "../server";
 import mockMongooseConnect, { mockConnect } from "./__mocks__/mongoose-connect";
 import { LoaderImpl } from "./loader";
@@ -23,6 +24,7 @@ describe("Loader Module", () => {
         loader.load(app, server).then((result) => {
 
           expect(mockMongooseConnect).toHaveBeenCalled();
+          expect(mockConnect).toHaveBeenCalledWith(nconf.get("dbConnectionStr"));
           expect(result).toBe(true);
         });
       });

@@ -1,12 +1,21 @@
-import { Server as HttpServer } from 'node:http';
 import express from 'express';
-import { server, app } from './server';
+import { Server } from "node:http";
+import { mockProcessExit } from 'jest-mock-process';
+import { app, errorEventHandler, server } from './server';
+
+let mockExit = mockProcessExit();
 
 describe(`"Server" Module`, () => {
-    describe("Create Server fn", () => {
+
+    describe(`"Error event handler" fn`, () => {
+        errorEventHandler({ code: "EADDRINUSE" });
+        expect(mockExit).toHaveBeenCalled();
+    });
+
+    describe("Server startup module", () => {
         describe("Happy Path", () => {
-            it("Needed Http Server, server should be Http Server", () => {
-                expect(server).toBeInstanceOf(HttpServer);
+            it("Create a http server", () => {
+                expect(server).toBeInstanceOf(Server);
             });
 
             it("Needed Express Application, app should be express app", () => {
@@ -16,5 +25,3 @@ describe(`"Server" Module`, () => {
         });
     });
 });
-
-
