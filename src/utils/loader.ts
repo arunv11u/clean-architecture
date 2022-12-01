@@ -5,7 +5,7 @@ import { Environment } from './types';
 import { config, DefaultConfig } from './config';
 import nconf from 'nconf';
 import { routes } from './routes';
-import unhandledError from './unHandledErrorHandler';
+import unhandledError from './unhandled-error-handler';
 import { DbConnect } from './types';
 import { MongooseConnect } from './mongoose-connect';
 

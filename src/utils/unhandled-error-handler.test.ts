@@ -1,4 +1,4 @@
-import unhandledError from "./unHandledErrorHandler";
+import unhandledError from "./unhandled-error-handler";
 
 describe(`"Unhandled Errors" Module`, () => {
   afterEach(() => {

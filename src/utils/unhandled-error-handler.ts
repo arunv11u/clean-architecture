@@ -1,3 +1,4 @@
+
 export default function () {
   process.on("uncaughtException", (error) => {
     console.error(error.message);
@@ -7,4 +8,4 @@ export default function () {
   process.on("unhandledRejection", (error) => {
     throw error;
   });
-}
+};
