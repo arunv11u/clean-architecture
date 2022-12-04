@@ -11,7 +11,7 @@ export class IdGeneratorHelperImpl implements IdGeneratorHelper {
 
         const promise = new Promise<string>((resolve, reject) => {
             crypto.randomFill(buf, (err, buf) => {
-                if (err) return reject(new GenericError({ error: new Error("Short-8 Id generation faileds"), errorCode: 500 }));
+                if (err) return reject(new GenericError({ error: new Error("Short-8 Id generation failed"), errorCode: 500 }));
 
                 resolve(buf.toString('hex'));
             });

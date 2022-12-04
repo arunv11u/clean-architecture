@@ -1,10 +1,11 @@
 import "reflect-metadata";
 import mongoose from 'mongoose';
 import { app, server } from "../server";
-import { Environment } from "../utils";
+import { Environment } from "../utils/types";
 import { loader, connect, disconnect } from "./utils";
 
 jest.setTimeout(3000);
+
 
 beforeAll(async () => {
   await connect();
