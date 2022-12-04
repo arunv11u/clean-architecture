@@ -27,9 +27,9 @@ export class App {
         } catch (error) {
             console.log("Error in loading modules", error);
 
-            throw (error);
+            process.exit(1)
         };
     };
 };
 
-new App().main().catch(err => process.exit(1));
+new App().main();

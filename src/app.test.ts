@@ -54,9 +54,10 @@ describe("App Module", () => {
             it("Error while loading modules, should exit the process", async () => {
                 mockLoad.mockImplementation(() => { throw new Error() });
 
-                expect(app.main()).rejects.toBeInstanceOf(Error);
+                app.main();
 
                 expect(mockLoad).toHaveBeenCalled();
+                expect(mockExit).toHaveBeenCalled();
             });
         });
     });
