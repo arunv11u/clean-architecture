@@ -233,22 +233,51 @@ describe("Mongoose Schema Service Module", () => {
 
     describe(`"excludeDeleteMiddleware" method`, () => {
         let mockQuery: Partial<mongoose.Query<any, any, {}, any>>;
-        let mockNextFn: jest.Func;
+        let mockNextFn: jest.Mock;
+        let mockGetQuery: jest.Mock;
 
         beforeEach(() => {
+            mockGetQuery = jest.fn();
             mockQuery = {
-                getQuery: jest.fn(() => ({})),
+                getQuery: mockGetQuery,
                 where: jest.fn()
             };
             mockNextFn = jest.fn();
+
+        });
+
+        afterEach(() => {
+            jest.resetAllMocks();
         });
 
         describe("Happy Path", () => {
-            it("Mongoose document is passed as a input, should increment the version", () => {
+            it("If isDeleted option is not passed, should exclude isDeleted documents", () => {
+                mockGetQuery.mockImplementation(() => ({}));
+
                 const excludeDeleteMiddleware = mongooseSchemaService.excludeDeleteMiddleware().bind(mockQuery as mongoose.Query<any, any, {}, any>);
                 excludeDeleteMiddleware(mockNextFn);
 
                 expect(mockQuery.where).toHaveBeenCalledWith({ isDeleted: false });
+                expect(mockNextFn).toHaveBeenCalled();
+            });
+
+            it("If isDeleted option is passed as true, should return only deleted documents", () => {
+                mockGetQuery.mockImplementation(() => ({ isDeleted: true }));
+
+                const excludeDeleteMiddleware = mongooseSchemaService.excludeDeleteMiddleware().bind(mockQuery as mongoose.Query<any, any, {}, any>);
+                excludeDeleteMiddleware(mockNextFn);
+
+                expect(mockQuery.where).not.toHaveBeenCalledWith({ isDeleted: false });
+                expect(mockNextFn).toHaveBeenCalled();
+            });
+
+            it("If isDeleted option is passed with both true and false, should return both deleted and non deleted documents", () => {
+                mockGetQuery.mockImplementation(() => ({ $and: [{ $or: [{ isDeleted: true }, { isDeleted: false }] }] }));
+
+                const excludeDeleteMiddleware = mongooseSchemaService.excludeDeleteMiddleware().bind(mockQuery as mongoose.Query<any, any, {}, any>);
+                excludeDeleteMiddleware(mockNextFn);
+
+                expect(mockQuery.where).not.toHaveBeenCalledWith({ isDeleted: false });
                 expect(mockNextFn).toHaveBeenCalled();
             });
         });
@@ -268,12 +297,23 @@ describe("Mongoose Schema Service Module", () => {
         });
 
         describe("Happy Path", () => {
-            it("Mongoose document is passed as a input, should increment the version", () => {
+            it("If ignoreSoftDelete option is not passed, should return both deleted and non deleted documents", () => {
                 const excludeDeleteAggregateMiddleware = mongooseSchemaService.excludeDeleteAggregateMiddleware().bind(mockAggregateQuery as mongoose.Aggregate<any>);
                 excludeDeleteAggregateMiddleware(mockNextFn);
 
                 expect(mockAggregateQuery.pipeline).toHaveBeenCalled();
                 expect(mockUnshiftFn).toHaveBeenCalledWith({ $match: { isDeleted: false } });
+                expect(mockNextFn).toHaveBeenCalled();
+            });
+
+            it("If ignoreSoftDelete option is passed as true, should return only deleted documents", () => {
+                mockAggregateQuery.options = { ignoreSoftDelete: true };
+
+                const excludeDeleteAggregateMiddleware = mongooseSchemaService.excludeDeleteAggregateMiddleware().bind(mockAggregateQuery as mongoose.Aggregate<any>);
+                excludeDeleteAggregateMiddleware(mockNextFn);
+
+                expect(mockAggregateQuery.pipeline).not.toHaveBeenCalled();
+                expect(mockUnshiftFn).not.toHaveBeenCalledWith({ $match: { isDeleted: false } });
                 expect(mockNextFn).toHaveBeenCalled();
             });
         });
