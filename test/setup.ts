@@ -16,6 +16,9 @@ beforeEach(async () => {
   process.env.NODE_ENV = Environment.TEST;
   process.env.jwtSecretKey = "secret-key";
   process.env.dbConnectionStr = process.env.MONGO_URI;
+  process.env.rateLimiterWindowMs = (5 * 60 * 1000).toString();
+  process.env.rateLimiterMaxRequests = (2).toString();
+
 
   const collections = await mongoose.connection.db.collections();
 

@@ -6,11 +6,15 @@ import { GenericError } from "./errors";
 import { errorHandler } from "./middlewares";
 import { Routes } from "./types";
 import { appRouter } from "../app-router";
-import { limitRequests } from './rate-limiter';
+import { RateLimiter } from './rate-limiter';
 
 class RoutesImpl implements Routes {
   private _defaultRoutePath: string = "/api";
-  constructor() { };
+  private _rateLimiter: RateLimiter;
+  
+  constructor() { 
+    this._rateLimiter = new RateLimiter();
+  };
 
   listen(app: Express): boolean {
     app.use(cors(corsOptions));
@@ -25,7 +29,7 @@ class RoutesImpl implements Routes {
     });
 
     // Rate limiter
-    app.use(limitRequests());
+    app.use(this._rateLimiter.limitRequests());
 
     // Health check route.
     app.use(
