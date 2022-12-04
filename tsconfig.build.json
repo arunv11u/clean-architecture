@@ -1,7 +1,8 @@
 {
+  "rootDir": "./src",
   "extends": "./tsconfig.json",
   "exclude": [
-    "src/test/**/*",
+    "test/**/*",
     "src/**/*.test.ts",
     "src/__mocks__/**/*",
     "src/**/__mocks__/*",

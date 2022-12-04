@@ -1,8 +1,8 @@
 import { Express } from "express";
 import http from "http";
 import https from "https";
-import { Environment } from "../../utils/types";
-import { config, DefaultConfig } from '../../utils/config';
+import { Environment } from "../../src/utils/types";
+import { config, DefaultConfig } from '../../src/utils/config';
 
 const testConfig = {
   mongodb: {

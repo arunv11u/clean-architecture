@@ -18,10 +18,10 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "globalSetup": "./src/test/global-setup.ts",
-    "globalTeardown": "./src/test/global-teardown.ts",
+    "globalSetup": "./test/global-setup.ts",
+    "globalTeardown": "./test/global-teardown.ts",
     "setupFilesAfterEnv": [
-      "./src/test/setup.ts"
+      "./test/setup.ts"
     ],
     "clearMocks": true
   },
