@@ -1,6 +1,6 @@
 import nconf from 'nconf';
 import { app, server } from "../server";
-import mockMongooseConnect, { mockConnect } from "./__mocks__/mongoose-connect";
+import mockMongooseConnect, { mockConnect } from "./__mocks__/mongoose-connect.mock";
 import { LoaderImpl } from "./loader";
 
 jest.mock('./mongoose-connect', () => {

@@ -1,6 +1,6 @@
 
 import { faker } from "@faker-js/faker";
-import mockMongooseServiceImpl, { mockFindOne, mockSave } from '../../utils/services/__mocks__/mongoose.service';
+import mockMongooseServiceImpl, { mockFindOne, mockSave } from '../../utils/services/__mocks__/mongoose.service.mock';
 import { CreateUserInput, GenericError, UserDAO } from "../../utils";
 import { UserDAOMongooseImpl } from "./user.dao";
 import { User } from "../models/user.model";

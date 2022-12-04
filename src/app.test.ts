@@ -1,5 +1,5 @@
 import { mockProcessExit } from "jest-mock-process";
-import mockLoaderImpl, { mockLoad } from './utils/__mocks__/loader';
+import mockLoaderImpl, { mockLoad } from './utils/__mocks__/loader.mock';
 import { App } from './app';
 
 

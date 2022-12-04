@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../../utils";
-import mockAuthRepositoryImpl, { mockGuestLogin } from "../repositories/__mocks__/auth.repository";
+import mockAuthRepositoryImpl, { mockGuestLogin } from "../repositories/__mocks__/auth.repository.mock";
 import { AuthServiceImpl } from "./auth.service";
 
 jest.mock("../repositories/auth.repository.ts", () => {

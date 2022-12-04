@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import mockResponseHandlerImpl, { mockOk } from "../../utils/__mocks__/response-handler";
-import mockAuthServiceImpl, { mockGuestLogin } from "../services/__mocks__/auth.service";
+import mockResponseHandlerImpl, { mockOk } from "../../utils/__mocks__/response-handler.mock";
+import mockAuthServiceImpl, { mockGuestLogin } from "../services/__mocks__/auth.service.mock";
 import { AuthController } from "./auth.controller";
 
 jest.mock("../services/auth.service", () => {

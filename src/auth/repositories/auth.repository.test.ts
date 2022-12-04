@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import mockUserDAOMongooseImpl, { mockSave as mockUserSave } from '../../users/daos/__mocks__/user.dao';
-import mockTokenDAOMongooseImpl, { mockSave as mockTokenSave } from '../../tokens/daos/__mocks__/token.dao';
+import mockUserDAOMongooseImpl, { mockSave as mockUserSave } from '../../users/daos/__mocks__/user.dao.mock';
+import mockTokenDAOMongooseImpl, { mockSave as mockTokenSave } from '../../tokens/daos/__mocks__/token.dao.mock';
 import { AuthRepository, GuestLoginInput } from '../../utils';
 import { AuthRepositoryImpl } from './auth.repository';
 import mongoose from 'mongoose';

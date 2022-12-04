@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { UserService } from "../../utils";
-import mockIdGeneratorHelperImpl, { mockShort8 } from "../../utils/helpers/__mocks__/id-generator.helper";
-import mockUserDAOMongooseImpl, { mockCheckUserExists } from "../daos/__mocks__/user.dao";
+import mockIdGeneratorHelperImpl, { mockShort8 } from "../../utils/helpers/__mocks__/id-generator.helper.mock";
+import mockUserDAOMongooseImpl, { mockCheckUserExists } from "../daos/__mocks__/user.dao.mock";
 import { UserServiceImpl } from "./user.service";
 
 jest.mock('../../utils', () => {

@@ -1,4 +1,4 @@
-import mockMongooseServiceImpl, { mockSave } from '../../utils/services/__mocks__/mongoose.service';
+import mockMongooseServiceImpl, { mockSave } from '../../utils/services/__mocks__/mongoose.service.mock';
 import { GenericError, TokenDAO } from '../../utils';
 import { TokenDAOMongooseImpl } from './token.dao';
 
