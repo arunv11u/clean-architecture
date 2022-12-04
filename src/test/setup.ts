@@ -14,18 +14,18 @@ beforeEach(async () => {
   // Setting up process environment secrets:
   process.env.NODE_ENV = Environment.TEST;
   process.env.jwtSecretKey = "secret-key";
+  process.env.dbConnectionStr = process.env.MONGO_URI;
 
   const collections = await mongoose.connection.db.collections();
 
-  for (let collection of collections) {
+  for (let collection of collections)
     await collection.deleteMany({});
-  };
 
 
   await loader(app, server);
 });
 
-afterEach(() => {});
+afterEach(() => { });
 
 afterAll(async () => {
   await disconnect();

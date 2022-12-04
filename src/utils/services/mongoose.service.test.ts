@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import { GenericError } from "../errors";
 import { MongooseServiceImpl } from "./mongoose.service";
 
+
+
 describe("Mongoose Service Module", () => {
     const mongooseService = new MongooseServiceImpl();
 
@@ -30,6 +32,18 @@ describe("Mongoose Service Module", () => {
     };
 
     const User = mongoose.model("_users", userSchema);
+
+    describe(`"_reconnectIfDisconnected" method`, () => {
+        describe("Happy path", () => {
+            it("If mongoose is disconnected, should try and reconnect", async () => {
+                await mongoose.disconnect();
+
+                await mongooseService['_reconnectIfDisconnected']();
+
+                expect(mongoose.connection.readyState).toBe(1);
+            });
+        });
+    });
 
     describe(`"save" method`, () => {
         describe("Exception Path", () => {
