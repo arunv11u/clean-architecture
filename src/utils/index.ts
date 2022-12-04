@@ -1,5 +1,3 @@
-export * from './assets';
-
 export * from './configs';
 
 export * from './decorators';
