@@ -1,10 +1,21 @@
+import mongoose from "mongoose";
 import { DatabaseConnectionError, GenericError } from "./errors";
 import { MongooseConnect } from './mongoose-connect';
 
+jest.mock('mongoose');
 
 describe("Mongoose Connect Module", () => {
     const dbConnectionString = "mongodb://localhost:27017";
     const mongooseConnect = new MongooseConnect();
+    const mockConnect = jest.fn();
+
+    beforeEach(() => {
+        mongoose.connect = mockConnect;
+    });
+
+    afterEach(() => {
+        mockConnect.mockReset();
+    });
 
     describe(`"connect" method`, () => {
         describe("Exception Path", () => {
@@ -13,8 +24,9 @@ describe("Mongoose Connect Module", () => {
                 expect(() => mongooseConnect.connect(undefined as any)).rejects.toThrow("Db connection string is required to connect to the database");
             });
 
-            // Only run this test after disabling mongodb-memory server in the test environment
-            it.skip("If db connection string is invalid or failed to connect to db, should throw error", () => {
+            it("If db connection string is invalid or failed to connect to db, should throw error", () => {
+                mockConnect.mockImplementation(() => { throw new Error("Db connection failed!") });
+
                 expect(() => mongooseConnect.connect(dbConnectionString)).rejects.toThrow(DatabaseConnectionError);
                 expect(() => mongooseConnect.connect(dbConnectionString)).rejects.toThrow("Error, connecting to the database");
             });
@@ -22,8 +34,7 @@ describe("Mongoose Connect Module", () => {
 
         describe("Happy Path", () => {
 
-            // Only run this test after disabling mongodb-memory server in the test environment
-            it.skip("If all required values are set, should connect to db and return true", () => {
+            it("If all required values are set, should connect to db and return true", () => {
                 expect(mongooseConnect.connect(dbConnectionString)).resolves.toBe(true);
             });
         });
