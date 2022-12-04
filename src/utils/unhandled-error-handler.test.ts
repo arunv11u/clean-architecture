@@ -1,19 +1,22 @@
 import unhandledError from "./unhandled-error-handler";
+import { mockProcessExit } from "jest-mock-process";
+
+
 
 describe(`"Unhandled Errors" Module`, () => {
+  const mockExit = mockProcessExit();
+
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  // Only run this test case after removing process.exit(1) from the unHandledErrorHandler module.
-  // Make sure to undo the changes before commiting it to Version Control System(Git)
-  it.skip("should handle uncaughtException", () => {
+
+  it("should handle uncaughtException", () => {
     const mockError = new Error("Server internal error");
     jest.spyOn(process, "on").mockImplementation((event, handler): any => {
       if (event === "uncaughtException") handler(mockError);
     });
     jest.spyOn(console, "error").mockReturnValueOnce();
-    jest.spyOn(process, "exit");
 
     unhandledError();
 
@@ -21,7 +24,7 @@ describe(`"Unhandled Errors" Module`, () => {
       "uncaughtException",
       expect.any(Function)
     );
-    expect(process.exit).toBeCalledWith(1);
+    expect(mockExit).toBeCalledWith(1);
     expect(console.error).toBeCalledWith("Server internal error");
   });
 
