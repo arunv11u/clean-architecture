@@ -50,11 +50,11 @@ describe("User Component", () => {
                     const userDoc1 = getUserDoc();
                     const userDoc2 = getUserDoc();
 
-                    const userObj = User.jsonObj([userDoc1, userDoc2] as any) as UserDoc[];
+                    const usersObj = User.jsonObj([userDoc1, userDoc2] as any) as UserDoc[];
 
                     const expectedUsersObj = [getExpectedUserObj(userDoc1), getExpectedUserObj(userDoc2)];
-                    expect(userObj).not.toBeInstanceOf(User);
-                    expect(userObj).toStrictEqual(expectedUsersObj);
+                    expect(usersObj).not.toBeInstanceOf(User);
+                    expect(usersObj).toStrictEqual(expectedUsersObj);
                 });
 
                 it("If null is passed as input, should return null", () => {

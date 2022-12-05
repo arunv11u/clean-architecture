@@ -1,12 +1,13 @@
-import mongoose, { Aggregate, HydratedDocument, Query, ObjectId } from 'mongoose';
+import mongoose, { Aggregate, HydratedDocument, Query, Types } from 'mongoose';
 import { MongooseSchemaServiceImpl } from '../../utils';
 
 const mongooseSchemaService = new MongooseSchemaServiceImpl();
 const schemaOptions = mongooseSchemaService.schemaOptions();
 
+
 interface TokenAttrs {
     value: string;
-    user: ObjectId;
+    user: Types.ObjectId;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -14,7 +15,7 @@ interface TokenAttrs {
 
 interface TokenDoc extends mongoose.Document {
     value: string;
-    user: ObjectId;
+    user: Types.ObjectId;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -32,7 +33,7 @@ interface TokenModel extends mongoose.Model<TokenDoc> {
 const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
     {
         value: { type: String, required: [true, 'is a required field'] },
-        user: { type: mongoose.Types.ObjectId, required: [true, 'is a required field'] },
+        user: { type: "ObjectId", required: [true, 'is a required field'] },
         isDeleted: { type: Boolean, default: false },
         creationDate: { type: Date },
         lastModifiedDate: { type: Date }
@@ -71,12 +72,14 @@ tokenSchema.pre<Aggregate<TokenDoc>>('aggregate', mongooseSchemaService.excludeD
 
 
 //* VirtualTypes here.
-tokenSchema.virtual('locals');
+
+
 const Token = mongoose.model<TokenDoc, TokenModel>('tokens', tokenSchema);
 
 
 export {
     TokenAttrs,
+    TokenDoc,
     BuildToken,
     Token
 };
