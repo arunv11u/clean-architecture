@@ -1,3 +1,3 @@
-var crypto = jest.createMockFromModule("crypto");
+const crypto = jest.createMockFromModule("crypto");
 
 export = crypto;
