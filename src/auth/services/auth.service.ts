@@ -1,6 +1,7 @@
 import { Response, NextFunction } from "express";
 import { getTokenFactory, getUserFactory } from "../../global-config";
 import { AuthDTO, AuthRepository, AuthService, GuestLoginInput, MongooseSessionHelper, MongooseSessionHelperImpl, TokenService, TypedRequest, UserService } from "../../utils";
+import { AuthRO } from "../../utils/types/auth/auth.ro.type";
 import { AuthRepositoryImpl } from "../repositories/auth.repository";
 
 export class AuthServiceImpl implements AuthService {
@@ -20,7 +21,7 @@ export class AuthServiceImpl implements AuthService {
     request: TypedRequest<{}, {}, AuthDTO.GuestLogin>,
     response: Response<any, Record<string, any>>,
     next: NextFunction
-  ):Promise<string> {
+  ): Promise<AuthRO.GuestLogin> {
     const mongooseSession = await this._mongooseSessionHelper.start();
 
     try {
@@ -44,10 +45,10 @@ export class AuthServiceImpl implements AuthService {
 
       await this._mongooseSessionHelper.commit(mongooseSession);
 
-      return token;
+      return { name: guestLoginInput.user.name, userId: guestLoginInput.user.userId };
     } catch (error) {
       await this._mongooseSessionHelper.abort(mongooseSession);
-      
+
       throw error;
     };
   };

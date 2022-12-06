@@ -9,6 +9,7 @@ import {
 import { AuthServiceImpl } from "../services/auth.service";
 import { ResponseHandlerImpl } from '../../utils/response-handler';
 import { AuthValidationImpl } from "../validations/auth.validation";
+import { AuthRO } from "../../utils/types/auth/auth.ro.type";
 
 const authService = new AuthServiceImpl();
 const responseHandler = new ResponseHandlerImpl();
@@ -24,10 +25,9 @@ export class AuthController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const _response = await authService.guestLogin(request, response, next);
+      const responseData = await authService.guestLogin(request, response, next);
 
-      const responseData = { token: _response };
-      responseHandler.ok<{ token: string }, {}>(response, responseData);
+      responseHandler.ok<AuthRO.GuestLogin, {}>(response, responseData);
     } catch (error) {
       console.error(`Error in guestLogin :`, error);
       next(error);
