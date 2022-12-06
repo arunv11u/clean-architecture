@@ -62,17 +62,16 @@ export class AuthValidationImpl implements AuthValidation {
       if (!this._dataTypeValidation.checkFieldIsObject(phone)) throw this._responseHandler.clientError(`Phone field must be an object`);
 
       const hasValidPhoneFields = this._objectValidation.allowFields(request.body.phone, allowedPhoneFields);
-      if (!hasValidPhoneFields.isValid) throw this._responseHandler.clientError(hasValidPhoneFields.message);
+      if (!hasValidPhoneFields.isValid) throw this._responseHandler.clientError(`phone.${hasValidPhoneFields.message}`);
 
       for (let field of requiredPhoneFields) {
-        const phoneFieldName = this._stringHelper.camelToTitleCase(field);
         const isPhoneFieldExist = this._objectValidation.checkFieldExist(request.body.phone, field);
 
-        if (!isPhoneFieldExist) throw this._responseHandler.clientError(`${phoneFieldName} is required`);
+        if (!isPhoneFieldExist) throw this._responseHandler.clientError(`phone.${field} is required`);
       };
 
-      if (!this._dataTypeValidation.checkFieldIsString(phone.code)) throw this._responseHandler.clientError("Phone Code must be a string");
-      if (!this._dataTypeValidation.checkFieldIsString(phone.number)) throw this._responseHandler.clientError("Phone Number must be a string");
+      if (!this._dataTypeValidation.checkFieldIsString(phone.code)) throw this._responseHandler.clientError(`phone.code must be a string`);
+      if (!this._dataTypeValidation.checkFieldIsString(phone.number)) throw this._responseHandler.clientError(`phone.number must be a string`);
 
       const mobileNumber = `${phone.code}${phone.number}`;
       if (!this._stringValidation.checkStrMinLen(mobileNumber, mobileNumberMinLen)) throw this._responseHandler.clientError(`Mobile Number should be minimum ${mobileNumberMinLen} characters`);
