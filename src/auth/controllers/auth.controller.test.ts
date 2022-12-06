@@ -36,17 +36,41 @@ describe("Auth Component", () => {
         };
       });
 
-      it("Express request, response and next are passed as arguments, should trigger register method in Auth Service", async () => {
-
-        await authController.guestLogin(
-          mockRequest as Request,
-          mockResponse as Response,
-          mockNextFunction
-        );
-
-        expect(mockGuestLogin).toHaveBeenCalled();
-        expect(mockOk).toHaveBeenCalled();
+      afterEach(() => {
+        mockGuestLogin.mockReset();
       });
+
+      describe("Exception Path", () => {
+        it("If error occurs in auth service in registration method, should call the next middleware with error", async () => {
+          const error = new Error("Something went wrong!");
+
+          mockGuestLogin.mockImplementation(() => { throw error });
+
+          await authController.guestLogin(
+            mockRequest as Request,
+            mockResponse as Response,
+            mockNextFunction
+          );
+
+          expect(mockGuestLogin).toHaveBeenCalled();
+          expect(mockNextFunction).toHaveBeenCalledWith(error);
+        });
+      });
+
+      describe("Happy Path", () => {
+        it("Express request, response and next are passed as arguments, should trigger register method in Auth Service", async () => {
+
+          await authController.guestLogin(
+            mockRequest as Request,
+            mockResponse as Response,
+            mockNextFunction
+          );
+
+          expect(mockGuestLogin).toHaveBeenCalled();
+          expect(mockOk).toHaveBeenCalled();
+        });
+      });
+
     });
   });
 });
