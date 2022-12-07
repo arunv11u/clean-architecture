@@ -5,6 +5,8 @@ import {
 } from './routes.decorator';
 
 
+jest.mock("reflect-metadata");
+
 describe("Decorators Module", () => {
     const routeHandler: RequestHandler = (request: Request, response: Response, next: NextFunction) => { };
 
