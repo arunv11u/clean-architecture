@@ -1,5 +1,6 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import { appRouter } from '../../app-router';
+import { MetadataKeys } from '../types';
 import { Controller } from './controller.decorator';
 
 
@@ -13,11 +14,12 @@ describe("Decorators Module", () => {
                 const routePrefix = "/user";
                 const method = "put";
                 const path = "/update";
+                const key = "update";
                 const controller = Controller(routePrefix);
                 const routeHandler: RequestHandler = (request: Request, response: Response, next: NextFunction) => { };
                 const target = {
                     prototype: {
-                        "update": routeHandler
+                        [key]: routeHandler
                     }
                 };
                 const middlewares: RequestHandler[] = [(request: Request, response: Response, next: NextFunction) => { }];
@@ -31,6 +33,9 @@ describe("Decorators Module", () => {
 
                 controller(target as any);
 
+                expect(Reflect.getMetadata).toHaveBeenNthCalledWith(1, MetadataKeys.Path, target.prototype, key);
+                expect(Reflect.getMetadata).toHaveBeenNthCalledWith(2, MetadataKeys.Method, target.prototype, key);
+                expect(Reflect.getMetadata).toHaveBeenNthCalledWith(3, MetadataKeys.Middleware, target.prototype, key);
                 expect(spyRouter).toHaveBeenCalledWith(`${routePrefix}${path}`, ...middlewares, routeHandler);
             });
         });
