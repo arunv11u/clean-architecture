@@ -8,7 +8,8 @@ jest.mock("reflect-metadata");
 
 
 describe("Decorators Module", () => {
-    describe(`"controller" decorator`, () => {
+
+    describe(`"Controller" decorator`, () => {
         describe("Happy Path", () => {
             it("If a class has controller decorator and contains methods, should register the route in the express router", () => {
                 const routePrefix = "/user";
