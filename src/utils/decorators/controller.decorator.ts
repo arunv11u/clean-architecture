@@ -13,9 +13,8 @@ function controller(routePrefix: string) {
             const method: RouteMethods = Reflect.getMetadata(MetadataKeys.Method, target.prototype, key);
             const middlewares: RequestHandler[] = Reflect.getMetadata(MetadataKeys.Middleware, target.prototype, key) || [];
 
-            if (path) {
-                router[method](`${routePrefix}${path}`, ...middlewares, routeHandler)
-            };
+            if (path)
+                router[method](`${routePrefix}${path}`, ...middlewares, routeHandler);
         };
     };
 };

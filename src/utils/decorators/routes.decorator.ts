@@ -6,7 +6,7 @@ interface RequestHandlerDescriptor extends PropertyDescriptor {
 };
 
 function routeBinder(method: RouteMethods) {
-    return function get(path: string) {
+    return function (path: string) {
         return function (target: any, key: string, desc: RequestHandlerDescriptor) {
             Reflect.defineMetadata(MetadataKeys.Path, path, target, key);
             Reflect.defineMetadata(MetadataKeys.Method, method, target, key);

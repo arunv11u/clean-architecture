@@ -28,8 +28,7 @@ export class AuthValidationImpl implements AuthValidation {
     const mobileNumberMinLen = 8;
     const mobileNumberMaxLen = 16;
 
-    console.log("request.body ::", typeof request.body, request.body);
-
+    
     const hasValidFields = this._objectValidation.allowFields(request.body, allowedFields);
     if (!hasValidFields.isValid) throw this._responseHandler.clientError(hasValidFields.message);
 
