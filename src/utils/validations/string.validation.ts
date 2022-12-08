@@ -5,7 +5,7 @@ export class StringValidationImpl implements StringValidation {
 
   constructor() { };
 
-  checkStrMaxLen(inputData: string, length: number): boolean {
+  checkStrMaxLen(inputData: string | undefined, length: number): boolean {
     if (!inputData || typeof inputData !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
@@ -22,7 +22,7 @@ export class StringValidationImpl implements StringValidation {
     return false;
   };
 
-  checkStrMinLen(inputData: string, length: number): boolean {
+  checkStrMinLen(inputData: string | undefined, length: number): boolean {
     if (!inputData || typeof inputData !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
@@ -39,7 +39,7 @@ export class StringValidationImpl implements StringValidation {
     return false;
   };
 
-  checkValidEmail(inputData: string): boolean {
+  checkValidEmail(inputData: string | undefined): boolean {
     if (!inputData || typeof inputData !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
@@ -53,7 +53,7 @@ export class StringValidationImpl implements StringValidation {
       );
   };
 
-  allowEmptyStr(inputData: string): boolean {
+  allowEmptyStr(inputData: string | undefined): boolean {
     if ((inputData !== "" && !inputData) || typeof inputData !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
@@ -63,7 +63,7 @@ export class StringValidationImpl implements StringValidation {
     return true;
   };
 
-  checkRegexMatch(inputData: string, regexPattern: RegExp): boolean {
+  checkRegexMatch(inputData: string | undefined, regexPattern: RegExp): boolean {
     if (!inputData || typeof inputData !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),

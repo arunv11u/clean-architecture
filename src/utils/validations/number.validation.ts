@@ -5,7 +5,7 @@ export class NumberValidationImpl implements NumberValidation {
 
   constructor() { };
 
-  checkNumMaxVal = (inputData: number, maxValue: number) => {
+  checkNumMaxVal = (inputData: number | undefined, maxValue: number) => {
     if ((inputData !== 0 && !inputData) || typeof inputData !== "number")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a number"),
@@ -20,7 +20,7 @@ export class NumberValidationImpl implements NumberValidation {
     return inputData <= maxValue;
   };
 
-  checkNumMinVal = (inputData: number, minValue: number) => {
+  checkNumMinVal = (inputData: number | undefined, minValue: number) => {
     if ((inputData !== 0 && !inputData) || typeof inputData !== "number")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a number"),
