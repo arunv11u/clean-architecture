@@ -1,7 +1,7 @@
 export interface StringValidation {
-  checkStrMaxLen(inputData: string, length: number): boolean;
-  checkStrMinLen(inputData: string, length: number): boolean;
-  checkValidEmail(inputData: string): boolean;
-  allowEmptyStr(inputData: string): boolean;
-  checkRegexMatch(inputData: string, regexPattern: RegExp): boolean;
+  checkStrMaxLen(inputData: string | undefined, length: number): boolean;
+  checkStrMinLen(inputData: string | undefined, length: number): boolean;
+  checkValidEmail(inputData: string | undefined): boolean;
+  allowEmptyStr(inputData: string | undefined): boolean;
+  checkRegexMatch(inputData: string | undefined, regexPattern: RegExp): boolean;
 };
