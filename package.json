@@ -13,7 +13,8 @@
     "start": "npm run build && NODE_ENV=production node build/app.js",
     "clean": "del ./build/*",
     "build": "npm run clean && tsc --project tsconfig.build.json && cp -r ./src/utils/assets ./build/utils/",
-    "test": "jest --watchAll --verbose --no-cache --detectOpenHandles --env=node --coverage"
+    "test": "jest --watchAll --verbose --no-cache --detectOpenHandles --env=node --coverage",
+    "test:silent": "jest --watchAll --verbose --no-cache --detectOpenHandles --env=node --coverage --silent"
   },
   "jest": {
     "preset": "ts-jest",
