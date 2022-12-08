@@ -44,7 +44,6 @@ export class AuthValidationImpl implements AuthValidation {
     if (!this._stringValidation.checkStrMaxLen(name, nameMaxLen)) throw this._responseHandler.clientError(`Name should not exceeds ${nameMaxLen} characters`);
 
     const email = request.body.email;
-    if (email === "") throw this._responseHandler.clientError(`Email Address should be minimum ${emailMinLen} characters`);
     if (email) {
       if (!this._dataTypeValidation.checkFieldIsString(email)) throw this._responseHandler.clientError("Email Address must be a string");
       if (!this._stringValidation.checkStrMinLen(email, emailMinLen)) throw this._responseHandler.clientError(`Email Address should be minimum ${emailMinLen} characters`);
