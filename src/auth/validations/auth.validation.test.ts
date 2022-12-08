@@ -83,6 +83,30 @@ describe("Auth Component", () => {
           expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email Address must be a string");
         });
 
+        it("If email is null, should throw error", () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: null
+            }
+          };
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email Address must be a string");
+        });
+
+        it("If email is empty string, should trigger next function", () => {
+          mockRequest = {
+            body: {
+              name: faker.name.fullName(),
+              email: ""
+            }
+          };
+
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow(GenericError);
+          expect(() => guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext)).toThrow("Email Address must be a string");
+        });
+
         it(`If email is less than ${emailMinLen} character, should throw error`, () => {
           mockRequest = {
             body: {
@@ -298,30 +322,6 @@ describe("Auth Component", () => {
           mockRequest = {
             body: {
               name: faker.name.fullName()
-            }
-          };
-
-          guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext);
-          expect(mockNext).toHaveBeenCalled();
-        });
-
-        it("If email is null, should trigger next function", () => {
-          mockRequest = {
-            body: {
-              name: faker.name.fullName(),
-              email: null
-            }
-          };
-
-          guestLoginValidator(mockRequest as Request, mockResponse as Response, mockNext);
-          expect(mockNext).toHaveBeenCalled();
-        });
-
-        it("If email is empty string, should trigger next function", () => {
-          mockRequest = {
-            body: {
-              name: faker.name.fullName(),
-              email: ""
             }
           };
 
