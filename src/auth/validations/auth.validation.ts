@@ -28,7 +28,7 @@ export class AuthValidationImpl implements AuthValidation {
     const mobileNumberMinLen = 8;
     const mobileNumberMaxLen = 16;
 
-    
+
     const hasValidFields = this._objectValidation.allowFields(request.body, allowedFields);
     if (!hasValidFields.isValid) throw this._responseHandler.clientError(hasValidFields.message);
 
@@ -46,10 +46,10 @@ export class AuthValidationImpl implements AuthValidation {
     const email = request.body.email;
     const isEmailExist = this._objectValidation.checkFieldExist(request.body, "email");
     if (isEmailExist) {
-      if (email && !this._dataTypeValidation.checkFieldIsString(email)) throw this._responseHandler.clientError("Email Address must be a string");
-      if (email && !this._stringValidation.checkStrMinLen(email, emailMinLen)) throw this._responseHandler.clientError(`Email Address should be minimum ${emailMinLen} characters`);
-      if (email && !this._stringValidation.checkStrMaxLen(email, emailMaxLen)) throw this._responseHandler.clientError(`Email Address should not exceeds ${emailMaxLen} characters`);
-      if (email && !this._stringValidation.checkValidEmail(email)) throw this._responseHandler.clientError(`Email Address is invalid`);
+      if (!this._dataTypeValidation.checkFieldIsString(email)) throw this._responseHandler.clientError("Email Address must be a string");
+      if (!this._stringValidation.checkStrMinLen(email, emailMinLen)) throw this._responseHandler.clientError(`Email Address should be minimum ${emailMinLen} characters`);
+      if (!this._stringValidation.checkStrMaxLen(email, emailMaxLen)) throw this._responseHandler.clientError(`Email Address should not exceeds ${emailMaxLen} characters`);
+      if (!this._stringValidation.checkValidEmail(email)) throw this._responseHandler.clientError(`Email Address is invalid`);
     };
 
     const phone = request.body.phone;
@@ -57,7 +57,7 @@ export class AuthValidationImpl implements AuthValidation {
     if (isPhoneExist) {
       const allowedPhoneFields: string[] = ["code", "number"];
       const requiredPhoneFields: string[] = ["code", "number"];
-      
+
       if (!this._dataTypeValidation.checkFieldIsObject(phone)) throw this._responseHandler.clientError(`Phone field must be an object`);
 
       const hasValidPhoneFields = this._objectValidation.allowFields(request.body.phone, allowedPhoneFields);
