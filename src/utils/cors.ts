@@ -1,3 +1,4 @@
+import { CorsOptions } from "cors";
 import { Environment } from "../utils";
 
 export const corsOptions = function (req: any, callback: any) {
@@ -12,15 +13,13 @@ export const corsOptions = function (req: any, callback: any) {
     else if (process.env.NODE_ENV === Environment.TEST)
         whitelist.push('http://localhost:4200');
 
-    let corsOptions = {
+    let corsOptions: CorsOptions = {
+        methods: ["POST"],
         origin: function (origin: any, callback: any) {
-            if (whitelist.indexOf(origin) !== -1 || !origin) {
-                callback(null, true);
-            } else {
-                callback(new Error('Not allowed by CORS'));
-            }
+            if (whitelist.indexOf(origin) !== -1 || !origin) callback(null, true);
+            else callback(new Error('Not allowed by CORS'));
         },
-        exposedHeaders: [],
+        allowedHeaders: ["Authorization"]
     };
     callback(null, corsOptions);
 
