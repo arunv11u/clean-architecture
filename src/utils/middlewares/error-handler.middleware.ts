@@ -17,10 +17,8 @@ export const errorHandler = (err: Error,
     const _error = {
         _code: 500,
     };
-    if (err instanceof CustomError) {
+    if (err instanceof CustomError)
         return res.status(err.statusCode).send({ errors: err.serializeErrors() });
-    };
 
     return res.status(_error._code).send(formattedErrorResponse);
-
 };

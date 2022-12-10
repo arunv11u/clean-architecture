@@ -1,10 +1,14 @@
-import express from "express";
+import express, { Response } from "express";
 import { GenericError } from "./errors";
 import { CustomResponse, ResponseHandler, TypedResponse } from "./types";
 
 export class ResponseHandlerImpl implements ResponseHandler {
 
   constructor() { };
+
+  private _setResponseTypeJSON(response: Response) {
+    response.type("application/json");
+  };
 
   ok<ResBody, Locals>(
     response: TypedResponse<CustomResponse<ResBody>, Locals>,
@@ -18,7 +22,7 @@ export class ResponseHandlerImpl implements ResponseHandler {
         errorCode: 500,
       });
 
-    response.type("application/json");
+    this._setResponseTypeJSON(response);
 
     if (!data) return response.status(200).send({ data: null });
 
@@ -37,7 +41,7 @@ export class ResponseHandlerImpl implements ResponseHandler {
         errorCode: 500,
       });
 
-    response.type("application/json");
+    this._setResponseTypeJSON(response);
 
     if (!data) return response.status(201).send({ data: null });
 
