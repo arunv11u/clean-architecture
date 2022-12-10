@@ -3,7 +3,7 @@ import cors from "cors";
 import path from "path";
 import { corsOptions } from "./cors";
 import { GenericError } from "./errors";
-import { errorHandler } from "./middlewares";
+import { errorHandler, setSecurityHeader } from "./middlewares";
 import { Routes } from "./types";
 import { appRouter } from "../app-router";
 import { RateLimiter } from './rate-limiter';
@@ -18,7 +18,8 @@ class RoutesImpl implements Routes {
 
   listen(app: Express): boolean {
     app.disable("x-powered-by");
-    app.enable("trust proxy")
+    app.enable("trust proxy");
+    app.use(setSecurityHeader);
     app.use(cors(corsOptions));
     app.use(express.json({ limit: "5mb" }));
     app.use(express.urlencoded({ extended: true }));
@@ -37,7 +38,6 @@ class RoutesImpl implements Routes {
     app.use(
       "/health-check",
       (req: Request, res: Response, next: NextFunction) => {
-        console.log("health check :", req.header("X-Forwarded-For"));
         return res.status(200).send();
       }
     );
@@ -53,7 +53,7 @@ class RoutesImpl implements Routes {
     app.use("/**", function (req: Request, res: Response, next: NextFunction) {
       throw new GenericError({
         error: new Error(`There is no route to process your request.`),
-        errorCode: 404,
+        errorCode: 404
       });
     });
 

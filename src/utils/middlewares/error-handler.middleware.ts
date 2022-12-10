@@ -3,8 +3,8 @@ import { CustomError } from "../errors";
 import { FormattedError } from "../types";
 
 export const errorHandler = (err: Error,
-    req: Request,
-    res: Response,
+    request: Request,
+    response: Response,
     next: NextFunction) => {
 
     const formattedErrorResponse: FormattedError = {
@@ -18,7 +18,7 @@ export const errorHandler = (err: Error,
         _code: 500,
     };
     if (err instanceof CustomError)
-        return res.status(err.statusCode).send({ errors: err.serializeErrors() });
+        return response.status(err.statusCode).send({ errors: err.serializeErrors() });
 
-    return res.status(_error._code).send(formattedErrorResponse);
+    return response.status(_error._code).send(formattedErrorResponse);
 };
