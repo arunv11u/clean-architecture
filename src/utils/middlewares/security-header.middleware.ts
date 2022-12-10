@@ -5,7 +5,6 @@ export const setSecurityHeader = (
     response: Response,
     next: NextFunction) => {
 
-    response.removeHeader("Server");
     response.setHeader("Content-Security-Policy", "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests");
     response.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
     response.setHeader("Cross-Origin-Opener-Policy", "same-origin");
