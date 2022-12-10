@@ -18,6 +18,7 @@ class RoutesImpl implements Routes {
 
   listen(app: Express): boolean {
     app.disable("x-powered-by");
+    app.enable("trust proxy")
     app.use(cors(corsOptions));
     app.use(express.json({ limit: "5mb" }));
     app.use(express.urlencoded({ extended: true }));
@@ -36,6 +37,7 @@ class RoutesImpl implements Routes {
     app.use(
       "/health-check",
       (req: Request, res: Response, next: NextFunction) => {
+        console.log("health check :", req.header("X-Forwarded-For"));
         return res.status(200).send();
       }
     );
