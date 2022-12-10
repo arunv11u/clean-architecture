@@ -3,7 +3,7 @@ import cors from "cors";
 import path from "path";
 import { corsOptions } from "./cors";
 import { GenericError } from "./errors";
-import { errorHandler, setSecurityHeader } from "./middlewares";
+import { errorHandler, setSecurityHeaders } from "./middlewares";
 import { Routes } from "./types";
 import { appRouter } from "../app-router";
 import { RateLimiter } from './rate-limiter';
@@ -19,7 +19,7 @@ class RoutesImpl implements Routes {
   listen(app: Express): boolean {
     app.disable("x-powered-by");
     app.enable("trust proxy");
-    app.use(setSecurityHeader);
+    app.use(setSecurityHeaders);
     app.use(cors(corsOptions));
     app.use(express.json({ limit: "5mb" }));
     app.use(express.urlencoded({ extended: true }));

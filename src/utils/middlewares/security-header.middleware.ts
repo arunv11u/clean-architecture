@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export const setSecurityHeader = (
+export const setSecurityHeaders = (
     request: Request,
     response: Response,
     next: NextFunction) => {
@@ -17,7 +17,7 @@ export const setSecurityHeader = (
     response.setHeader("X-Download-Options", "noopen");
     response.setHeader("X-Frame-Options", "SAMEORIGIN");
     response.setHeader("X-Permitted-Cross-Domain-Policies", "none");
-    response.setHeader("X-XSS-Protection", "0");
+    response.setHeader("X-XSS-Protection", "1; mode=block");
 
     next();
 };
