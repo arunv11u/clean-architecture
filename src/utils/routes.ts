@@ -1,24 +1,26 @@
 import express, { Request, Response, NextFunction, Express } from "express";
 import cors from "cors";
 import path from "path";
+import { appRouter } from "../app-router";
+import { defaultRoutePath } from "../global-config";
+import { cookieSessionOptions } from './session/cookie.session';
 import { corsOptions } from "./cors";
 import { GenericError } from "./errors";
 import { errorHandler, setSecurityHeaders } from "./middlewares";
 import { Routes } from "./types";
-import { appRouter } from "../app-router";
 import { RateLimiter } from './rate-limiter';
 
 class RoutesImpl implements Routes {
-  private _defaultRoutePath: string = "/api";
   private _rateLimiter: RateLimiter;
-  
-  constructor() { 
+
+  constructor() {
     this._rateLimiter = new RateLimiter();
   };
 
   listen(app: Express): boolean {
     app.disable("x-powered-by");
     app.enable("trust proxy");
+    app.use(cookieSessionOptions);
     app.use(setSecurityHeaders);
     app.use(cors(corsOptions));
     app.use(express.json({ limit: "5mb" }));
@@ -46,7 +48,7 @@ class RoutesImpl implements Routes {
     app.use("/images", express.static(path.join(__dirname, "./assets/images")));
 
     // Base URL for all following routes
-    app.use(this._defaultRoutePath, appRouter);
+    app.use(defaultRoutePath, appRouter);
 
 
     // If the requested URL doesn't match a route, then the below route will be processed.

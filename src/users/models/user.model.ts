@@ -1,6 +1,5 @@
 import mongoose, { Aggregate, HydratedDocument, Query } from 'mongoose';
-import { MongooseSchemaServiceImpl } from '../../utils/services';
-import { CurrentUser } from '../../utils/types/common/response-locals.type';
+import { CurrentUser, MongooseSchemaServiceImpl } from '../../utils';
 
 const mongooseSchemaService = new MongooseSchemaServiceImpl();
 const schemaOptions = mongooseSchemaService.schemaOptions();

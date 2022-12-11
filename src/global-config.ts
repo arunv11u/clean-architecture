@@ -2,6 +2,8 @@ import { AuthFactoryImpl } from "./auth";
 import { TokenFactoryImpl } from "./tokens";
 import { UserFactoryImpl } from "./users";
 
+const defaultRoutePath = "/api";
+
 const getAuthFactory = () => {
     return new AuthFactoryImpl();
 };
@@ -15,6 +17,7 @@ const getTokenFactory = () => {
 };
 
 export {
+    defaultRoutePath,
     getAuthFactory,
     getUserFactory,
     getTokenFactory
