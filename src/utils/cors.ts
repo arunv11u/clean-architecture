@@ -14,7 +14,7 @@ export const corsOptions = function (req: any, callback: any) {
         whitelist.push('http://localhost:4200');
 
     let corsOptions: CorsOptions = {
-        methods: ["HEAD", "POST"],
+        methods: ["OPTIONS", "HEAD", "POST"],
         origin: function (origin: any, callback: any) {
             if (whitelist.indexOf(origin) !== -1 || !origin) callback(null, true);
             else callback(new Error('Not allowed by CORS'));
