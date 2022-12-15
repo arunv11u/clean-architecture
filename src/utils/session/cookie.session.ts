@@ -7,7 +7,7 @@ const cookieSessionOptions = session({
     name: "sampleapp_sess", // Naming conventition: appname_meaningfulname
     secret: "temp secret",
     store: new StoreSession(),
-    cookie: { path: defaultRoutePath, httpOnly: true, secure: false },
+    cookie: { path: defaultRoutePath, httpOnly: true, secure: true },
     resave: false,
     saveUninitialized: false
 });
