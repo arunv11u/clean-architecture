@@ -59,7 +59,7 @@ export class AuthController {
   ) {
     const session = request.session;
 
-    console.log("session ::", session);
+    console.log("session ::", session, session.id);
 
     response.status(200).send({ data: "Checked Session!" });
   };
