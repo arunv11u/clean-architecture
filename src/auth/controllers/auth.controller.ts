@@ -11,10 +11,12 @@ import { AuthServiceImpl } from "../services/auth.service";
 import { ResponseHandlerImpl } from '../../utils/response-handler';
 import { AuthValidationImpl } from "../validations/auth.validation";
 import { AuthRO } from "../../utils/types";
+import { StoreSessionImpl } from "../../utils/session";
 
 const authService = new AuthServiceImpl();
 const responseHandler = new ResponseHandlerImpl();
 const authValidation = new AuthValidationImpl();
+const storeSession = new StoreSessionImpl();
 
 @Controller("/auth")
 export class AuthController {
@@ -42,7 +44,11 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      request.session.jwt = "jwt token";
+      request.session.cookie.maxAge = 60000;
+      console.log("request.session ::", request.session, request.session.id);
+      request.session.auth = "auth token";
+      request.session.refresh = "refreshToken";
+      console.log("after set exec ::");
 
       response.status(200).send({ data: "OK" });
     } catch (error) {
@@ -60,26 +66,30 @@ export class AuthController {
     const session = request.session;
 
     console.log("session ::", session, session.id);
+    console.log("2nd exec", session.auth, session.refresh);
 
     response.status(200).send({ data: "Checked Session!" });
   };
 
-  @Get("/remove-session")
+  @Get("/delete-session")
   async deleteSession(
     request: TypedRequest<{}, {}, {}>,
     response: Response<any, Record<string, any>>,
     next: NextFunction
   ) {
 
-    const promise = new Promise((resolve, reject) => {
-      request.session.destroy((err) => {
-        if (err) reject(err);
+    // const promise = new Promise((resolve, reject) => {
+    //   console.log("request.session.id ::", request.session.id);
+    //   request.session.destroy((err) => {
+    //     if (err) reject(err);
 
-        resolve(true);
-      });
-    });
-    await promise;
+    //     resolve(true);
+    //   });
+    // });
+    // await promise;
 
-    response.status(200).send({ data: "Session Removed!" })
+    await storeSession.delete(request.session.id);
+
+    response.status(200).send({ data: "Session Removed!" });
   };
 };

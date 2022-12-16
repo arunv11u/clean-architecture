@@ -9,6 +9,7 @@ import { GenericError } from "./errors";
 import { errorHandler, setSecurityHeaders } from "./middlewares";
 import { Routes } from "./types";
 import { RateLimiter } from './rate-limiter';
+import session from "express-session";
 
 class RoutesImpl implements Routes {
   private _rateLimiter: RateLimiter;
@@ -25,6 +26,8 @@ class RoutesImpl implements Routes {
     app.use(cors(corsOptions));
     app.use(express.json({ limit: "5mb" }));
     app.use(express.urlencoded({ extended: true }));
+
+    // session.MemoryStore.
 
     // Below code is used to print the incoming request method and its URL.
     app.use((req: Request, res: Response, next: NextFunction) => {
