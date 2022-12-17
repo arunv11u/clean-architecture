@@ -1,4 +1,4 @@
-import { Response, NextFunction } from "express";
+import { Response, NextFunction, Request } from "express";
 import {
   AuthDTO,
   Controller,
@@ -11,12 +11,11 @@ import { AuthServiceImpl } from "../services/auth.service";
 import { ResponseHandlerImpl } from '../../utils/response-handler';
 import { AuthValidationImpl } from "../validations/auth.validation";
 import { AuthRO } from "../../utils/types";
-import { StoreSessionImpl } from "../../utils/session";
 
 const authService = new AuthServiceImpl();
 const responseHandler = new ResponseHandlerImpl();
 const authValidation = new AuthValidationImpl();
-const storeSession = new StoreSessionImpl();
+
 
 @Controller("/auth")
 export class AuthController {
@@ -44,10 +43,9 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      request.session.cookie.maxAge = 60000;
-      console.log("request.session ::", request.session, request.session.id);
-      request.session.auth = "auth token";
-      request.session.refresh = "refreshToken";
+      response.cookie("sampleapp_auth", "Auth token", { path: "/api", httpOnly: true, secure: false, sameSite: "strict" });
+      response.cookie("sampleapp_refresh", "Refresh token", { path: "/api", httpOnly: true, secure: true, sameSite: "strict" });
+
       console.log("after set exec ::");
 
       response.status(200).send({ data: "OK" });
@@ -59,15 +57,16 @@ export class AuthController {
 
   @Get("/retrieve-session")
   async retrieveSession(
-    request: TypedRequest<{}, {}, {}>,
+    request: Request,
     response: Response<any, Record<string, any>>,
     next: NextFunction
   ) {
     try {
-      const session = request.session;
+      console.log("retrieve-session ::", request.headers, request.header("cookie"), request.cookies, request.signedCookies);
+      // const session = request.session;
 
-      console.log("session ::", session, session.id);
-      console.log("2nd exec", session.auth, session.refresh);
+      // console.log("session ::", session, session.id);
+      // console.log("2nd exec", session.auth, session.refresh);
 
       response.status(200).send({ data: "Checked Session!" });
     } catch (error) {
@@ -83,7 +82,7 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      await storeSession.delete(request.session.id);
+      // await storeSession.delete(request.session.id);
 
       response.status(200).send({ data: "Session Deleted!" });
     } catch (error) {

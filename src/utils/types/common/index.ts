@@ -12,8 +12,6 @@ export * from "./environment.type";
 
 export * from "./error.type";
 
-export * from "./express-session.type";
-
 export * from "./express.type";
 
 export * from "./factory.type";

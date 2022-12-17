@@ -3,13 +3,11 @@ import cors from "cors";
 import path from "path";
 import { appRouter } from "../app-router";
 import { defaultRoutePath } from "../global-config";
-import { cookieSessionOptions } from './session/cookie.session';
 import { corsOptions } from "./cors";
 import { GenericError } from "./errors";
 import { errorHandler, setSecurityHeaders } from "./middlewares";
 import { Routes } from "./types";
 import { RateLimiter } from './rate-limiter';
-import session from "express-session";
 
 class RoutesImpl implements Routes {
   private _rateLimiter: RateLimiter;
@@ -21,7 +19,6 @@ class RoutesImpl implements Routes {
   listen(app: Express): boolean {
     app.disable("x-powered-by");
     app.enable("trust proxy");
-    app.use(cookieSessionOptions);
     app.use(setSecurityHeaders);
     app.use(cors(corsOptions));
     app.use(express.json({ limit: "5mb" }));
