@@ -20,7 +20,7 @@ export const corsOptions = function (req: any, callback: any) {
             else callback(new Error('Not allowed by CORS'));
         },
         allowedHeaders: ["Content-Type", "Authorization"],
-        credentials: true
+        // credentials: true
     };
     callback(null, corsOptions);
 
