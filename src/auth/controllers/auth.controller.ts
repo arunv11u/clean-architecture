@@ -63,12 +63,17 @@ export class AuthController {
     response: Response<any, Record<string, any>>,
     next: NextFunction
   ) {
-    const session = request.session;
+    try {
+      const session = request.session;
 
-    console.log("session ::", session, session.id);
-    console.log("2nd exec", session.auth, session.refresh);
+      console.log("session ::", session, session.id);
+      console.log("2nd exec", session.auth, session.refresh);
 
-    response.status(200).send({ data: "Checked Session!" });
+      response.status(200).send({ data: "Checked Session!" });
+    } catch (error) {
+      console.error(`Error in retrieveSession :`, error);
+      next(error);
+    };
   };
 
   @Get("/delete-session")
@@ -77,19 +82,13 @@ export class AuthController {
     response: Response<any, Record<string, any>>,
     next: NextFunction
   ) {
+    try {
+      await storeSession.delete(request.session.id);
 
-    // const promise = new Promise((resolve, reject) => {
-    //   console.log("request.session.id ::", request.session.id);
-    //   request.session.destroy((err) => {
-    //     if (err) reject(err);
-
-    //     resolve(true);
-    //   });
-    // });
-    // await promise;
-
-    await storeSession.delete(request.session.id);
-
-    response.status(200).send({ data: "Session Removed!" });
+      response.status(200).send({ data: "Session Deleted!" });
+    } catch (error) {
+      console.error(`Error in deleteSession :`, error);
+      next(error);
+    };
   };
 };
