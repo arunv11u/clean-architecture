@@ -62,7 +62,7 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      console.log("retrieve-session ::", request.headers, request.header("cookie"), request.cookies, request.signedCookies);
+      console.log("retrieve-session ::", request.header("cookie"), request.cookies);
       // const session = request.session;
 
       // console.log("session ::", session, session.id);
