@@ -1,7 +1,9 @@
 import { Response, NextFunction, Request } from "express";
+import nconf from "nconf";
 import {
   AuthDTO,
   Controller,
+  CookieImpl,
   Get,
   Post,
   TypedRequest,
@@ -10,11 +12,12 @@ import {
 import { AuthServiceImpl } from "../services/auth.service";
 import { ResponseHandlerImpl } from '../../utils/response-handler';
 import { AuthValidationImpl } from "../validations/auth.validation";
-import { AuthRO } from "../../utils/types";
+import { AuthRO, Cookies } from "../../utils/types";
 
 const authService = new AuthServiceImpl();
 const responseHandler = new ResponseHandlerImpl();
 const authValidation = new AuthValidationImpl();
+const cookie = new CookieImpl();
 
 
 @Controller("/auth")
@@ -43,8 +46,8 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      response.cookie("sampleapp_auth", "Auth token", { path: "/api", httpOnly: true, secure: true, sameSite: "strict", signed: true, maxAge: 100000 });
-      response.cookie("sampleapp_refresh", "Refresh token", { path: "/api", httpOnly: true, secure: true, sameSite: "strict", signed: true, maxAge: 200000 });
+      cookie.set(response, { name: Cookies.sampleapp_auth, value: "Auth Token" }, { signed: true, maxAge: nconf.get("authExpiryMs") });
+      cookie.set(response, { name: Cookies.sampleapp_refresh, value: "Refresh Token" }, { signed: true, maxAge: nconf.get("refreshExpiryMs") });
 
 
       response.status(200).send({ data: "OK" });
@@ -61,7 +64,8 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      console.log("retrieve-session ::", request.cookies, request.signedCookies);
+      const signedCookies = cookie.getSignedCookies(request);
+      console.log("retrieve-session ::", signedCookies);
 
       response.status(200).send({ data: "Checked Session!" });
     } catch (error) {
@@ -77,7 +81,7 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      response.clearCookie("sampleapp_refresh", { path: '/api' });
+      cookie.clear(response, Cookies.sampleapp_refresh, { path: '/api' });
 
       response.status(200).send({ data: "Session Deleted!" });
     } catch (error) {

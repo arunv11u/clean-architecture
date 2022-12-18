@@ -1,5 +1,7 @@
 export * from './configs';
 
+export * from './cookies';
+
 export * from './decorators';
 
 export * from './errors';

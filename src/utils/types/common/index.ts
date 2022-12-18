@@ -1,5 +1,7 @@
 export * from "./config.type";
 
+export * from "./cookie.type";
+
 export * from "./helpers";
 
 export * from "./services";
