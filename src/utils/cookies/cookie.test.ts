@@ -20,8 +20,15 @@ describe("Cookies Module", () => {
     });
     describe(`"set" method`, () => {
         describe("Happy Path", () => {
+            it("Passing response object and cookies data, should set the cookie", () => {
+                cookie.set(mockResponse as Response, { name: Cookies.sampleapp_auth, value: "Auth Token" });
+                
+                expect(mockCookieFn).toHaveBeenCalled();
+            });
+
             it("Passing response object, cookies data and cookies options, should set the cookie", () => {
                 cookie.set(mockResponse as Response, { name: Cookies.sampleapp_auth, value: "Auth Token" }, { secure: true, maxAge: 10000 });
+                
                 expect(mockCookieFn).toHaveBeenCalled();
             });
         });
@@ -41,10 +48,10 @@ describe("Cookies Module", () => {
     describe(`"getSignedCookies" method`, () => {
         describe("Happy Path", () => {
             it("Passing no inputs, should return signed cookies", () => {
-                mockRequest = { cookies: { sampleapp_refresh: "Refresh Token" } };
-                const cookies = cookie.getCookies(mockRequest as Request);
+                mockRequest = { signedCookies: { sampleapp_refresh: "Refresh Token" } };
+                const cookies = cookie.getSignedCookies(mockRequest as Request);
 
-                expect(cookies).toStrictEqual(mockRequest.cookies);
+                expect(cookies).toStrictEqual(mockRequest.signedCookies);
             });
         });
     });
@@ -53,6 +60,12 @@ describe("Cookies Module", () => {
         describe("Happy Path", () => {
             it("Passing reponse and cookie name, should clear the cookie", () => {
                 cookie.clear(mockResponse as Response, Cookies.sampleapp_auth);
+
+                expect(mockClearCookieFn).toHaveBeenCalled();
+            });
+
+            it("Passing reponse, cookie name and cookie options, should clear the cookie", () => {
+                cookie.clear(mockResponse as Response, Cookies.sampleapp_auth, { path: "/api" });
 
                 expect(mockClearCookieFn).toHaveBeenCalled();
             });
