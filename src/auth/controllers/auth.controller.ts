@@ -38,55 +38,5 @@ export class AuthController {
       next(error);
     };
   };
-
-  @Get("/set-session")
-  async setSession(
-    request: TypedRequest<{}, {}, {}>,
-    response: Response<any, Record<string, any>>,
-    next: NextFunction
-  ) {
-    try {
-      cookie.set(response, { name: Cookies.sampleapp_auth, value: "Auth Token" }, { signed: true, maxAge: nconf.get("authExpiryMs") });
-      cookie.set(response, { name: Cookies.sampleapp_refresh, value: "Refresh Token" }, { signed: true, maxAge: nconf.get("refreshExpiryMs") });
-
-
-      response.status(200).send({ data: "OK" });
-    } catch (error) {
-      console.error(`Error in checkSession :`, error);
-      next(error);
-    };
-  };
-
-  @Get("/retrieve-session")
-  async retrieveSession(
-    request: Request,
-    response: Response<any, Record<string, any>>,
-    next: NextFunction
-  ) {
-    try {
-      const signedCookies = cookie.getSignedCookies(request);
-      console.log("retrieve-session ::", signedCookies);
-
-      response.status(200).send({ data: "Checked Session!" });
-    } catch (error) {
-      console.error(`Error in retrieveSession :`, error);
-      next(error);
-    };
-  };
-
-  @Get("/delete-session")
-  async deleteSession(
-    request: Request,
-    response: Response<any, Record<string, any>>,
-    next: NextFunction
-  ) {
-    try {
-      cookie.clear(response, Cookies.sampleapp_refresh, { path: '/api' });
-
-      response.status(200).send({ data: "Session Deleted!" });
-    } catch (error) {
-      console.error(`Error in deleteSession :`, error);
-      next(error);
-    };
-  };
+  
 };
