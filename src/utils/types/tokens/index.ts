@@ -1,3 +1,4 @@
+export * from './enums';
 
 export * from './token.dao.type';
 

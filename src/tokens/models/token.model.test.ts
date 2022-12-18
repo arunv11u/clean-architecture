@@ -1,9 +1,11 @@
 import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
+import { TokenTypes } from '../../utils';
 import { BuildToken, Token, TokenDoc } from './token.model';
 
 function getTokenDoc() {
     return new Token({
+        type: TokenTypes.auth,
         value: faker.random.alphaNumeric(8),
         user: new mongoose.Types.ObjectId()
     });
@@ -12,6 +14,7 @@ function getTokenDoc() {
 function getExpectedTokenObj(tokenDoc: TokenDoc) {
     return {
         id: tokenDoc._id,
+        type: tokenDoc.type,
         value: tokenDoc.value,
         user: tokenDoc.user,
         isDeleted: tokenDoc.isDeleted
@@ -25,6 +28,7 @@ describe("Token Component", () => {
             describe("Happy Path", () => {
                 it("Token details passed as input, should return token object", () => {
                     const tokenAttrs: BuildToken = {
+                        type: TokenTypes.auth,
                         value: faker.random.alphaNumeric(10),
                         user: new mongoose.Types.ObjectId(),
                     };

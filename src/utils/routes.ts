@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction, Express } from "express";
 import cors from "cors";
 import path from "path";
+import cookieParser from "cookie-parser";
+import nconf from "nconf";
 import { appRouter } from "../app-router";
 import { defaultRoutePath } from "../global-config";
 import { corsOptions } from "./cors";
@@ -21,6 +23,7 @@ class RoutesImpl implements Routes {
     app.enable("trust proxy");
     app.use(setSecurityHeaders);
     app.use(cors(corsOptions));
+    app.use(cookieParser(nconf.get("cookieSecret")));
     app.use(express.json({ limit: "5mb" }));
     app.use(express.urlencoded({ extended: true }));
 

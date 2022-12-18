@@ -1,6 +1,8 @@
 import { ClientSession, Types } from "mongoose";
+import { TokenTypes } from "./enums";
 
 interface CreateTokenInput {
+    type: TokenTypes;
     value: string;
 };
 

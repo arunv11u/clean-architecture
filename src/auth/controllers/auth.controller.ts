@@ -5,7 +5,7 @@ import {
   Get,
   Post,
   TypedRequest,
-  Use,
+  Use
 } from "../../utils";
 import { AuthServiceImpl } from "../services/auth.service";
 import { ResponseHandlerImpl } from '../../utils/response-handler';
@@ -43,10 +43,9 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      response.cookie("sampleapp_auth", "Auth token", { path: "/api", httpOnly: true, secure: false, sameSite: "strict" });
-      response.cookie("sampleapp_refresh", "Refresh token", { path: "/api", httpOnly: true, secure: true, sameSite: "strict" });
+      response.cookie("sampleapp_auth", "Auth token", { path: "/api", httpOnly: true, secure: true, sameSite: "strict", signed: true, maxAge: 100000 });
+      response.cookie("sampleapp_refresh", "Refresh token", { path: "/api", httpOnly: true, secure: true, sameSite: "strict", signed: true, maxAge: 200000 });
 
-      console.log("after set exec ::");
 
       response.status(200).send({ data: "OK" });
     } catch (error) {
@@ -62,11 +61,7 @@ export class AuthController {
     next: NextFunction
   ) {
     try {
-      console.log("retrieve-session ::", request.header("cookie"), request.cookies);
-      // const session = request.session;
-
-      // console.log("session ::", session, session.id);
-      // console.log("2nd exec", session.auth, session.refresh);
+      console.log("retrieve-session ::", request.cookies, request.signedCookies);
 
       response.status(200).send({ data: "Checked Session!" });
     } catch (error) {
@@ -77,12 +72,12 @@ export class AuthController {
 
   @Get("/delete-session")
   async deleteSession(
-    request: TypedRequest<{}, {}, {}>,
+    request: Request,
     response: Response<any, Record<string, any>>,
     next: NextFunction
   ) {
     try {
-      // await storeSession.delete(request.session.id);
+      response.clearCookie("sampleapp_refresh", { path: '/api' });
 
       response.status(200).send({ data: "Session Deleted!" });
     } catch (error) {

@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { getTokenFactory, getUserFactory } from "../../global-config";
-import { AuthDTO, AuthRepository, AuthService, GuestLoginInput, MongooseSessionHelper, MongooseSessionHelperImpl, TokenService, TypedRequest, UserService } from "../../utils";
+import { AuthDTO, AuthRepository, AuthService, GuestLoginInput, MongooseSessionHelper, MongooseSessionHelperImpl, TokenService, TokenTypes, TypedRequest, UserService } from "../../utils";
 import { AuthRO } from "../../utils/types/auth/auth.ro.type";
 import { AuthRepositoryImpl } from "../repositories/auth.repository";
 
@@ -37,6 +37,7 @@ export class AuthServiceImpl implements AuthService {
           userId
         },
         token: {
+          type: TokenTypes.auth,
           value: token
         }
       };

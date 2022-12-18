@@ -1,11 +1,12 @@
 import mongoose, { Aggregate, HydratedDocument, Query, Types } from 'mongoose';
-import { MongooseSchemaServiceImpl } from '../../utils';
+import { MongooseSchemaServiceImpl, TokenTypes } from '../../utils';
 
 const mongooseSchemaService = new MongooseSchemaServiceImpl();
 const schemaOptions = mongooseSchemaService.schemaOptions();
 
 
 interface TokenAttrs {
+    type: TokenTypes;
     value: string;
     user: Types.ObjectId;
     isDeleted?: boolean;
@@ -14,6 +15,7 @@ interface TokenAttrs {
 };
 
 interface TokenDoc extends mongoose.Document {
+    type: TokenTypes;
     value: string;
     user: Types.ObjectId;
     isDeleted?: boolean;
@@ -32,6 +34,7 @@ interface TokenModel extends mongoose.Model<TokenDoc> {
 
 const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
     {
+        type: { type: String, enum: TokenTypes, required: [true, 'is a required field'] },
         value: { type: String, required: [true, 'is a required field'] },
         user: { type: "ObjectId", required: [true, 'is a required field'] },
         isDeleted: { type: Boolean, default: false },
