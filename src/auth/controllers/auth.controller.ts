@@ -1,10 +1,7 @@
-import { Response, NextFunction, Request } from "express";
-import nconf from "nconf";
+import { Response, NextFunction } from "express";
 import {
   AuthDTO,
   Controller,
-  CookieImpl,
-  Get,
   Post,
   TypedRequest,
   Use
@@ -12,12 +9,11 @@ import {
 import { AuthServiceImpl } from "../services/auth.service";
 import { ResponseHandlerImpl } from '../../utils/response-handler';
 import { AuthValidationImpl } from "../validations/auth.validation";
-import { AuthRO, Cookies } from "../../utils/types";
+import { AuthRO } from "../../utils/types";
 
 const authService = new AuthServiceImpl();
 const responseHandler = new ResponseHandlerImpl();
 const authValidation = new AuthValidationImpl();
-const cookie = new CookieImpl();
 
 
 @Controller("/auth")

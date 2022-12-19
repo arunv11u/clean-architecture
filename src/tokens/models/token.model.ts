@@ -9,6 +9,7 @@ interface TokenAttrs {
     type: TokenTypes;
     value: string;
     user: Types.ObjectId;
+    refreshTokenUsed: Types.ObjectId;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -18,6 +19,7 @@ interface TokenDoc extends mongoose.Document {
     type: TokenTypes;
     value: string;
     user: Types.ObjectId;
+    refreshTokenUsed: Types.ObjectId;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -37,6 +39,7 @@ const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
         type: { type: String, enum: TokenTypes, required: [true, 'is a required field'] },
         value: { type: String, required: [true, 'is a required field'] },
         user: { type: "ObjectId", required: [true, 'is a required field'] },
+        refreshTokenUsed: { type: "ObjectId", required: [true, 'is a required field'] },
         isDeleted: { type: Boolean, default: false },
         creationDate: { type: Date },
         lastModifiedDate: { type: Date }

@@ -1,33 +1,41 @@
 import { CookieOptions, Response, Request } from "express";
 
-enum Cookies {
-    sampleapp_auth = "sampleapp_auth",
-    sampleapp_refresh = "sampleapp_refresh"
+enum Cookies { 
+    appnameCookieName = "appname_cookiename"
+};
+
+enum SignedCookies {
+    lifeverseChristmasEventAuthToken = "lifeversechristmasevent_auth",
+    lifeverseChristmasEventRefreshToken = "lifeversechristmasevent_refresh"
 };
 
 interface CookieData {
-    name: Cookies;
+    name: SignedCookies;
     value: string;
 };
 
-interface CookiesObj { };
+type CookiesObj = Record<Cookies, string>;
 
-interface SignedCookiesObj {
-    sampleapp_auth: string;
-    sampleapp_refresh: string;
-};
+type SignedCookiesObj = Record<SignedCookies, string>;
+
+type ModCookiesObj = Record<keyof typeof Cookies, string>;
+
+type ModSignedCookiesObj = Record<keyof typeof SignedCookies, string>;
 
 interface Cookie {
     set(response: Response, cookieData: CookieData, cookieOptions?: CookieOptions): void;
-    getCookies(request: Request): CookiesObj;
-    getSignedCookies(request: Request): SignedCookiesObj;
-    clear(response: Response, key: Cookies, cookieOptions?: CookieOptions): void;
+    getCookies(request: Request): ModCookiesObj;
+    getSignedCookies(request: Request): ModSignedCookiesObj;
+    clear(response: Response, key: Cookies | SignedCookies, cookieOptions?: CookieOptions): void;
 };
 
 export {
     Cookies,
+    SignedCookies,
     CookieData,
     CookiesObj,
     SignedCookiesObj,
+    ModCookiesObj,
+    ModSignedCookiesObj,
     Cookie
 };

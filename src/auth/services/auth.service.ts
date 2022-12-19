@@ -27,7 +27,7 @@ export class AuthServiceImpl implements AuthService {
     try {
       const userId = await this._userService.generateUserId();
 
-      const token = await this._tokenService.user({ userId });
+      const token = await this._tokenService.user({ userId, type: TokenTypes.auth });
 
       const guestLoginInput: GuestLoginInput = {
         user: {

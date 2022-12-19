@@ -1,5 +1,5 @@
 import { Request, Response, CookieOptions } from "express";
-import { Cookie, CookieData, Cookies, CookiesObj, SignedCookiesObj } from "../types";
+import { Cookie, CookieData, Cookies, CookiesObj, ModCookiesObj, ModSignedCookiesObj, SignedCookies, SignedCookiesObj } from "../types";
 
 
 export class CookieImpl implements Cookie {
@@ -21,15 +21,28 @@ export class CookieImpl implements Cookie {
         response.cookie(cookieData.name, cookieData.value, cookieOptions)
     };
 
-    getCookies(request: Request<any, Record<string, any>>): CookiesObj {
-        return request.cookies;
+    getCookies(request: Request<any, Record<string, any>>): ModCookiesObj {
+        const cookies = request.cookies as CookiesObj;
+
+        const modCookies: ModCookiesObj = {
+            appnameCookieName: cookies.appname_cookiename
+        };
+
+        return modCookies;
     };
 
-    getSignedCookies(request: Request<any, Record<string, any>>): SignedCookiesObj {
-        return request.signedCookies;
+    getSignedCookies(request: Request<any, Record<string, any>>): ModSignedCookiesObj {
+        const signedCookies = request.signedCookies as SignedCookiesObj;
+
+        const modSignedCookies: ModSignedCookiesObj = {
+            lifeverseChristmasEventAuthToken: signedCookies.lifeversechristmasevent_auth,
+            lifeverseChristmasEventRefreshToken: signedCookies.lifeversechristmasevent_refresh
+        };
+
+        return modSignedCookies;
     };
 
-    clear(response: Response<any, Record<string, any>>, key: Cookies, cookieOptions?: CookieOptions | undefined): void {
+    clear(response: Response<any, Record<string, any>>, key: Cookies | SignedCookies, cookieOptions?: CookieOptions | undefined): void {
         if (cookieOptions) cookieOptions = { ...this._cookieOptions, ...cookieOptions };
         else cookieOptions = this._cookieOptions;
 
