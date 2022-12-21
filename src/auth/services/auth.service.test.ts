@@ -87,7 +87,6 @@ describe("Auth Component", () => {
           expect(mockStart).toHaveBeenCalled();
           expect(mockAuthRepositoryImpl).toHaveBeenCalled();
           expect(mockGenerateUserId).toHaveBeenCalled();
-          expect(mockUser).toHaveBeenCalled();
           expect(mockGuestLogin).toHaveBeenCalled();
           expect(mockCommit).toHaveBeenCalled();
           expect(userDetails).toStrictEqual(expectedResult);

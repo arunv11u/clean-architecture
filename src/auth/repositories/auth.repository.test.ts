@@ -45,18 +45,12 @@ describe("Auth Component", () => {
                                 number: "9876543210"
                             },
                             userId: faker.random.alphaNumeric(8)
-                        },
-                        token: {
-                            type: TokenTypes.auth,
-                            value: faker.random.alphaNumeric()
                         }
                     };
 
                     await authRepository.guestLogin(guestLoginData);
 
                     expect(mockUserSave).toHaveBeenCalled();
-
-                    expect(mockTokenSave).toHaveBeenCalled();
                 });
             });
         });

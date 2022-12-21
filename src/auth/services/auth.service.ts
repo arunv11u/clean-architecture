@@ -27,18 +27,12 @@ export class AuthServiceImpl implements AuthService {
     try {
       const userId = await this._userService.generateUserId();
 
-      const token = await this._tokenService.user({ userId, type: TokenTypes.auth });
-
       const guestLoginInput: GuestLoginInput = {
         user: {
           name: request.body.name,
           email: request.body.email,
           phone: request.body.phone,
           userId
-        },
-        token: {
-          type: TokenTypes.auth,
-          value: token
         }
       };
 

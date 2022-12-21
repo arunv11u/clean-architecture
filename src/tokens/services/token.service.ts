@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import nconf from "nconf";
 import { ResponseHandler, ResponseHandlerImpl, UserTokenPayload, TokenService, UserDecodedPayload, UserRefreshTokenRes, TokenTypes } from "../../utils";
 
+
+
 export class TokenServiceImpl implements TokenService {
 
     private _reponseHandler: ResponseHandler;
@@ -17,7 +19,7 @@ export class TokenServiceImpl implements TokenService {
         const secretKey: string = nconf.get("jwtSecretKey");
 
         const tokenGeneratePromise = new Promise<string>((resolve, reject) => {
-            jwt.sign(payload, secretKey, {}, (err, token) => {
+            jwt.sign(JSON.stringify(payload), secretKey, {}, (err, token) => {
                 if (err) reject(this._reponseHandler.internalError("JWT token generation failed"));
 
                 resolve(token as string);
@@ -35,7 +37,7 @@ export class TokenServiceImpl implements TokenService {
             jwt.verify(token, secretKey, {}, (err, decoded) => {
                 if (err) return reject(this._reponseHandler.internalError("Token is invalid"));
 
-                decoded = decoded as jwt.JwtPayload;
+                decoded = JSON.parse(decoded as string) as jwt.JwtPayload;
                 const _decoded: UserDecodedPayload = {
                     type: decoded.type,
                     userId: decoded.userId
@@ -54,16 +56,16 @@ export class TokenServiceImpl implements TokenService {
         const decodedToken = await this.verify(token);
         
         const userTokenPayload: UserTokenPayload = {
-            type: TokenTypes.auth,
+            type: TokenTypes.refresh,
             userId: decodedToken.userId
         };
 
-        const authToken = await this.user(userTokenPayload, { expiresIn: nconf.get("authExpiryMs") })
+        const accessToken = await this.user(userTokenPayload, { expiresIn: nconf.get("authExpiryMs") })
         const refreshToken = await this.user(userTokenPayload, { expiresIn: nconf.get("refreshExpiryMs") });
 
         return {
             tokens: {
-                authToken, refreshToken
+                accessToken, refreshToken
             },
             userDecodedPayload: userTokenPayload
         };

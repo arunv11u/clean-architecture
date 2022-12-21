@@ -1,9 +1,12 @@
 import { faker } from "@faker-js/faker";
 import jwt from 'jsonwebtoken';
-import { UserTokenPayload, TokenService, GenericError } from "../../utils";
+import { UserTokenPayload, TokenService, GenericError, TokenTypes } from "../../utils";
+import { mockUser, mockVerify } from './__mocks__/token.service.mock';
 import { TokenServiceImpl } from "./token.service";
 
+
 jest.mock("jsonwebtoken");
+
 
 describe("Token Component", () => {
     describe("Token Service Module", () => {
@@ -18,7 +21,7 @@ describe("Token Component", () => {
             };
 
             (jwt.verify as any) = (token: string, secretOrPublicKey: jwt.Secret, options: jwt.VerifyOptions & { complete: true }, cb: (err: null | Error, decoded: any) => void): void => {
-                cb(null, { userId });
+                cb(null, JSON.stringify({ type: TokenTypes.refresh, userId }));
             };
         });
 
@@ -26,16 +29,19 @@ describe("Token Component", () => {
 
             describe("Exception Path", () => {
                 it("If undefined passed as payload, should throw error", () => {
+
                     expect(() => tokenService.user(undefined as any)).rejects.toThrow(GenericError);
                     expect(() => tokenService.user(undefined as any)).rejects.toThrow("Payload is invalid");
                 });
 
                 it("If error occurs in signing jwt token, should throw error", async () => {
+
                     (jwt.sign as any) = (payload: string | object | Buffer, secretOrPrivateKey: jwt.Secret, options: jwt.SignOptions | undefined, cb: (err: null | Error, token: string | null) => void): void => {
                         cb(new Error("Something went wrong!"), null);
                     };
 
                     const tokenPayload: UserTokenPayload = {
+                        type: TokenTypes.refresh,
                         userId: faker.random.alpha()
                     };
 
@@ -45,7 +51,9 @@ describe("Token Component", () => {
 
             describe("Happy Path", () => {
                 it("Payload provided to generate token, should return token", async () => {
+
                     const tokenPayload: UserTokenPayload = {
+                        type: TokenTypes.refresh,
                         userId: faker.random.alpha()
                     };
 
@@ -74,11 +82,66 @@ describe("Token Component", () => {
 
             describe("Happy Path", () => {
                 it("If valid token provided, should return decoded value", async () => {
-                    const tokenPayload: UserTokenPayload = { userId };
+                    const tokenPayload: UserTokenPayload = {
+                        type: TokenTypes.refresh,
+                        userId
+                    };
                     const token = await tokenService.user(tokenPayload);
                     const isValidToken = await tokenService.verify(token);
 
                     expect(isValidToken).toStrictEqual(tokenPayload);
+                });
+            });
+        });
+
+        describe(`"refreshUser" method`, () => {
+            describe("Exception Path", () => {
+                it("If token not provided, should throw error", async () => {
+                    await expect(() => tokenService.refreshUser(undefined as any)).rejects.toThrow("Token is invalid");
+                });
+            });
+
+            describe("Happy Path", () => {
+                it("If token provided as input, should return tokens and payload", async () => {
+                    const accessToken = faker.random.alphaNumeric();
+                    const refreshToken = faker.random.alphaNumeric();
+                    const userDecodedPayload = {
+                        type: TokenTypes.refresh,
+                        userId: faker.random.alphaNumeric()
+                    };
+
+                    jest.mock('./token.service', () => {
+                        const mockTokenServiceImpl = jest.requireActual<typeof import('./token.service')>('./token.service').TokenServiceImpl;
+
+                        mockTokenServiceImpl.prototype.user = mockUser;
+                        mockTokenServiceImpl.prototype.verify = mockVerify;
+
+                        return {
+                            __esModule: true,
+                            TokenServiceImpl: mockTokenServiceImpl
+                        };
+                    });
+
+                    mockVerify.mockImplementation(() => userDecodedPayload);
+                    mockUser.mockImplementationOnce(() => accessToken);
+                    mockUser.mockImplementationOnce(() => refreshToken);
+
+                    const TokenService = require("./token.service");
+
+                    const tokenService: TokenService = new TokenService.TokenServiceImpl();
+
+                    const refreshTokenRes = await tokenService.refreshUser("JWT token here");
+
+                    expect(mockVerify).toHaveBeenCalled();
+                    expect(mockUser).toHaveBeenCalledTimes(2);
+
+                    expect(refreshTokenRes).toStrictEqual({
+                        tokens: {
+                            accessToken,
+                            refreshToken
+                        },
+                        userDecodedPayload
+                    });
                 });
             });
         });

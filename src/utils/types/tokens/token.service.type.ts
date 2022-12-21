@@ -8,7 +8,7 @@ interface UserTokenPayload {
 interface UserDecodedPayload extends UserTokenPayload {};
 
 interface Tokens {
-    authToken: string;
+    accessToken: string;
     refreshToken: string;
 };
 

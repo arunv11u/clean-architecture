@@ -1,6 +1,6 @@
-import { ClientSession, Types } from "mongoose";
+import { ClientSession } from "mongoose";
 import { getUserFactory, getTokenFactory } from "../../global-config";
-import { AuthRepository, CreateTokenInput, GuestLoginInput, TokenDAO, UserDAO } from "../../utils";
+import { AuthRepository, GuestLoginInput, TokenDAO, UserDAO } from "../../utils";
 
 
 export class AuthRepositoryImpl implements AuthRepository {
@@ -13,12 +13,6 @@ export class AuthRepositoryImpl implements AuthRepository {
     };
 
     async guestLogin(data: GuestLoginInput, session?: ClientSession): Promise<void> {
-        const user = await this._userDAO.save(data.user, session);
-
-        const tokenData: CreateTokenInput & { user: Types.ObjectId | string } = {
-            ...data.token,
-            user: user.id
-        };
-        await this._tokenDAO.save(tokenData, session);
+        await this._userDAO.save(data.user, session);
     };
 };

@@ -1,12 +1,18 @@
 import mongoose, { Aggregate, HydratedDocument, Query, Types } from 'mongoose';
-import { MongooseSchemaServiceImpl, TokenTypes } from '../../utils';
+import { MongooseSchemaServiceImpl } from '../../utils';
 
 const mongooseSchemaService = new MongooseSchemaServiceImpl();
 const schemaOptions = mongooseSchemaService.schemaOptions();
 
 
+enum SaveTokenTypes {
+    refresh = "REFRESH"
+};
+
+
 interface TokenAttrs {
-    type: TokenTypes;
+    _id?: Types.ObjectId;
+    type: SaveTokenTypes;
     value: string;
     user: Types.ObjectId;
     refreshTokenUsed: Types.ObjectId;
@@ -16,7 +22,7 @@ interface TokenAttrs {
 };
 
 interface TokenDoc extends mongoose.Document {
-    type: TokenTypes;
+    type: SaveTokenTypes;
     value: string;
     user: Types.ObjectId;
     refreshTokenUsed: Types.ObjectId;
@@ -36,7 +42,7 @@ interface TokenModel extends mongoose.Model<TokenDoc> {
 
 const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
     {
-        type: { type: String, enum: TokenTypes, required: [true, 'is a required field'] },
+        type: { type: String, enum: SaveTokenTypes, required: [true, 'is a required field'] },
         value: { type: String, required: [true, 'is a required field'] },
         user: { type: "ObjectId", required: [true, 'is a required field'] },
         refreshTokenUsed: { type: "ObjectId", required: [true, 'is a required field'] },
@@ -84,6 +90,7 @@ const Token = mongoose.model<TokenDoc, TokenModel>('tokens', tokenSchema);
 
 
 export {
+    SaveTokenTypes,
     TokenAttrs,
     TokenDoc,
     BuildToken,

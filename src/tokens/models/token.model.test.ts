@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import { TokenTypes } from '../../utils';
-import { BuildToken, Token, TokenDoc } from './token.model';
+import { BuildToken, SaveTokenTypes, Token, TokenDoc } from './token.model';
 
 function getTokenDoc() {
     return new Token({
-        type: TokenTypes.auth,
+        type: TokenTypes.refresh,
         value: faker.random.alphaNumeric(8),
         user: new mongoose.Types.ObjectId()
     });
@@ -27,10 +27,13 @@ describe("Token Component", () => {
         describe(`"build" method in token schema statics`, () => {
             describe("Happy Path", () => {
                 it("Token details passed as input, should return token object", () => {
+                    const tokenId = new mongoose.Types.ObjectId();
                     const tokenAttrs: BuildToken = {
-                        type: TokenTypes.auth,
+                        _id: tokenId,
+                        type: SaveTokenTypes.refresh,
                         value: faker.random.alphaNumeric(10),
                         user: new mongoose.Types.ObjectId(),
+                        refreshTokenUsed: tokenId
                     };
 
                     expect(Token.build(tokenAttrs)).toBeInstanceOf(Token);

@@ -31,14 +31,14 @@ export class AuthMiddlewareImpl implements AuthMiddleware {
         return async function (this: AuthMiddlewareImpl, request: Request, response: Response, next: NextFunction) {
             try {
                 const signedcookies = this._cookie.getSignedCookies(request);
-                console.log("signedcookies ::", signedcookies);
 
                 if (!signedcookies.lifeverseChristmasEventAuthToken) throw new GenericError({ error: new Error("Unauthorized"), errorCode: 401 });
 
                 const validatedToken = await this.validateToken(signedcookies);
 
+
                 if (validatedToken.tokens) {
-                    response.cookie(SignedCookies.lifeverseChristmasEventAuthToken, validatedToken.tokens.authToken);
+                    response.cookie(SignedCookies.lifeverseChristmasEventAuthToken, validatedToken.tokens.accessToken);
                     response.cookie(SignedCookies.lifeverseChristmasEventRefreshToken, validatedToken.tokens.refreshToken);
                 };
 

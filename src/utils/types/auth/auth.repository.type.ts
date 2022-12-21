@@ -4,7 +4,6 @@ import { CreateUserInput } from "../users";
 
 interface GuestLoginInput {
     user: CreateUserInput;
-    token: CreateTokenInput;
 };
 
 interface AuthRepository {

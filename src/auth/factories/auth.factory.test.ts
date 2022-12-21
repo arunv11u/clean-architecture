@@ -1,3 +1,4 @@
+import { AuthMiddlewareImpl } from "../middlewares/auth.middleware";
 import { AuthRepositoryImpl } from "../repositories/auth.repository";
 import { AuthServiceImpl } from "../services/auth.service";
 import { AuthValidationImpl } from "../validations/auth.validation";
@@ -27,6 +28,14 @@ describe("Auth Component", () => {
             describe("Happy Path", () => {
                 it("No inputs passed, should return Auth Service Object", () => {
                     expect(authFactory.getRepository()).toBeInstanceOf(AuthRepositoryImpl);
+                });
+            });
+        });
+
+        describe(`"getMiddleware" method`, () => {
+            describe("Happy Path", () => {
+                it("No inputs passed, should return Auth Middleware Object", () => {
+                    expect(authFactory.getMiddleware()).toBeInstanceOf(AuthMiddlewareImpl);
                 });
             });
         });
