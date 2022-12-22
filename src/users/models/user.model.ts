@@ -33,13 +33,13 @@ interface UserDoc extends mongoose.Document {
     updatedBy?: mongoose.Types.ObjectId;
 };
 
-type BuildUser = UserAttrs & { locals: CurrentUser<UserAttrs> };
+type BuildUser = UserAttrs & { _id?: string | mongoose.Types.ObjectId, locals: CurrentUser<UserAttrs> };
 
-type UserObj = UserAttrs & { id: string };
+type UserObj = UserAttrs & { id: string | mongoose.Types.ObjectId, version: number };
 
 interface UserModel extends mongoose.Model<UserDoc> {
     build(attrs: BuildUser): HydratedDocument<UserDoc>;
-    jsonObj(doc: HydratedDocument<UserDoc> | HydratedDocument<UserDoc[]> | null): UserObj | UserObj[] | null;
+    jsonObj(doc: UserDoc | UserDoc[] | null): UserObj | UserObj[] | null;
 };
 
 const phoneSchema = new mongoose.Schema<UserPhone, any>({
@@ -67,7 +67,7 @@ userSchema.statics.build = (attrs: BuildUser): HydratedDocument<UserDoc> => {
     return new User(attrs);
 };
 
-userSchema.statics.jsonObj = (doc: HydratedDocument<UserDoc> | HydratedDocument<UserDoc[]>): UserObj | UserObj[] | null => {
+userSchema.statics.jsonObj = (doc: UserDoc | UserDoc[]): UserObj | UserObj[] | null => {
     if (Array.isArray(doc))
         return doc.map((ele) => ele.toJSON());
 
@@ -108,6 +108,7 @@ const User = mongoose.model<UserDoc, UserModel>('users', userSchema);
 export {
     UserAttrs,
     UserDoc,
+    UserObj,
     BuildUser,
     User
 };

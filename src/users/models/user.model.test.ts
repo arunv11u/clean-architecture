@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { BuildUser, User, UserDoc } from './user.model';
+import { BuildUser, User, UserDoc, UserObj } from './user.model';
 
 function getUserDoc() {
     return new User({
@@ -8,12 +8,13 @@ function getUserDoc() {
     });
 };
 
-function getExpectedUserObj(userDoc: UserDoc) {
+function getExpectedUserObj(userDoc: UserDoc): UserObj {
     return {
         id: userDoc._id,
         name: userDoc.name,
         userId: userDoc.userId,
-        isDeleted: userDoc.isDeleted
+        isDeleted: userDoc.isDeleted,
+        version: userDoc.__v
     };
 };
 
@@ -39,7 +40,7 @@ describe("User Component", () => {
                 it("If a mongoose document provided as input, should return equivalent JSON object", () => {
                     const userDoc = getUserDoc();
 
-                    const userObj = User.jsonObj(userDoc) as UserDoc;
+                    const userObj = User.jsonObj(userDoc) as UserObj;
 
                     const expectedUserObj = getExpectedUserObj(userDoc);
                     expect(userObj).not.toBeInstanceOf(User);
@@ -50,7 +51,7 @@ describe("User Component", () => {
                     const userDoc1 = getUserDoc();
                     const userDoc2 = getUserDoc();
 
-                    const usersObj = User.jsonObj([userDoc1, userDoc2] as any) as UserDoc[];
+                    const usersObj = User.jsonObj([userDoc1, userDoc2] as any) as UserObj[];
 
                     const expectedUsersObj = [getExpectedUserObj(userDoc1), getExpectedUserObj(userDoc2)];
                     expect(usersObj).not.toBeInstanceOf(User);

@@ -9,13 +9,12 @@ enum SaveTokenTypes {
     refresh = "REFRESH"
 };
 
-
 interface TokenAttrs {
-    _id?: Types.ObjectId;
     type: SaveTokenTypes;
     value: string;
-    user: Types.ObjectId;
-    refreshTokenUsed: Types.ObjectId;
+    user: string | Types.ObjectId;
+    refreshTokenUsed?: string | Types.ObjectId;
+    isExpired?: boolean;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -25,19 +24,20 @@ interface TokenDoc extends mongoose.Document {
     type: SaveTokenTypes;
     value: string;
     user: Types.ObjectId;
-    refreshTokenUsed: Types.ObjectId;
+    refreshTokenUsed?: string | Types.ObjectId;
+    isExpired?: boolean;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
 };
 
-type BuildToken = TokenAttrs;
+type BuildToken = TokenAttrs & { _id?: string | mongoose.Types.ObjectId };
 
-type TokenObj = TokenAttrs & { id: string };
+type TokenObj = TokenAttrs & { id: string | mongoose.Types.ObjectId, version: number };
 
 interface TokenModel extends mongoose.Model<TokenDoc> {
     build(attrs: BuildToken): HydratedDocument<TokenDoc>;
-    jsonObj(doc: HydratedDocument<TokenDoc> | HydratedDocument<TokenDoc[]> | null): TokenObj | TokenObj[] | null;
+    jsonObj(doc: TokenDoc | TokenDoc[] | null): TokenObj | TokenObj[] | null;
 };
 
 const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
@@ -45,7 +45,8 @@ const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
         type: { type: String, enum: SaveTokenTypes, required: [true, 'is a required field'] },
         value: { type: String, required: [true, 'is a required field'] },
         user: { type: "ObjectId", required: [true, 'is a required field'] },
-        refreshTokenUsed: { type: "ObjectId", required: [true, 'is a required field'] },
+        refreshTokenUsed: { type: "ObjectId", required: [function (this: any) { return this.type === SaveTokenTypes.refresh }, 'is a required field'] },
+        isExpired: { type: Boolean, default: false },
         isDeleted: { type: Boolean, default: false },
         creationDate: { type: Date },
         lastModifiedDate: { type: Date }
@@ -58,7 +59,7 @@ tokenSchema.statics.build = (attrs: BuildToken): HydratedDocument<TokenDoc> => {
     return new Token(attrs);
 };
 
-tokenSchema.statics.jsonObj = (doc: HydratedDocument<TokenDoc> | HydratedDocument<TokenDoc[]>): TokenObj | TokenObj[] | null => {
+tokenSchema.statics.jsonObj = (doc: TokenDoc | TokenDoc[]): TokenObj | TokenObj[] | null => {
     if (Array.isArray(doc))
         return doc.map((ele) => ele.toJSON()) as TokenObj[];
 
@@ -94,5 +95,6 @@ export {
     TokenAttrs,
     TokenDoc,
     BuildToken,
+    TokenObj,
     Token
 };

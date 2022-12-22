@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import { TokenTypes } from '../../utils';
-import { BuildToken, SaveTokenTypes, Token, TokenDoc } from './token.model';
+import { BuildToken, SaveTokenTypes, Token, TokenDoc, TokenObj } from './token.model';
 
 function getTokenDoc() {
     return new Token({
@@ -11,18 +11,43 @@ function getTokenDoc() {
     });
 };
 
-function getExpectedTokenObj(tokenDoc: TokenDoc) {
+function getExpectedTokenObj(tokenDoc: TokenDoc): TokenObj {
     return {
         id: tokenDoc._id,
         type: tokenDoc.type,
         value: tokenDoc.value,
         user: tokenDoc.user,
-        isDeleted: tokenDoc.isDeleted
+        isDeleted: tokenDoc.isDeleted,
+        isExpired: tokenDoc.isExpired,
+        version: tokenDoc.__v
     };
 };
 
 describe("Token Component", () => {
     describe("Token Model", () => {
+
+        describe("Schema validation", () => {
+            describe("Exception Path", () => {
+                it(`refreshTokenUsed field is undefined when type is "${TokenTypes.refresh}"`, () => {
+                    const tokenId = new mongoose.Types.ObjectId();
+                    const tokenAttrs: BuildToken = {
+                        _id: tokenId,
+                        type: SaveTokenTypes.refresh,
+                        value: faker.random.alphaNumeric(10),
+                        user: new mongoose.Types.ObjectId()
+                    };
+
+                    try {
+                        const validationRes = new Token(tokenAttrs).validateSync()
+
+                        const error = `${validationRes?.errors["refreshTokenUsed"].path} ${validationRes?.errors["refreshTokenUsed"].message}`;
+                        expect("refreshTokenUsed is a required field").toBe(error);
+                    } catch (error) {
+                        console.log("Error in token validation ::", error);
+                    };
+                });
+            });
+        });
 
         describe(`"build" method in token schema statics`, () => {
             describe("Happy Path", () => {
@@ -46,7 +71,7 @@ describe("Token Component", () => {
                 it("If a mongoose document provided as input, should return equivalent JSON object", () => {
                     const tokenDoc = getTokenDoc();
 
-                    const tokenObj = Token.jsonObj(tokenDoc) as TokenDoc;
+                    const tokenObj = Token.jsonObj(tokenDoc) as TokenObj;
 
                     const expectedTokenObj = getExpectedTokenObj(tokenDoc);
                     expect(tokenObj).not.toBeInstanceOf(Token);
@@ -57,7 +82,7 @@ describe("Token Component", () => {
                     const tokenDoc1 = getTokenDoc();
                     const tokenDoc2 = getTokenDoc();
 
-                    const tokensObj = Token.jsonObj([tokenDoc1, tokenDoc2] as any) as TokenDoc[];
+                    const tokensObj = Token.jsonObj([tokenDoc1, tokenDoc2] as any) as TokenObj[];
 
                     const expectedTokensObj = [getExpectedTokenObj(tokenDoc1), getExpectedTokenObj(tokenDoc2)];
                     expect(tokensObj).not.toBeInstanceOf(Token);

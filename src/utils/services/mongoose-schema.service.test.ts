@@ -19,7 +19,7 @@ describe("Mongoose Schema Service Module", () => {
 
                 const returnValue = transform(documentData, { ...documentData });
 
-                expect({ id: documentData._id, name: documentData.name }).toStrictEqual(returnValue);
+                expect({ id: documentData._id, name: documentData.name, version: documentData.__v }).toStrictEqual(returnValue);
             });
         });
     });

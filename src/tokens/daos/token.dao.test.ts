@@ -21,17 +21,17 @@ describe("Token Component", () => {
     });
 
     describe("DAO Module", () => {
-        describe(`"save" method`, () => {
+        describe(`"saveRefreshToken" method`, () => {
             describe("Exception Path", () => {
                 it("If undefined passed as an argument, should throw error", () => {
-                    expect(() => tokenDAO.save(undefined as any)).rejects.toThrow(GenericError);
-                    expect(() => tokenDAO.save(undefined as any)).rejects.toThrow("Token details is undefined in save token DAO, expected token details");
+                    expect(() => tokenDAO.saveRefreshToken(undefined as any)).rejects.toThrow(GenericError);
+                    expect(() => tokenDAO.saveRefreshToken(undefined as any)).rejects.toThrow("Token details is undefined in save token DAO, expected token details");
                 });
             });
 
             describe("Happy Path", () => {
                 it("Token details passed, should save the token", async () => {
-                    await tokenDAO.save({} as any);
+                    await tokenDAO.saveRefreshToken({} as any);
 
                     expect(mockMongooseServiceImpl).toHaveBeenCalled();
                     expect(mockSave).toHaveBeenCalled();

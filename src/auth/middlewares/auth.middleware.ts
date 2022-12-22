@@ -1,17 +1,15 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
-import { getTokenFactory } from "../../global-config";
-import { User, UserDoc } from "../../users/models/user.model";
-import { AuthMiddleware, Cookie, CookieImpl, DatabaseService, GenericError, ModSignedCookiesObj, MongooseServiceImpl, SignedCookies, TokenService, ValidateTokenRes } from "../../utils";
+import { AuthMiddleware, Cookie, CookieImpl, GenericError, ModSignedCookiesObj, SignedCookies, TokenService, UserDAO, ValidateTokenRes } from "../../utils";
 
 export class AuthMiddlewareImpl implements AuthMiddleware {
     private _cookie: Cookie;
     private _tokenService: TokenService;
-    private _mongooseService: DatabaseService;
+    private _userDAO: UserDAO;
 
-    constructor() {
+    constructor(tokenService: TokenService, userDAO: UserDAO) {
         this._cookie = new CookieImpl();
-        this._tokenService = getTokenFactory().getService();
-        this._mongooseService = new MongooseServiceImpl();
+        this._tokenService = tokenService;
+        this._userDAO = userDAO;
     };
 
 
@@ -45,10 +43,9 @@ export class AuthMiddlewareImpl implements AuthMiddleware {
                 response.locals.decodedToken = validatedToken.userDecodedPayload;
 
                 const userId = validatedToken.userDecodedPayload.userId;
-                const user = await this._mongooseService.findOne(User, { _id: userId });
+                const user = await this._userDAO.findById(userId);
 
-                const userObj = User.jsonObj(user) as UserDoc;
-                response.locals.user = userObj;
+                response.locals.user = user;
 
                 next();
             } catch (error) {

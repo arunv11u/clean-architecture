@@ -10,7 +10,10 @@ export class MongooseSchemaServiceImpl extends DatabaseSchemaService {
 
         this._transform = (doc: any, ret: any) => {
             const id = doc._id;
+            const version = doc.__v;
+
             ret.id = id;
+            ret.version = version;
 
             delete ret._id;
             delete ret.__v;

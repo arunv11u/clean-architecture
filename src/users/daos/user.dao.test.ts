@@ -3,7 +3,8 @@ import { faker } from "@faker-js/faker";
 import mockMongooseServiceImpl, { mockFindOne, mockSave } from '../../utils/services/__mocks__/mongoose.service.mock';
 import { CreateUserInput, GenericError, UserDAO } from "../../utils";
 import { UserDAOMongooseImpl } from "./user.dao";
-import { User } from "../models/user.model";
+import { User, UserAttrs } from "../models/user.model";
+import mongoose from "mongoose";
 
 
 jest.mock('../../utils', () => {
@@ -59,7 +60,7 @@ describe("Auth Component", () => {
         describe(`"checkUserExists" method`, () => {
 
             describe("Exception Path", () => {
-                it("If undefined provided as userId, should throw error", () => {
+                it("If undefined is provided as userId, should throw error", () => {
                     expect(() => userDAO.checkUserExists(undefined as any)).rejects.toThrow(GenericError);
                 });
             });
@@ -86,6 +87,47 @@ describe("Auth Component", () => {
                     expect(mockMongooseServiceImpl).toHaveBeenCalled();
                     expect(mockFindOne).toHaveBeenCalledWith(User, query);
                     expect(isUserIdExists).resolves.toBe(true);
+                });
+            });
+        });
+
+        describe(`"findById" method`, () => {
+
+            describe("Exception Path", () => {
+                it("If undefined is provided as id, should throw error", () => {
+                    expect(() => userDAO.findById(undefined as any)).rejects.toThrow(GenericError);
+                    expect(() => userDAO.findById(undefined as any)).rejects.toThrow("Id is invalid");
+                });
+
+                it("If user does not exist for the provided id, should throw error", () => {
+                    mockFindOne.mockImplementation(() => null);
+
+                    expect(() => userDAO.findById(new mongoose.Types.ObjectId())).rejects.toThrow(GenericError);
+                    expect(() => userDAO.findById(new mongoose.Types.ObjectId())).rejects.toThrow("User not found");
+                });
+            });
+
+            describe("Happy Path", () => {
+                it("If valid id is provided, should return respective user details", async () => {
+                    
+                    const user = {
+                        _id: new mongoose.Types.ObjectId(),
+                        name: faker.name.fullName(),
+                        userId: faker.random.alphaNumeric(10),
+                        email: faker.internet.email(),
+                        __v: 0
+                    };
+                    mockFindOne.mockImplementation(() => new User(user));
+
+                    const userObj = await userDAO.findById(new mongoose.Types.ObjectId())
+
+                    const expectedUser: any = { ...user, isDeleted: false };
+                    expectedUser.id = expectedUser._id;
+                    expectedUser.version = expectedUser.__v;
+                    delete expectedUser._id;
+                    delete expectedUser.__v;
+
+                    expect(userObj).toStrictEqual(expectedUser);
                 });
             });
         });

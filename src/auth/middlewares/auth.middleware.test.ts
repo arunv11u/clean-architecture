@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
-import mockTokenServiceImpl, { mockUser, mockVerify, mockRefreshUser } from "../../tokens/services/__mocks__/token.service.mock";
-import mockMongooseServiceImpl, { mockSave, mockFindOne } from "../../utils/services/__mocks__/mongoose.service.mock";
+import mockTokenServiceImpl, { mockVerify, mockRefreshUser } from "../../tokens/services/__mocks__/token.service.mock";
+import mockUserDAOMongooseImpl, { mockFindById } from "../../users/daos/__mocks__/user.dao.mock";
 import { TokenServiceImpl } from "../../tokens/services/token.service";
-import { AuthMiddleware, DatabaseService, GenericError, MongooseServiceImpl, TokenService, TokenTypes } from "../../utils";
+import { AuthMiddleware, GenericError, TokenService, TokenTypes, UserDAO } from "../../utils";
 import { AuthMiddlewareImpl } from "./auth.middleware";
-import { User } from "../../users/models/user.model";
+import { UserDAOMongooseImpl } from "../../users/daos/user.dao";
 
 
 jest.mock('../../tokens/services/token.service', () => {
@@ -20,14 +20,14 @@ jest.mock('../../tokens/services/token.service', () => {
     };
 });
 
-jest.mock('../../utils/services/mongoose.service', () => {
+jest.mock('../../users/daos/user.dao', () => {
     const originalModule =
-        jest.requireActual<typeof import('../../utils/services/mongoose.service')>('../../utils/services/mongoose.service');
+        jest.requireActual<typeof import('../../users/daos/user.dao')>('../../users/daos/user.dao');
 
     return {
         __esModule: true,
         ...originalModule,
-        MongooseServiceImpl: mockMongooseServiceImpl
+        UserDAOMongooseImpl: mockUserDAOMongooseImpl
     };
 });
 
@@ -35,8 +35,8 @@ describe("Auth Component", () => {
     describe("Auth Middleware", () => {
 
         let authMiddleware: AuthMiddleware;
-        let mockTokenServiceImpl: TokenService;
-        let mockMongooseServiceImpl: DatabaseService;
+        let mockTokenService: TokenService;
+        let mockUserDAO: UserDAO;
         let mockRequest: Partial<Request>;
         let mockResponse: Partial<Response>;
         const mockNextFn: jest.Mock = jest.fn();
@@ -44,9 +44,9 @@ describe("Auth Component", () => {
         const mockCookieFn: jest.Mock = jest.fn();
 
         beforeEach(() => {
-            authMiddleware = new AuthMiddlewareImpl();
-            mockTokenServiceImpl = new TokenServiceImpl();
-            mockMongooseServiceImpl = new MongooseServiceImpl();
+            mockTokenService = new TokenServiceImpl();
+            mockUserDAO = new UserDAOMongooseImpl();
+            authMiddleware = new AuthMiddlewareImpl(mockTokenService, mockUserDAO);
 
             mockRequest = {
                 signedCookies: {}
@@ -76,31 +76,27 @@ describe("Auth Component", () => {
                         userId: faker.random.alphaNumeric()
                     };
                     const userObj = {
-                        _id: new mongoose.Types.ObjectId(),
+                        id: new mongoose.Types.ObjectId(),
                         userId: faker.random.alphaNumeric(10),
-                        name: faker.name.fullName()
+                        name: faker.name.fullName(),
+                        isDeleted: false
                     };
 
                     mockVerify.mockImplementation(() => {
                         return decodedToken;
                     });
 
-                    mockFindOne.mockImplementation(() => {
-                        return new User(userObj);
+                    mockFindById.mockImplementation(() => {
+                        return userObj;
                     });
 
                     await authCheck(mockRequest as Request, mockResponse as Response, mockNextFn);
 
                     expect(mockVerify).toHaveBeenCalled();
-                    expect(mockFindOne).toHaveBeenCalled();
+                    expect(mockFindById).toHaveBeenCalled();
                     expect(mockResponse.locals).toStrictEqual({
                         decodedToken,
-                        user: {
-                            id: userObj._id,
-                            name: userObj.name,
-                            userId: userObj.userId,
-                            isDeleted: false
-                        }
+                        user: userObj
                     });
                 });
 
@@ -111,9 +107,10 @@ describe("Auth Component", () => {
                         userId: faker.random.alphaNumeric()
                     };
                     const userObj = {
-                        _id: new mongoose.Types.ObjectId(),
+                        id: new mongoose.Types.ObjectId(),
                         userId: faker.random.alphaNumeric(10),
-                        name: faker.name.fullName()
+                        name: faker.name.fullName(),
+                        isDeleted: false
                     };
                     const tokens = {
                         accessToken: faker.random.alphaNumeric(),
@@ -127,23 +124,18 @@ describe("Auth Component", () => {
                         userDecodedPayload: decodedToken
                     }));
 
-                    mockFindOne.mockImplementation(() => {
-                        return new User(userObj);
+                    mockFindById.mockImplementation(() => {
+                        return userObj;
                     });
 
                     await authCheck(mockRequest as Request, mockResponse as Response, mockNextFn);
 
                     expect(mockVerify).toHaveBeenCalled();
                     expect(mockRefreshUser).toHaveBeenCalled();
-                    expect(mockFindOne).toHaveBeenCalled();
+                    expect(mockFindById).toHaveBeenCalled();
                     expect(mockResponse.locals).toStrictEqual({
                         decodedToken,
-                        user: {
-                            id: userObj._id,
-                            name: userObj.name,
-                            userId: userObj.userId,
-                            isDeleted: false
-                        }
+                        user: userObj
                     });
                 });
             });

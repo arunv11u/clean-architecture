@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { UserTokenPayload, TokenService, GenericError, TokenTypes } from "../../utils";
 import { mockUser, mockVerify } from './__mocks__/token.service.mock';
 import { TokenServiceImpl } from "./token.service";
+import mongoose, { mongo } from "mongoose";
 
 
 jest.mock("jsonwebtoken");
@@ -12,6 +13,7 @@ describe("Token Component", () => {
     describe("Token Service Module", () => {
         const userId = faker.random.alphaNumeric(8);
         let tokenService: TokenService;
+        const tokenId = new mongoose.Types.ObjectId();
 
         beforeEach(() => {
             tokenService = new TokenServiceImpl();
@@ -21,7 +23,7 @@ describe("Token Component", () => {
             };
 
             (jwt.verify as any) = (token: string, secretOrPublicKey: jwt.Secret, options: jwt.VerifyOptions & { complete: true }, cb: (err: null | Error, decoded: any) => void): void => {
-                cb(null, JSON.stringify({ type: TokenTypes.refresh, userId }));
+                cb(null, JSON.stringify({ id: tokenId, type: TokenTypes.refresh, userId }));
             };
         });
 
@@ -41,6 +43,7 @@ describe("Token Component", () => {
                     };
 
                     const tokenPayload: UserTokenPayload = {
+                        id: new mongoose.Types.ObjectId(),
                         type: TokenTypes.refresh,
                         userId: faker.random.alpha()
                     };
@@ -53,6 +56,7 @@ describe("Token Component", () => {
                 it("Payload provided to generate token, should return token", async () => {
 
                     const tokenPayload: UserTokenPayload = {
+                        id: tokenId.toString(),
                         type: TokenTypes.refresh,
                         userId: faker.random.alpha()
                     };
@@ -83,6 +87,7 @@ describe("Token Component", () => {
             describe("Happy Path", () => {
                 it("If valid token provided, should return decoded value", async () => {
                     const tokenPayload: UserTokenPayload = {
+                        id: tokenId.toString(),
                         type: TokenTypes.refresh,
                         userId
                     };
@@ -106,8 +111,9 @@ describe("Token Component", () => {
                     const accessToken = faker.random.alphaNumeric();
                     const refreshToken = faker.random.alphaNumeric();
                     const userDecodedPayload = {
+                        id: new mongoose.Types.ObjectId(),
                         type: TokenTypes.refresh,
-                        userId: faker.random.alphaNumeric()
+                        userId: new mongoose.Types.ObjectId()
                     };
 
                     jest.mock('./token.service', () => {

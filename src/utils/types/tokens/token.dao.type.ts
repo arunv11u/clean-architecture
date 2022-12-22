@@ -1,13 +1,13 @@
 import { ClientSession, Types } from "mongoose";
-import { TokenTypes } from "./enums";
 
 interface CreateTokenInput {
-    type: TokenTypes;
+    user: Types.ObjectId | string;
+    refreshTokenUsed: string | Types.ObjectId;
     value: string;
 };
 
 interface TokenDAO {
-    save(tokenDetails: CreateTokenInput & { user: Types.ObjectId | string }, session?: ClientSession): Promise<void>;
+    saveRefreshToken(tokenDetails: CreateTokenInput, session?: ClientSession): Promise<void>;
 };
 
 export {

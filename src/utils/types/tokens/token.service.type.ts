@@ -1,8 +1,10 @@
+import { Types } from "mongoose";
 import { TokenTypes } from "./enums";
 
 interface UserTokenPayload {
+    id: string | Types.ObjectId;
     type: TokenTypes;
-    userId: string;
+    userId: string | Types.ObjectId;
 };
 
 interface UserDecodedPayload extends UserTokenPayload {};

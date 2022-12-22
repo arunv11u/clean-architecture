@@ -1,5 +1,5 @@
-import { ClientSession } from "mongoose";
-import { UserDoc } from "../../../users/models/user.model";
+import mongoose, { ClientSession } from "mongoose";
+import { UserDoc, UserObj } from "../../../users/models/user.model";
 
 interface UserPhone {
     code: string;
@@ -14,8 +14,9 @@ interface CreateUserInput {
 };
 
 interface UserDAO {
-    save(userDetails: CreateUserInput, session?: ClientSession): Promise<UserDoc>;
+    save(userDetails: CreateUserInput, session?: ClientSession): Promise<UserObj>;
     checkUserExists(userId: string): Promise<boolean>;
+    findById(id: string | mongoose.Types.ObjectId, session?: ClientSession): Promise<UserObj>;
 };
 
 export {
