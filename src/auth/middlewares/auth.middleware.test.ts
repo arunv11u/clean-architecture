@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import { faker } from "@faker-js/faker";
 import mongoose from "mongoose";
 import mockTokenServiceImpl, { mockVerify, mockRefreshUser } from "../../tokens/services/__mocks__/token.service.mock";
-import mockUserDAOMongooseImpl, { mockFindById } from "../../users/daos/__mocks__/user.dao.mock";
+import mockUserDAOImpl, { mockFindById } from "../../users/daos/__mocks__/user.dao.mock";
 import { TokenServiceImpl } from "../../tokens/services/token.service";
 import { AuthMiddleware, GenericError, TokenService, TokenTypes, UserDAO } from "../../utils";
 import { AuthMiddlewareImpl } from "./auth.middleware";
-import { UserDAOMongooseImpl } from "../../users/daos/user.dao";
+import { UserDAOImpl } from "../../users/daos/user.dao";
 
 
 jest.mock('../../tokens/services/token.service', () => {
@@ -27,7 +27,7 @@ jest.mock('../../users/daos/user.dao', () => {
     return {
         __esModule: true,
         ...originalModule,
-        UserDAOMongooseImpl: mockUserDAOMongooseImpl
+        UserDAOImpl: mockUserDAOImpl
     };
 });
 
@@ -45,7 +45,7 @@ describe("Auth Component", () => {
 
         beforeEach(() => {
             mockTokenService = new TokenServiceImpl();
-            mockUserDAO = new UserDAOMongooseImpl();
+            mockUserDAO = new UserDAOImpl();
             authMiddleware = new AuthMiddlewareImpl(mockTokenService, mockUserDAO);
 
             mockRequest = {

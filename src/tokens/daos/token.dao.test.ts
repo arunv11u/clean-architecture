@@ -1,6 +1,6 @@
 import mockMongooseServiceImpl, { mockSave } from '../../utils/services/__mocks__/mongoose.service.mock';
 import { GenericError, TokenDAO } from '../../utils';
-import { TokenDAOMongooseImpl } from './token.dao';
+import { TokenDAOImpl } from './token.dao';
 
 
 jest.mock('../../utils', () => {
@@ -17,7 +17,7 @@ jest.mock('../../utils', () => {
 describe("Token Component", () => {
     let tokenDAO: TokenDAO;
     beforeEach(() => {
-        tokenDAO = new TokenDAOMongooseImpl();
+        tokenDAO = new TokenDAOImpl();
     });
 
     describe("DAO Module", () => {

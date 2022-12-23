@@ -2,7 +2,7 @@
 import { faker } from "@faker-js/faker";
 import mockMongooseServiceImpl, { mockFindOne, mockSave } from '../../utils/services/__mocks__/mongoose.service.mock';
 import { CreateUserInput, GenericError, UserDAO } from "../../utils";
-import { UserDAOMongooseImpl } from "./user.dao";
+import { UserDAOImpl } from "./user.dao";
 import { User, UserAttrs } from "../models/user.model";
 import mongoose from "mongoose";
 
@@ -22,7 +22,7 @@ describe("Auth Component", () => {
     let userDAO: UserDAO;
 
     beforeEach(() => {
-        userDAO = new UserDAOMongooseImpl();
+        userDAO = new UserDAOImpl();
 
         mockFindOne.mockReset();
     });
@@ -39,7 +39,7 @@ describe("Auth Component", () => {
 
             describe("Happy Path", () => {
                 it("User details passed, should save the user", async () => {
-                    const userDAO = new UserDAOMongooseImpl();
+                    const userDAO = new UserDAOImpl();
                     const userDetails: CreateUserInput = {
                         name: faker.name.fullName(),
                         email: faker.internet.email(),

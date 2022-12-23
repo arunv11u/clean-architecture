@@ -3,7 +3,7 @@ import { UserDAO, CreateUserInput, DatabaseService, MongooseServiceImpl, Respons
 import { User, UserDoc, UserObj } from "../models/user.model";
 
 
-export class UserDAOMongooseImpl implements UserDAO {
+export class UserDAOImpl implements UserDAO {
     private _responseHandler: ResponseHandler;
     private _mongooseService: DatabaseService;
 

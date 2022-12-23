@@ -1,4 +1,4 @@
-import { UserDAOMongooseImpl } from "../daos/user.dao";
+import { UserDAOImpl } from "../daos/user.dao";
 import { UserPipeImpl } from "../pipes/user.pipe";
 import { UserServiceImpl } from "../services/user.service";
 import { UserValidationImpl } from "../validations/user.validation";
@@ -36,7 +36,7 @@ describe("User Component", () => {
         describe(`"getDAO" method`, () => {
             describe("Happy Path", () => {
                 it("No inputs passed, should return User Service Object", () => {
-                    expect(userFactory.getDAO()).toBeInstanceOf(UserDAOMongooseImpl);
+                    expect(userFactory.getDAO()).toBeInstanceOf(UserDAOImpl);
                 });
             });
         });

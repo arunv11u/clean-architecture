@@ -1,5 +1,5 @@
 import { Request, Response, CookieOptions } from "express";
-import { Cookie, CookieData, Cookies, CookiesObj, ModCookiesObj, ModSignedCookiesObj, SignedCookies, SignedCookiesObj } from "../types";
+import { Cookie, CookieData, Cookies, CookiesObj, ModCookiesObj, ModSignedCookiesObj, SignedCookieData, SignedCookies, SignedCookiesObj } from "../types";
 
 
 export class CookieImpl implements Cookie {
@@ -14,8 +14,15 @@ export class CookieImpl implements Cookie {
         };
     };
 
-    set(response: Response<any, Record<string, any>>, cookieData: CookieData, cookieOptions?: CookieOptions | undefined): void {
+    setCookies(response: Response<any, Record<string, any>>, cookieData: CookieData, cookieOptions?: CookieOptions | undefined): void {
         if (cookieOptions) cookieOptions = { ...this._cookieOptions, ...cookieOptions };
+        else cookieOptions = this._cookieOptions;
+
+        response.cookie(cookieData.name, cookieData.value, cookieOptions)
+    };
+
+    setSignedCookies(response: Response<any, Record<string, any>>, cookieData: SignedCookieData, cookieOptions?: CookieOptions | undefined): void {
+        if (cookieOptions) cookieOptions = { ...this._cookieOptions, signed: true, ...cookieOptions };
         else cookieOptions = this._cookieOptions;
 
         response.cookie(cookieData.name, cookieData.value, cookieOptions)

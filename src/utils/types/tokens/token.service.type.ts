@@ -15,8 +15,9 @@ interface Tokens {
 };
 
 interface UserRefreshTokenRes {
-    tokens: Tokens;
-    userDecodedPayload: UserDecodedPayload
+    refreshedTokens?: Tokens;
+    isStolenToken: boolean;
+    userDecodedPayload?: UserDecodedPayload;
 };
 
 interface TokenService {

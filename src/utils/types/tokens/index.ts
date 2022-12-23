@@ -4,4 +4,6 @@ export * from './token.dao.type';
 
 export * from './token.factory.type';
 
+export * from './token.repository.type';
+
 export * from './token.service.type';

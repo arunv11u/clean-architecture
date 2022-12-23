@@ -14,7 +14,6 @@ interface TokenAttrs {
     value: string;
     user: string | Types.ObjectId;
     refreshTokenUsed?: string | Types.ObjectId;
-    isExpired?: boolean;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -25,7 +24,6 @@ interface TokenDoc extends mongoose.Document {
     value: string;
     user: Types.ObjectId;
     refreshTokenUsed?: string | Types.ObjectId;
-    isExpired?: boolean;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -46,7 +44,6 @@ const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
         value: { type: String, required: [true, 'is a required field'] },
         user: { type: "ObjectId", required: [true, 'is a required field'] },
         refreshTokenUsed: { type: "ObjectId", required: [function (this: any) { return this.type === SaveTokenTypes.refresh }, 'is a required field'] },
-        isExpired: { type: Boolean, default: false },
         isDeleted: { type: Boolean, default: false },
         creationDate: { type: Date },
         lastModifiedDate: { type: Date }
@@ -82,6 +79,7 @@ tokenSchema.pre<Query<TokenDoc, TokenDoc>>('update', mongooseSchemaService.exclu
 tokenSchema.pre<Aggregate<TokenDoc>>('aggregate', mongooseSchemaService.excludeDeleteAggregateMiddleware());
 
 //* indexing here.
+tokenSchema.index({ "refreshTokenUsed": 1 });
 
 
 //* VirtualTypes here.

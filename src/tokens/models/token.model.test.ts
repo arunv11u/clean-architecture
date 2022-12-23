@@ -18,7 +18,6 @@ function getExpectedTokenObj(tokenDoc: TokenDoc): TokenObj {
         value: tokenDoc.value,
         user: tokenDoc.user,
         isDeleted: tokenDoc.isDeleted,
-        isExpired: tokenDoc.isExpired,
         version: tokenDoc.__v
     };
 };

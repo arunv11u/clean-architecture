@@ -18,16 +18,16 @@ describe("Cookies Module", () => {
         };
         cookie = new CookieImpl();
     });
-    describe(`"set" method`, () => {
+    describe(`"setSignedCookies" method`, () => {
         describe("Happy Path", () => {
             it("Passing response object and cookies data, should set the cookie", () => {
-                cookie.set(mockResponse as Response, { name: SignedCookies.lifeverseChristmasEventAuthToken, value: "Auth Token" });
+                cookie.setSignedCookies(mockResponse as Response, { name: SignedCookies.lifeverseChristmasEventAuthToken, value: "Auth Token" });
                 
                 expect(mockCookieFn).toHaveBeenCalled();
             });
 
             it("Passing response object, cookies data and cookies options, should set the cookie", () => {
-                cookie.set(mockResponse as Response, { name: SignedCookies.lifeverseChristmasEventAuthToken, value: "Auth Token" }, { secure: true, maxAge: 10000 });
+                cookie.setSignedCookies(mockResponse as Response, { name: SignedCookies.lifeverseChristmasEventAuthToken, value: "Auth Token" }, { secure: true, maxAge: 10000 });
                 
                 expect(mockCookieFn).toHaveBeenCalled();
             });

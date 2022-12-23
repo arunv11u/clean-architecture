@@ -1,6 +1,6 @@
 
 import { TokenServiceImpl } from "../../tokens/services/token.service";
-import { UserDAOMongooseImpl } from "../../users/daos/user.dao";
+import { UserDAOImpl } from "../../users/daos/user.dao";
 import { AuthFactory, AuthMiddleware, AuthRepository, AuthService, AuthValidation } from "../../utils";
 import { AuthMiddlewareImpl } from "../middlewares/auth.middleware";
 import { AuthRepositoryImpl } from "../repositories/auth.repository";
@@ -19,7 +19,7 @@ export class AuthFactoryImpl implements AuthFactory {
         this._authValidation = new AuthValidationImpl();
         this._authService = new AuthServiceImpl();
         this._authRepository = new AuthRepositoryImpl();
-        this._authMiddleware = new AuthMiddlewareImpl(new TokenServiceImpl(), new UserDAOMongooseImpl());
+        this._authMiddleware = new AuthMiddlewareImpl(new TokenServiceImpl(), new UserDAOImpl());
     };
 
     getValidation(): AuthValidation {

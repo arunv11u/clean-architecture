@@ -1,5 +1,6 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
-import { AuthMiddleware, Cookie, CookieImpl, GenericError, ModSignedCookiesObj, SignedCookies, TokenService, UserDAO, ValidateTokenRes } from "../../utils";
+import nconf from "nconf";
+import { AuthMiddleware, Cookie, CookieImpl, GenericError, ModSignedCookiesObj, SignedCookies, TokenService, UserDAO, UserDecodedPayload, ValidateTokenRes } from "../../utils";
 
 export class AuthMiddlewareImpl implements AuthMiddleware {
     private _cookie: Cookie;
@@ -34,15 +35,32 @@ export class AuthMiddlewareImpl implements AuthMiddleware {
 
                 const validatedToken = await this.validateToken(signedcookies);
 
+                if (validatedToken.isStolenToken) {
+                    this._cookie.clear(response, SignedCookies.lifeverseChristmasEventAuthToken);
+                    this._cookie.clear(response, SignedCookies.lifeverseChristmasEventRefreshToken);
 
-                if (validatedToken.tokens) {
-                    response.cookie(SignedCookies.lifeverseChristmasEventAuthToken, validatedToken.tokens.accessToken);
-                    response.cookie(SignedCookies.lifeverseChristmasEventRefreshToken, validatedToken.tokens.refreshToken);
+                    throw new GenericError({ error: new Error("Session expired, please login to continue"), errorCode: 401 });
+                };
+
+                if (validatedToken.refreshedTokens) {
+                    this._cookie.setSignedCookies(response,
+                        {
+                            name: SignedCookies.lifeverseChristmasEventAuthToken,
+                            value: validatedToken.refreshedTokens.accessToken
+                        },
+                        { maxAge: nconf.get("authExpiryMs") });
+                    this._cookie.setSignedCookies(response,
+                        {
+                            name: SignedCookies.lifeverseChristmasEventRefreshToken,
+                            value: validatedToken.refreshedTokens.refreshToken
+                        },
+                        { maxAge: nconf.get("refreshExpiryMs") });
                 };
 
                 response.locals.decodedToken = validatedToken.userDecodedPayload;
 
-                const userId = validatedToken.userDecodedPayload.userId;
+                const userDecodedPayload = validatedToken.userDecodedPayload as UserDecodedPayload;
+                const userId = userDecodedPayload.userId;
                 const user = await this._userDAO.findById(userId);
 
                 response.locals.user = user;

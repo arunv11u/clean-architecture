@@ -1,19 +1,19 @@
 import { faker } from '@faker-js/faker';
-import mockUserDAOMongooseImpl, { mockSave as mockUserSave } from '../../users/daos/__mocks__/user.dao.mock';
-import mockTokenDAOMongooseImpl, { mockSave as mockTokenSave } from '../../tokens/daos/__mocks__/token.dao.mock';
+import mockUserDAOImpl, { mockSave as mockUserSave } from '../../users/daos/__mocks__/user.dao.mock';
+import mockTokenDAOImpl, { mockSave as mockTokenSave } from '../../tokens/daos/__mocks__/token.dao.mock';
 import { AuthRepository, GuestLoginInput, TokenTypes } from '../../utils';
 import { AuthRepositoryImpl } from './auth.repository';
 import mongoose from 'mongoose';
 
 jest.mock('../../users/daos/user.dao', () => {
     return {
-        UserDAOMongooseImpl: mockUserDAOMongooseImpl
+        UserDAOImpl: mockUserDAOImpl
     };
 });
 
 jest.mock('../../tokens/daos/token.dao', () => {
     return {
-        TokenDAOMongooseImpl: mockTokenDAOMongooseImpl
+        TokenDAOImpl: mockTokenDAOImpl
     };
 });
 

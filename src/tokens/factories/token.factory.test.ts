@@ -1,4 +1,4 @@
-import { TokenDAOMongooseImpl } from "../daos/token.dao";
+import { TokenDAOImpl } from "../daos/token.dao";
 import { TokenServiceImpl } from "../services/token.service";
 import { TokenFactoryImpl } from "./token.factory";
 
@@ -10,7 +10,7 @@ describe("Token Component", () => {
         describe(`"getDAO" method`, () => {
             describe("Happy Path", () => {
                 it("No inputs passed, should return Token DAO Object", () => {
-                    expect(tokenFactory.getDAO()).toBeInstanceOf(TokenDAOMongooseImpl);
+                    expect(tokenFactory.getDAO()).toBeInstanceOf(TokenDAOImpl);
                 });
             });
         });

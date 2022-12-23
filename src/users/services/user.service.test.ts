@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { UserService } from "../../utils";
 import mockIdGeneratorHelperImpl, { mockShort8 } from "../../utils/helpers/__mocks__/id-generator.helper.mock";
-import mockUserDAOMongooseImpl, { mockCheckUserExists } from "../daos/__mocks__/user.dao.mock";
+import mockUserDAOImpl, { mockCheckUserExists } from "../daos/__mocks__/user.dao.mock";
 import { UserServiceImpl } from "./user.service";
 
 jest.mock('../../utils', () => {
@@ -22,7 +22,7 @@ jest.mock('../daos/user.dao', () => {
   return {
     __esModule: true,
     ...originalModule,
-    UserDAOMongooseImpl: mockUserDAOMongooseImpl
+    UserDAOImpl: mockUserDAOImpl
   };
 });
 
@@ -53,7 +53,7 @@ describe("User Component", () => {
           expect(mockIdGeneratorHelperImpl).toHaveBeenCalled();
           expect(mockShort8).toHaveBeenCalled();
 
-          expect(mockUserDAOMongooseImpl).toHaveBeenCalled();
+          expect(mockUserDAOImpl).toHaveBeenCalled();
           expect(mockCheckUserExists).toHaveBeenCalled();
         });
       });

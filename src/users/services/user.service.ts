@@ -1,5 +1,5 @@
 import { UserService, UserDAO, IdGeneratorHelper, IdGeneratorHelperImpl } from "../../utils";
-import { UserDAOMongooseImpl } from "../daos/user.dao";
+import { UserDAOImpl } from "../daos/user.dao";
 
 
 export class UserServiceImpl implements UserService {
@@ -8,7 +8,7 @@ export class UserServiceImpl implements UserService {
     private _idGeneratorHelper: IdGeneratorHelper;
 
     constructor() {
-        this._userDAO = new UserDAOMongooseImpl();
+        this._userDAO = new UserDAOImpl();
         this._idGeneratorHelper = new IdGeneratorHelperImpl();
     };
 

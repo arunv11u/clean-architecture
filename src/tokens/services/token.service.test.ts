@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { UserTokenPayload, TokenService, GenericError, TokenTypes } from "../../utils";
 import { mockUser, mockVerify } from './__mocks__/token.service.mock';
 import { TokenServiceImpl } from "./token.service";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 
 jest.mock("jsonwebtoken");
@@ -107,7 +107,7 @@ describe("Token Component", () => {
             });
 
             describe("Happy Path", () => {
-                it("If token provided as input, should return tokens and payload", async () => {
+                it("If token provided as input, should return refreshedTokens and payload", async () => {
                     const accessToken = faker.random.alphaNumeric();
                     const refreshToken = faker.random.alphaNumeric();
                     const userDecodedPayload = {
@@ -142,10 +142,11 @@ describe("Token Component", () => {
                     expect(mockUser).toHaveBeenCalledTimes(2);
 
                     expect(refreshTokenRes).toStrictEqual({
-                        tokens: {
+                        refreshedTokens: {
                             accessToken,
                             refreshToken
                         },
+                        isStolenToken: false,
                         userDecodedPayload
                     });
                 });

@@ -1,5 +1,5 @@
 import { UserDAO, UserFactory, UserPipe, UserService, UserValidation } from "../../utils";
-import { UserDAOMongooseImpl } from "../daos/user.dao";
+import { UserDAOImpl } from "../daos/user.dao";
 import { UserPipeImpl } from "../pipes/user.pipe";
 import { UserServiceImpl } from "../services/user.service";
 import { UserValidationImpl } from "../validations/user.validation";
@@ -15,7 +15,7 @@ export class UserFactoryImpl implements UserFactory {
         this._userValidation = new UserValidationImpl();
         this._userPipe = new UserPipeImpl();
         this._userService = new UserServiceImpl();
-        this._userDAO = new UserDAOMongooseImpl();
+        this._userDAO = new UserDAOImpl();
     };
 
     getValidation(): UserValidation {

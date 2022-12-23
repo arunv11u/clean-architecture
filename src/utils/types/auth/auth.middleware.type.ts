@@ -2,8 +2,9 @@ import { RequestHandler } from 'express';
 import { Tokens, UserDecodedPayload } from '../tokens';
 
 interface ValidateTokenRes {
-    tokens?: Tokens;
-    userDecodedPayload: UserDecodedPayload;
+    refreshedTokens?: Tokens;
+    isStolenToken?: boolean;
+    userDecodedPayload?: UserDecodedPayload;
 };
 
 interface AuthMiddleware {

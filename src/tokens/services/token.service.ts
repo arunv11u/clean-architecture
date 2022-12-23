@@ -1,22 +1,22 @@
 import jwt from "jsonwebtoken";
 import nconf from "nconf";
-import { ResponseHandler, ResponseHandlerImpl, UserTokenPayload, TokenService, UserDecodedPayload, UserRefreshTokenRes, TokenTypes, TokenDAO } from "../../utils";
-import { TokenDAOMongooseImpl } from "../daos/token.dao";
-
+import { ResponseHandler, ResponseHandlerImpl, UserTokenPayload, TokenService, UserDecodedPayload, UserRefreshTokenRes, TokenTypes, TokenDAO, CreateTokenInput, TokenRepository, MongooseSessionHelper, MongooseSessionHelperImpl } from "../../utils";
+import { TokenDAOImpl } from "../daos/token.dao";
+import { TokenRepositoryImpl } from "../repositories/token.repository";
 
 
 export class TokenServiceImpl implements TokenService {
 
     private _reponseHandler: ResponseHandler;
     private _tokenDAO: TokenDAO;
+    private _tokenRepository: TokenRepository;
+    private _mongooseSessionHelper: MongooseSessionHelper;
 
     constructor() {
         this._reponseHandler = new ResponseHandlerImpl();
-        this._tokenDAO = new TokenDAOMongooseImpl();
-    };
-
-    private async expireStolenTokens() {
-
+        this._tokenDAO = new TokenDAOImpl();
+        this._tokenRepository = new TokenRepositoryImpl();
+        this._mongooseSessionHelper = new MongooseSessionHelperImpl();
     };
 
     async user(payload: UserTokenPayload, options?: jwt.SignOptions): Promise<string> {
@@ -60,30 +60,50 @@ export class TokenServiceImpl implements TokenService {
     };
 
     async refreshUser(token: string, options?: jwt.SignOptions): Promise<UserRefreshTokenRes> {
-        if (!token) throw this._reponseHandler.internalError("Token is invalid");
+        const session = await this._mongooseSessionHelper.start();
+        try {  
+            const refreshTokenRes: UserRefreshTokenRes = {
+                isStolenToken: true
+            };
+    
+            if (!token) throw this._reponseHandler.internalError("Token is invalid");
+    
+            const decodedToken = await this.verify(token);
+    
+            const userTokenPayload: UserTokenPayload = {
+                id: decodedToken.id,
+                type: TokenTypes.refresh,
+                userId: decodedToken.userId
+            };
+            refreshTokenRes.userDecodedPayload = userTokenPayload;
+    
+            const isStolenToken = await this._tokenRepository.expireRefreshTokensIfStolen(decodedToken.id, session);
+    
+            if (!isStolenToken) {
+                const accessToken = await this.user(userTokenPayload, { expiresIn: nconf.get("authExpiryMs") });
+                const refreshToken = await this.user(userTokenPayload, { expiresIn: nconf.get("refreshExpiryMs") });
+    
+                const tokenDetails: CreateTokenInput = {
+                    refreshTokenUsed: decodedToken.id,
+                    user: decodedToken.userId,
+                    value: refreshToken
+                };
+                await this._tokenDAO.saveRefreshToken(tokenDetails, session);
+    
+                refreshTokenRes.isStolenToken = false;
+                refreshTokenRes.refreshedTokens = {
+                    accessToken,
+                    refreshToken
+                };
+            };
+    
+            await this._mongooseSessionHelper.commit(session);
 
-        const decodedToken = await this.verify(token);
+            return refreshTokenRes;
+        } catch (error) {
+            await this._mongooseSessionHelper.abort(session);
 
-        const userTokenPayload: UserTokenPayload = {
-            id: decodedToken.id,
-            type: TokenTypes.refresh,
-            userId: decodedToken.userId
-        };
-
-        const accessToken = await this.user(userTokenPayload, { expiresIn: nconf.get("authExpiryMs") })
-        const refreshToken = await this.user(userTokenPayload, { expiresIn: nconf.get("refreshExpiryMs") });
-
-        await this._tokenDAO.saveRefreshToken({
-            refreshTokenUsed: decodedToken.id,
-            user: decodedToken.userId,
-            value: refreshToken
-        });
-
-        return {
-            tokens: {
-                accessToken, refreshToken
-            },
-            userDecodedPayload: userTokenPayload
+            throw error;
         };
     };
 };
