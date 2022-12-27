@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Cookie, SignedCookies } from "../types";
+import { Cookie, Cookies, SignedCookies } from "../types";
 import { CookieImpl } from "./cookie";
 
 describe("Cookies Module", () => {
@@ -18,15 +18,32 @@ describe("Cookies Module", () => {
         };
         cookie = new CookieImpl();
     });
-    describe(`"setSignedCookies" method`, () => {
+    
+    describe(`"setCookies" method`, () => {
         describe("Happy Path", () => {
             it("Passing response object and cookies data, should set the cookie", () => {
-                cookie.setSignedCookies(mockResponse as Response, { name: SignedCookies.lifeverseChristmasEventAuthToken, value: "Auth Token" });
+                cookie.setCookies(mockResponse as Response, { name: Cookies.appnameCookieName, value: "Cookie Name" });
                 
                 expect(mockCookieFn).toHaveBeenCalled();
             });
 
             it("Passing response object, cookies data and cookies options, should set the cookie", () => {
+                cookie.setCookies(mockResponse as Response, { name: Cookies.appnameCookieName, value: "Cookie Name" }, { secure: true, maxAge: 10000 });
+                
+                expect(mockCookieFn).toHaveBeenCalled();
+            });
+        });
+    });
+    
+    describe(`"setSignedCookies" method`, () => {
+        describe("Happy Path", () => {
+            it("Passing response object and cookies data, should set the signed cookie", () => {
+                cookie.setSignedCookies(mockResponse as Response, { name: SignedCookies.lifeverseChristmasEventAuthToken, value: "Auth Token" });
+                
+                expect(mockCookieFn).toHaveBeenCalled();
+            });
+
+            it("Passing response object, cookies data and cookies options, should set the signed cookie", () => {
                 cookie.setSignedCookies(mockResponse as Response, { name: SignedCookies.lifeverseChristmasEventAuthToken, value: "Auth Token" }, { secure: true, maxAge: 10000 });
                 
                 expect(mockCookieFn).toHaveBeenCalled();
