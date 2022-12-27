@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { faker } from "@faker-js/faker";
-import mongoose from "mongoose";
 import mockTokenServiceImpl, { mockVerify, mockRefreshUser } from "../../tokens/services/__mocks__/token.service.mock";
 import mockUserDAOImpl, { mockFindById } from "../../users/daos/__mocks__/user.dao.mock";
+import mockCookieImpl, { mockClear, mockGetSignedCookies } from "../../utils/cookies/__mocks__/cookie.mock";
 import { TokenServiceImpl } from "../../tokens/services/token.service";
-import { AuthMiddleware, GenericError, TokenService, TokenTypes, UserDAO } from "../../utils";
+import { AuthMiddleware, GenericError, MongooseHelper, MongooseHelperImpl, TokenService, TokenTypes, UserDAO } from "../../utils";
 import { AuthMiddlewareImpl } from "./auth.middleware";
 import { UserDAOImpl } from "../../users/daos/user.dao";
 
@@ -31,6 +31,17 @@ jest.mock('../../users/daos/user.dao', () => {
     };
 });
 
+jest.mock('../../utils', () => {
+    const originalModule =
+        jest.requireActual<typeof import('../../utils')>('../../utils');
+
+    return {
+        __esModule: true,
+        ...originalModule,
+        CookieImpl: mockCookieImpl
+    };
+});
+
 describe("Auth Component", () => {
     describe("Auth Middleware", () => {
 
@@ -42,6 +53,7 @@ describe("Auth Component", () => {
         const mockNextFn: jest.Mock = jest.fn();
         let authCheck: any;
         const mockCookieFn: jest.Mock = jest.fn();
+        let mongooseHelper: MongooseHelper;
 
         beforeEach(() => {
             mockTokenService = new TokenServiceImpl();
@@ -56,11 +68,13 @@ describe("Auth Component", () => {
                 locals: {}
             };
             authCheck = authMiddleware.checkAuthorization();
+            mongooseHelper = new MongooseHelperImpl();
         });
 
         describe("checkAuthorization method", () => {
             describe("Exception Path", () => {
                 it("Empty signed cookies passed, should throw error", async () => {
+                    mockGetSignedCookies.mockImplementation(() => ({}));
 
                     await authCheck(mockRequest as Request, mockResponse as Response, mockNextFn);
 
@@ -76,16 +90,19 @@ describe("Auth Component", () => {
                         userId: faker.random.alphaNumeric()
                     };
                     const userObj = {
-                        id: new mongoose.Types.ObjectId(),
+                        id: mongooseHelper.getObjectId(),
                         userId: faker.random.alphaNumeric(10),
                         name: faker.name.fullName(),
                         isDeleted: false
                     };
 
+                    mockGetSignedCookies.mockImplementation(() => ({
+                        lifeverseChristmasEventAuthToken: faker.random.alphaNumeric(10),
+                        lifeverseChristmasEventRefreshToken: faker.random.alphaNumeric(10)
+                    }));
                     mockVerify.mockImplementation(() => {
                         return decodedToken;
                     });
-
                     mockFindById.mockImplementation(() => {
                         return userObj;
                     });
@@ -107,7 +124,7 @@ describe("Auth Component", () => {
                         userId: faker.random.alphaNumeric()
                     };
                     const userObj = {
-                        id: new mongoose.Types.ObjectId(),
+                        id: mongooseHelper.getObjectId(),
                         userId: faker.random.alphaNumeric(10),
                         name: faker.name.fullName(),
                         isDeleted: false
@@ -117,13 +134,15 @@ describe("Auth Component", () => {
                         refreshToken: faker.random.alphaNumeric()
                     };
 
+                    mockGetSignedCookies.mockImplementation(() => ({
+                        lifeverseChristmasEventAuthToken: faker.random.alphaNumeric(10),
+                        lifeverseChristmasEventRefreshToken: faker.random.alphaNumeric(10)
+                    }));
                     mockVerify.mockImplementation(() => { throw new Error("Access token is expired") });
-
                     mockRefreshUser.mockImplementation(() => ({
-                        tokens,
+                        refreshedTokens: tokens,
                         userDecodedPayload: decodedToken
                     }));
-
                     mockFindById.mockImplementation(() => {
                         return userObj;
                     });
@@ -137,6 +156,24 @@ describe("Auth Component", () => {
                         decodedToken,
                         user: userObj
                     });
+                });
+
+                it("Signed cookies provided and the tokens are stolen, should clear cookies and throw error", async () => {
+                    mockRequest.signedCookies.lifeversechristmasevent_auth = faker.random.alphaNumeric(10);
+
+                    mockGetSignedCookies.mockImplementation(() => ({
+                        lifeverseChristmasEventAuthToken: faker.random.alphaNumeric(10),
+                        lifeverseChristmasEventRefreshToken: faker.random.alphaNumeric(10)
+                    }));
+                    mockVerify.mockImplementation(() => { throw new Error("Access token is expired") });
+                    mockRefreshUser.mockImplementation(() => ({
+                        isStolenToken: true
+                    }));
+
+                    await authCheck(mockRequest as Request, mockResponse as Response, mockNextFn);
+
+                    expect(mockVerify).toHaveBeenCalled();
+                    expect(mockNextFn).toHaveBeenCalledWith(new GenericError({ error: new Error("Session expired, please login to continue"), errorCode: 401 }));
                 });
             });
         });

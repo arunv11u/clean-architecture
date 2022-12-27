@@ -14,6 +14,7 @@ interface TokenAttrs {
     value: string;
     user: string | Types.ObjectId;
     refreshTokenUsed?: string | Types.ObjectId;
+    isStolen?: boolean;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -24,6 +25,7 @@ interface TokenDoc extends mongoose.Document {
     value: string;
     user: Types.ObjectId;
     refreshTokenUsed?: string | Types.ObjectId;
+    isStolen?: boolean;
     isDeleted?: boolean;
     creationDate?: Date;
     lastModifiedDate?: Date;
@@ -43,7 +45,8 @@ const tokenSchema = new mongoose.Schema<TokenDoc, TokenModel>(
         type: { type: String, enum: SaveTokenTypes, required: [true, 'is a required field'] },
         value: { type: String, required: [true, 'is a required field'] },
         user: { type: "ObjectId", required: [true, 'is a required field'] },
-        refreshTokenUsed: { type: "ObjectId", required: [function (this: any) { return this.type === SaveTokenTypes.refresh }, 'is a required field'] },
+        refreshTokenUsed: { type: "ObjectId" },
+        isStolen: { type: Boolean, default: false },
         isDeleted: { type: Boolean, default: false },
         creationDate: { type: Date },
         lastModifiedDate: { type: Date }

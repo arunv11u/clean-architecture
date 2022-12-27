@@ -2,12 +2,15 @@ import { faker } from "@faker-js/faker";
 import { InsertManyResult } from "mongodb";
 import mongoose from "mongoose";
 import { GenericError } from "../errors";
+import { MongooseHelperImpl } from "../helpers";
+import { MongooseHelper } from "../types";
 import { MongooseServiceImpl } from "./mongoose.service";
 
 
 
 describe("Mongoose Service Module", () => {
     const mongooseService = new MongooseServiceImpl();
+    const mongooseHelper: MongooseHelper = new MongooseHelperImpl();
 
     const userSchema = new mongoose.Schema({
         name: { type: String },
@@ -56,7 +59,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If all required inputs passed, should save and return document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" },
@@ -85,7 +88,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If all required inputs passed, should save and return documents", async () => {
                 const inputData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -124,7 +127,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If id is passed, should return the respected document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -155,7 +158,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If query is passed, should return the matched document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -186,7 +189,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If query is passed, should return the matched document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -217,7 +220,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If query is passed, should return the matched document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -248,7 +251,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If pipeline stages are passed, should return the matched documents", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -277,7 +280,7 @@ describe("Mongoose Service Module", () => {
             });
 
             it("If update query is passed as undefined, should throw error", () => {
-                const id = new mongoose.Types.ObjectId();
+                const id = mongooseHelper.getObjectId();
                 expect(() => mongooseService.findByIdAndUpdate(User, id, undefined as any)).rejects.toThrow(GenericError);
                 expect(() => mongooseService.findByIdAndUpdate(User, id, undefined as any)).rejects.toThrow("Expected update query object, but got undefined");
             });
@@ -286,7 +289,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If id and update queries are passed, should update and return the document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -323,7 +326,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If filter and update queries are passed, should update and return the document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -360,7 +363,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If filter and update queries are passed, should update and return the document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
@@ -399,13 +402,13 @@ describe("Mongoose Service Module", () => {
                 const phoneNumber = "9876543210";
                 const userData = [
                     {
-                        _id: new mongoose.Types.ObjectId(),
+                        _id: mongooseHelper.getObjectId(),
                         name: faker.name.fullName(),
                         email: faker.internet.email(),
                         phone: { code: "+91", number: phoneNumber }
                     },
                     {
-                        _id: new mongoose.Types.ObjectId(),
+                        _id: mongooseHelper.getObjectId(),
                         name: faker.name.fullName(),
                         email: faker.internet.email(),
                         phone: { code: "+91", number: phoneNumber }
@@ -436,7 +439,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If filter and update queries are passed, should update and return the document", async () => {
                 const userData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }

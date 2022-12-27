@@ -77,9 +77,10 @@ export class TokenServiceImpl implements TokenService {
             };
             refreshTokenRes.userDecodedPayload = userTokenPayload;
     
-            const isStolenToken = await this._tokenRepository.expireRefreshTokensIfStolen(decodedToken.id, session);
+            const isStolenToken = await this._tokenRepository.markStolenRefreshTokensIfStolen(decodedToken.id, session);
     
-            if (!isStolenToken) {
+            const legitToken = !isStolenToken;
+            if (legitToken) {
                 const accessToken = await this.user(userTokenPayload, { expiresIn: nconf.get("authExpiryMs") });
                 const refreshToken = await this.user(userTokenPayload, { expiresIn: nconf.get("refreshExpiryMs") });
     

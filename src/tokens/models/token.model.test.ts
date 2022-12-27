@@ -1,13 +1,14 @@
 import { faker } from '@faker-js/faker';
-import mongoose from 'mongoose';
-import { TokenTypes } from '../../utils';
+import { MongooseHelper, MongooseHelperImpl, TokenTypes } from '../../utils';
 import { BuildToken, SaveTokenTypes, Token, TokenDoc, TokenObj } from './token.model';
+
+const mongooseHelper: MongooseHelper = new MongooseHelperImpl();
 
 function getTokenDoc() {
     return new Token({
         type: TokenTypes.refresh,
         value: faker.random.alphaNumeric(8),
-        user: new mongoose.Types.ObjectId()
+        user: mongooseHelper.getObjectId()
     });
 };
 
@@ -17,6 +18,7 @@ function getExpectedTokenObj(tokenDoc: TokenDoc): TokenObj {
         type: tokenDoc.type,
         value: tokenDoc.value,
         user: tokenDoc.user,
+        isStolen: tokenDoc.isStolen,
         isDeleted: tokenDoc.isDeleted,
         version: tokenDoc.__v
     };
@@ -25,38 +27,15 @@ function getExpectedTokenObj(tokenDoc: TokenDoc): TokenObj {
 describe("Token Component", () => {
     describe("Token Model", () => {
 
-        describe("Schema validation", () => {
-            describe("Exception Path", () => {
-                it(`refreshTokenUsed field is undefined when type is "${TokenTypes.refresh}"`, () => {
-                    const tokenId = new mongoose.Types.ObjectId();
-                    const tokenAttrs: BuildToken = {
-                        _id: tokenId,
-                        type: SaveTokenTypes.refresh,
-                        value: faker.random.alphaNumeric(10),
-                        user: new mongoose.Types.ObjectId()
-                    };
-
-                    try {
-                        const validationRes = new Token(tokenAttrs).validateSync()
-
-                        const error = `${validationRes?.errors["refreshTokenUsed"].path} ${validationRes?.errors["refreshTokenUsed"].message}`;
-                        expect("refreshTokenUsed is a required field").toBe(error);
-                    } catch (error) {
-                        console.log("Error in token validation ::", error);
-                    };
-                });
-            });
-        });
-
         describe(`"build" method in token schema statics`, () => {
             describe("Happy Path", () => {
                 it("Token details passed as input, should return token object", () => {
-                    const tokenId = new mongoose.Types.ObjectId();
+                    const tokenId = mongooseHelper.getObjectId();
                     const tokenAttrs: BuildToken = {
                         _id: tokenId,
                         type: SaveTokenTypes.refresh,
                         value: faker.random.alphaNumeric(10),
-                        user: new mongoose.Types.ObjectId(),
+                        user: mongooseHelper.getObjectId(),
                         refreshTokenUsed: tokenId
                     };
 

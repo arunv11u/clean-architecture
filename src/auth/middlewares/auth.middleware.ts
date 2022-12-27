@@ -49,6 +49,7 @@ export class AuthMiddlewareImpl implements AuthMiddleware {
                             value: validatedToken.refreshedTokens.accessToken
                         },
                         { maxAge: nconf.get("authExpiryMs") });
+                        
                     this._cookie.setSignedCookies(response,
                         {
                             name: SignedCookies.lifeverseChristmasEventRefreshToken,

@@ -1,10 +1,13 @@
 import { faker } from "@faker-js/faker";
 import mongoose, { Types } from "mongoose";
 import { GenericError } from "../errors";
+import { MongooseHelperImpl } from "../helpers";
+import { MongooseHelper } from "../types";
 import { MongooseSchemaServiceImpl } from "./mongoose-schema.service";
 
 describe("Mongoose Schema Service Module", () => {
     const mongooseSchemaService = new MongooseSchemaServiceImpl();
+    const mongooseHelper: MongooseHelper = new MongooseHelperImpl();
 
     describe(`"transform" getter`, () => {
         describe("Happy Path", () => {
@@ -12,7 +15,7 @@ describe("Mongoose Schema Service Module", () => {
                 const transform = mongooseSchemaService.transform;
 
                 const documentData = {
-                    _id: new mongoose.Types.ObjectId(),
+                    _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     __v: 0
                 };
@@ -49,11 +52,11 @@ describe("Mongoose Schema Service Module", () => {
     describe(`"getDocId" method`, () => {
         describe("Happy Path", () => {
             it("No input passed, should return new objectId", () => {
-                expect(new mongoose.Types.ObjectId()).toBeInstanceOf(Types.ObjectId);
+                expect(mongooseHelper.getObjectId()).toBeInstanceOf(Types.ObjectId);
             });
 
             it("Stringified Object Id passed as an input, should return the same string as Object Id", () => {
-                const objectId = new mongoose.Types.ObjectId();
+                const objectId = mongooseHelper.getObjectId();
 
                 expect(mongooseSchemaService.getDocId(objectId.toString())).toBeInstanceOf(Types.ObjectId);
                 expect(mongooseSchemaService.getDocId(objectId.toString())).toStrictEqual(objectId);
@@ -121,7 +124,7 @@ describe("Mongoose Schema Service Module", () => {
             it("Locals is set in the query, should set the createdBy and updatedBy fields", () => {
                 mockQuery = {
                     get: jest.fn(function (this: any, data: string) { return this[data] }),
-                    locals: { user: { id: new mongoose.Types.ObjectId() } },
+                    locals: { user: { id: mongooseHelper.getObjectId() } },
                     set: jest.fn()
                 };
 
@@ -194,7 +197,7 @@ describe("Mongoose Schema Service Module", () => {
             it("Locals is set in the query, should set the createdBy and updatedBy fields", () => {
                 mockQuery = {
                     get: jest.fn(function (this: any, data: string) { return this[data] }),
-                    locals: { user: { id: new mongoose.Types.ObjectId() } },
+                    locals: { user: { id: mongooseHelper.getObjectId() } },
                     set: jest.fn()
                 };
 

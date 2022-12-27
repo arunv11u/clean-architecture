@@ -1,9 +1,8 @@
 import { faker } from '@faker-js/faker';
 import mockUserDAOImpl, { mockSave as mockUserSave } from '../../users/daos/__mocks__/user.dao.mock';
-import mockTokenDAOImpl, { mockSave as mockTokenSave } from '../../tokens/daos/__mocks__/token.dao.mock';
-import { AuthRepository, GuestLoginInput, TokenTypes } from '../../utils';
+import mockTokenDAOImpl from '../../tokens/daos/__mocks__/token.dao.mock';
+import { AuthRepository, GuestLoginInput, MongooseHelper, MongooseHelperImpl, TokenTypes } from '../../utils';
 import { AuthRepositoryImpl } from './auth.repository';
-import mongoose from 'mongoose';
 
 jest.mock('../../users/daos/user.dao', () => {
     return {
@@ -19,9 +18,11 @@ jest.mock('../../tokens/daos/token.dao', () => {
 
 describe("Auth Component", () => {
     let authRepository: AuthRepository;
+    let mongooseHelper: MongooseHelper;
 
     beforeEach(() => {
         authRepository = new AuthRepositoryImpl();
+        mongooseHelper = new MongooseHelperImpl();
     });
 
     afterEach(() => {
@@ -34,7 +35,7 @@ describe("Auth Component", () => {
 
             describe("Happy Path", () => {
                 it("If guest login data passed, should create the user and token document", async () => {
-                    mockUserSave.mockImplementation(() => ({ user: { id: new mongoose.Types.ObjectId() } }));
+                    mockUserSave.mockImplementation(() => ({ user: { id: mongooseHelper.getObjectId() } }));
 
                     const guestLoginData: GuestLoginInput = {
                         user: {

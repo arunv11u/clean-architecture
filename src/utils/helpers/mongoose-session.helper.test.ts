@@ -2,7 +2,15 @@ import mongoose from 'mongoose';
 import { MongooseSessionHelper } from '../types';
 import { MongooseSessionHelperImpl } from './mongoose-session.helper';
 
-jest.mock("mongoose");
+jest.mock("mongoose", () => {
+    const originalModule =
+        jest.requireActual<typeof import('mongoose')>('mongoose');
+
+    return {
+        __esModule: true,
+        ...originalModule
+    };
+});
 
 describe("Mongoose Session Helper Module", () => {
     const mockStartSession = jest.fn();

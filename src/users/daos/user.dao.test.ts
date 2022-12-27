@@ -1,10 +1,9 @@
 
 import { faker } from "@faker-js/faker";
 import mockMongooseServiceImpl, { mockFindOne, mockSave } from '../../utils/services/__mocks__/mongoose.service.mock';
-import { CreateUserInput, GenericError, UserDAO } from "../../utils";
+import { CreateUserInput, GenericError, MongooseHelper, MongooseHelperImpl, UserDAO } from "../../utils";
 import { UserDAOImpl } from "./user.dao";
 import { User, UserAttrs } from "../models/user.model";
-import mongoose from "mongoose";
 
 
 jest.mock('../../utils', () => {
@@ -20,9 +19,11 @@ jest.mock('../../utils', () => {
 
 describe("Auth Component", () => {
     let userDAO: UserDAO;
+    let mongooseHelper: MongooseHelper;
 
     beforeEach(() => {
         userDAO = new UserDAOImpl();
+        mongooseHelper = new MongooseHelperImpl();
 
         mockFindOne.mockReset();
     });
@@ -102,8 +103,8 @@ describe("Auth Component", () => {
                 it("If user does not exist for the provided id, should throw error", () => {
                     mockFindOne.mockImplementation(() => null);
 
-                    expect(() => userDAO.findById(new mongoose.Types.ObjectId())).rejects.toThrow(GenericError);
-                    expect(() => userDAO.findById(new mongoose.Types.ObjectId())).rejects.toThrow("User not found");
+                    expect(() => userDAO.findById(mongooseHelper.getObjectId())).rejects.toThrow(GenericError);
+                    expect(() => userDAO.findById(mongooseHelper.getObjectId())).rejects.toThrow("User not found");
                 });
             });
 
@@ -111,7 +112,7 @@ describe("Auth Component", () => {
                 it("If valid id is provided, should return respective user details", async () => {
                     
                     const user = {
-                        _id: new mongoose.Types.ObjectId(),
+                        _id: mongooseHelper.getObjectId(),
                         name: faker.name.fullName(),
                         userId: faker.random.alphaNumeric(10),
                         email: faker.internet.email(),
@@ -119,7 +120,7 @@ describe("Auth Component", () => {
                     };
                     mockFindOne.mockImplementation(() => new User(user));
 
-                    const userObj = await userDAO.findById(new mongoose.Types.ObjectId())
+                    const userObj = await userDAO.findById(mongooseHelper.getObjectId())
 
                     const expectedUser: any = { ...user, isDeleted: false };
                     expectedUser.id = expectedUser._id;

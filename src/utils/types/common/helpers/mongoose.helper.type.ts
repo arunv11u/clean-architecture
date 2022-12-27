@@ -1,8 +1,5 @@
-import { ClientSession } from "mongoose";
+import { Types } from "mongoose";
 
-
-export interface MongooseSessionHelper {
-    start(): Promise<ClientSession>;
-    commit(session: ClientSession): Promise<void>;
-    abort(session: ClientSession): Promise<void>;
+export interface MongooseHelper {
+    getObjectId(id?: string | Types.ObjectId): Types.ObjectId;
 };

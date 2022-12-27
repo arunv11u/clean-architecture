@@ -1,19 +1,30 @@
 import { faker } from "@faker-js/faker";
 import jwt from 'jsonwebtoken';
-import { UserTokenPayload, TokenService, GenericError, TokenTypes } from "../../utils";
+import { UserTokenPayload, TokenService, GenericError, TokenTypes, MongooseHelper, MongooseHelperImpl } from "../../utils";
+import mockTokenRepositoryImpl, { mockMarkStolenRefreshTokensIfStolen } from '../repositories/__mocks__/token.repository.mock';
 import { mockUser, mockVerify } from './__mocks__/token.service.mock';
 import { TokenServiceImpl } from "./token.service";
-import mongoose from "mongoose";
 
+const mongooseHelper: MongooseHelper = new MongooseHelperImpl();
 
 jest.mock("jsonwebtoken");
+jest.mock('../repositories/token.repository', () => {
+    const originalModule =
+        jest.requireActual<typeof import('../repositories/token.repository')>('../repositories/token.repository');
+
+    return {
+        __esModule: true,
+        ...originalModule,
+        TokenRepositoryImpl: mockTokenRepositoryImpl
+    };
+});
 
 
 describe("Token Component", () => {
     describe("Token Service Module", () => {
         const userId = faker.random.alphaNumeric(8);
         let tokenService: TokenService;
-        const tokenId = new mongoose.Types.ObjectId();
+        const tokenId = mongooseHelper.getObjectId();
 
         beforeEach(() => {
             tokenService = new TokenServiceImpl();
@@ -43,7 +54,7 @@ describe("Token Component", () => {
                     };
 
                     const tokenPayload: UserTokenPayload = {
-                        id: new mongoose.Types.ObjectId(),
+                        id: mongooseHelper.getObjectId(),
                         type: TokenTypes.refresh,
                         userId: faker.random.alpha()
                     };
@@ -107,13 +118,58 @@ describe("Token Component", () => {
             });
 
             describe("Happy Path", () => {
-                it("If token provided as input, should return refreshedTokens and payload", async () => {
+                it("If token provided as input and the token is stolen, should return stolen token true", async () => {
+                    // const accessToken = faker.random.alphaNumeric();
+                    // const refreshToken = faker.random.alphaNumeric();
+                    const userDecodedPayload = {
+                        id: mongooseHelper.getObjectId(),
+                        type: TokenTypes.refresh,
+                        userId: mongooseHelper.getObjectId()
+                    };
+
+                    jest.mock('./token.service', () => {
+                        const mockTokenServiceImpl = jest.requireActual<typeof import('./token.service')>('./token.service').TokenServiceImpl;
+
+                        mockTokenServiceImpl.prototype.user = mockUser;
+                        mockTokenServiceImpl.prototype.verify = mockVerify;
+
+                        return {
+                            __esModule: true,
+                            TokenServiceImpl: mockTokenServiceImpl
+                        };
+                    });
+
+                    mockVerify.mockImplementation(() => userDecodedPayload);
+                    // mockUser.mockImplementationOnce(() => accessToken);
+                    // mockUser.mockImplementationOnce(() => refreshToken);
+                    mockMarkStolenRefreshTokensIfStolen.mockImplementation(() => true);
+
+                    const TokenService = require("./token.service");
+
+                    const tokenService: TokenService = new TokenService.TokenServiceImpl();
+
+                    const refreshTokenRes = await tokenService.refreshUser("JWT token here");
+
+                    expect(mockVerify).toHaveBeenCalled();
+                    // expect(mockUser).toHaveBeenCalledTimes(2);
+
+                    expect(refreshTokenRes).toStrictEqual({
+                        // refreshedTokens: {
+                        //     accessToken,
+                        //     refreshToken
+                        // },
+                        isStolenToken: true,
+                        userDecodedPayload
+                    });
+                });
+
+                it("If provided token is legit, should return refreshed tokens and payload", async () => {
                     const accessToken = faker.random.alphaNumeric();
                     const refreshToken = faker.random.alphaNumeric();
                     const userDecodedPayload = {
-                        id: new mongoose.Types.ObjectId(),
+                        id: mongooseHelper.getObjectId(),
                         type: TokenTypes.refresh,
-                        userId: new mongoose.Types.ObjectId()
+                        userId: mongooseHelper.getObjectId()
                     };
 
                     jest.mock('./token.service', () => {
@@ -131,6 +187,7 @@ describe("Token Component", () => {
                     mockVerify.mockImplementation(() => userDecodedPayload);
                     mockUser.mockImplementationOnce(() => accessToken);
                     mockUser.mockImplementationOnce(() => refreshToken);
+                    mockMarkStolenRefreshTokensIfStolen.mockImplementation(() => false);
 
                     const TokenService = require("./token.service");
 

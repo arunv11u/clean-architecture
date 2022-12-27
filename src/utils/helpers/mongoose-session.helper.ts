@@ -1,5 +1,4 @@
-import { ClientSession } from 'mongodb';
-import mongoose from 'mongoose';
+import mongoose, { ClientSession } from 'mongoose';
 import { MongooseSessionHelper } from '../types';
 
 export class MongooseSessionHelperImpl implements MongooseSessionHelper {
