@@ -30,6 +30,12 @@ describe("Token Component", () => {
                 it("Id is passed as undefined, should throw error", () => {
                     expect(() => tokenRespository.markStolenRefreshTokensIfStolen(undefined as any)).rejects.toThrow("Id is undefined in mark stolen refresh tokens if stolen method in token repository, expected Object Id");
                 });
+
+                it("Refresh token not found in db, should throw error", async () => {
+                    mockGetRefreshToken.mockImplementation(() => null);
+
+                    await expect(() => tokenRespository.markStolenRefreshTokensIfStolen("Refresh Token")).rejects.toThrow("Token is invalid");
+                });
             });
 
             describe("Happy Path", () => {

@@ -4,6 +4,7 @@ export const mockSaveRefreshToken = jest.fn();
 export const mockGetRefreshToken = jest.fn();
 export const mockGetStolenRefreshTokenIds = jest.fn();
 export const mockMarkStolenRefreshTokens = jest.fn();
+export const mockSoftDeleteRefreshToken = jest.fn();
 
 
 const mock = jest.fn().mockImplementation(() => {
@@ -11,7 +12,8 @@ const mock = jest.fn().mockImplementation(() => {
         saveRefreshToken: mockSaveRefreshToken,
         getRefreshToken: mockGetRefreshToken,
         getStolenRefreshTokenIds: mockGetStolenRefreshTokenIds,
-        markStolenRefreshTokens: mockMarkStolenRefreshTokens
+        markStolenRefreshTokens: mockMarkStolenRefreshTokens,
+        softDeleteRefreshToken: mockSoftDeleteRefreshToken
     };
 });
 

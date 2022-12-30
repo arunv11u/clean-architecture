@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import mockMongooseServiceImpl, { mockSave, mockFindOne, mockUpdateMany } from '../../utils/services/__mocks__/mongoose.service.mock';
+import mockMongooseServiceImpl, { mockSave, mockFindOne, mockUpdateOne, mockUpdateMany } from '../../utils/services/__mocks__/mongoose.service.mock';
 import mockMongooseHelperImpl, { mockGetObjectId } from '../../utils/helpers/__mocks__/mongoose.helper.mock';
 import { CreateTokenInput, DatabaseService, GenericError, MongooseHelper, MongooseHelperImpl, MongooseServiceImpl, TokenDAO } from '../../utils';
 import { SaveTokenTypes, Token, TokenDoc } from '../models/token.model';
@@ -246,6 +246,27 @@ describe("Token Component", () => {
                     const expectedUpdatedQuery: UpdateQuery<TokenDoc> = { $set: { isStolen: true } }; 
 
                     expect(mockUpdateMany).toHaveBeenCalledWith(Token, expectedQuery, expectedUpdatedQuery, { session: undefined });
+                });
+            });
+        });
+
+        describe(`"softDeleteRefreshToken" method`, () => {
+            describe("Exception Path", () => {
+                it("Id is passed as undefined, should throw error", () => {
+                    expect(() => tokenDAO.softDeleteRefreshToken(undefined as any)).rejects.toThrow("Id is undefined in soft delete refresh token method in token DAO, expected token id");
+                });
+            });
+
+            describe("Happy Path", () => {
+                it("Token id is passed, should soft delete the refresh token document", async () => {
+                    const tokenId = mongooseHelper.getObjectId();
+    
+                    await tokenDAO.softDeleteRefreshToken(mongooseHelper.getObjectId());
+
+                    const expectedQuery: FilterQuery<TokenDoc> = { _id: tokenId };
+                    const expectedUpdateQuery: UpdateQuery<TokenDoc> = { $set: { isDeleted: true } };
+
+                    expect(mockUpdateOne).toHaveBeenCalledWith(Token, expectedQuery, expectedUpdateQuery, undefined);
                 });
             });
         });
