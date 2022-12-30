@@ -18,6 +18,8 @@ export class TokenRepositoryImpl implements TokenRepository {
         let isStolenToken: boolean = false;
         const refreshTokenData = await this._tokenDAO.getRefreshToken(id, session);
 
+        if (!refreshTokenData) throw this._responseHandler.clientError("Token is invalid");
+
         if (refreshTokenData.refreshTokenUsed) {
             const stolenTokenIds = await this._tokenDAO.getStolenRefreshTokenIds(id, session);
 

@@ -1,4 +1,6 @@
 import { Response, NextFunction } from "express";
+import { ResponseHandlerImpl } from '../../utils/response-handler';
+import { AuthRO } from "../../utils/types";
 import {
   AuthDTO,
   Controller,
@@ -6,14 +8,18 @@ import {
   TypedRequest,
   Use
 } from "../../utils";
+import { getTokenFactory, getUserFactory } from "../../global-config";
 import { AuthServiceImpl } from "../services/auth.service";
-import { ResponseHandlerImpl } from '../../utils/response-handler';
 import { AuthValidationImpl } from "../validations/auth.validation";
-import { AuthRO } from "../../utils/types";
+import { AuthMiddlewareImpl } from "../middlewares/auth.middleware";
+
+const tokenFactory = getTokenFactory();
+const userFactory = getUserFactory();
 
 const authService = new AuthServiceImpl();
 const responseHandler = new ResponseHandlerImpl();
 const authValidation = new AuthValidationImpl();
+const authMiddleware = new AuthMiddlewareImpl(tokenFactory.getService(), userFactory.getDAO());
 
 
 @Controller("/auth")
@@ -34,5 +40,21 @@ export class AuthController {
       next(error);
     };
   };
-  
+
+  @Post("/logout")
+  @Use(authMiddleware.checkAuthorization())
+  async logout(
+    request: TypedRequest<{}, {}, {}>,
+    response: Response<any, Record<string, any>>,
+    next: NextFunction
+  ) {
+    try {
+      await authService.logout(request, response, next);
+
+      responseHandler.ok(response);
+    } catch (error) {
+      console.error("Error in logout :", error);
+      next(error);
+    };
+  };
 };

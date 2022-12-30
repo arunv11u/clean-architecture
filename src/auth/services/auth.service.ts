@@ -1,20 +1,22 @@
-import { Response, NextFunction } from "express";
+import { Response, Request, NextFunction } from "express";
 import { getTokenFactory, getUserFactory } from "../../global-config";
-import { AuthDTO, AuthRepository, AuthService, GuestLoginInput, MongooseSessionHelper, MongooseSessionHelperImpl, TokenService, TokenTypes, TypedRequest, UserService } from "../../utils";
+import { AuthDTO, AuthRepository, AuthService, Cookie, CookieImpl, GuestLoginInput, MongooseSessionHelper, MongooseSessionHelperImpl, SignedCookies, TokenDAO, TypedRequest, UserService } from "../../utils";
 import { AuthRO } from "../../utils/types/auth/auth.ro.type";
 import { AuthRepositoryImpl } from "../repositories/auth.repository";
 
 export class AuthServiceImpl implements AuthService {
   private _authRepository: AuthRepository;
   private _userService: UserService;
-  private _tokenService: TokenService;
   private _mongooseSessionHelper: MongooseSessionHelper;
+  private _tokenDAO: TokenDAO;
+  private _cookie: Cookie;
 
   constructor() {
     this._authRepository = new AuthRepositoryImpl();
     this._userService = getUserFactory().getService();
-    this._tokenService = getTokenFactory().getService();
     this._mongooseSessionHelper = new MongooseSessionHelperImpl();
+    this._tokenDAO = getTokenFactory().getDAO();
+    this._cookie = new CookieImpl();
   };
 
   async guestLogin(
@@ -46,5 +48,14 @@ export class AuthServiceImpl implements AuthService {
 
       throw error;
     };
+  };
+
+  async logout(request: TypedRequest<{}, {}, {}>, response: Response<any, Record<string, any>>, next: NextFunction): Promise<void> {
+    const signedCookies = this._cookie.getSignedCookies(request as Request);
+
+    await this._tokenDAO.softDeleteRefreshToken(signedCookies.lifeverseChristmasEventRefreshToken);
+
+    this._cookie.clear(response, SignedCookies.lifeverseChristmasEventAuthToken);
+    this._cookie.clear(response, SignedCookies.lifeverseChristmasEventRefreshToken);
   };
 };

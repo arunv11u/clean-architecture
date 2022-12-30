@@ -5,11 +5,9 @@ import { AuthRepository, GuestLoginInput, TokenDAO, UserDAO } from "../../utils"
 
 export class AuthRepositoryImpl implements AuthRepository {
     private _userDAO: UserDAO;
-    private _tokenDAO: TokenDAO;
 
     constructor() {
         this._userDAO = getUserFactory().getDAO();
-        this._tokenDAO = getTokenFactory().getDAO();
     };
 
     async guestLogin(data: GuestLoginInput, session?: ClientSession): Promise<void> {

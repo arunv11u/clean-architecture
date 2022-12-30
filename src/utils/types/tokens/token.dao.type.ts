@@ -28,6 +28,7 @@ interface TokenDAO {
     getRefreshToken(id: string | Types.ObjectId, session?: ClientSession): Promise<RefreshTokenData>;
     getStolenRefreshTokenIds(id: string | Types.ObjectId, session?: ClientSession): Promise<Types.ObjectId[]>;
     markStolenRefreshTokens(ids: string | Types.ObjectId[], session?: ClientSession): Promise<void>;
+    softDeleteRefreshToken(id: string | Types.ObjectId, session?: ClientSession): Promise<void>;
 };
 
 export {

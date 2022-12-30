@@ -103,4 +103,13 @@ export class TokenDAOImpl implements TokenDAO {
 
         await this._mongooseService.updateMany(Token, query, updateQuery, { session });
     };
+
+    async softDeleteRefreshToken(id: string | Types.ObjectId, session?: ClientSession | undefined): Promise<void> {
+        if (!id) throw this._responseHandler.internalError("Id is undefined in soft delete refresh token method in token DAO, expected token id");
+
+        const query: FilterQuery<TokenDoc> = { _id: id };
+        const updateQuery: UpdateQuery<TokenDoc> = { $set: { isDeleted: true } };
+
+        await this._mongooseService.updateOne(Token, query, updateQuery, session);
+    };
 };

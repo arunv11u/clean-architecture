@@ -5,4 +5,5 @@ import { AuthRO } from './auth.ro.type';
 
 export interface AuthService {
     guestLogin(request: TypedRequest<{}, {}, AuthDTO.GuestLogin>, response: Response, next: NextFunction): Promise<AuthRO.GuestLogin>;
+    logout(request: TypedRequest<{}, {}, {}>, response: Response, next: NextFunction): Promise<void>;
 };
