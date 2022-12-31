@@ -37,7 +37,7 @@ describe("Auth Component", () => {
                 it("If guest login data passed, should create the user and token document", async () => {
                     mockUserSave.mockImplementation(() => ({ user: { id: mongooseHelper.getObjectId() } }));
 
-                    const guestLoginData: GuestLoginInput = {
+                    const guestLogin: GuestLoginInput = {
                         user: {
                             name: faker.name.fullName(),
                             email: faker.internet.email(),
@@ -49,7 +49,7 @@ describe("Auth Component", () => {
                         }
                     };
 
-                    await authRepository.guestLogin(guestLoginData);
+                    await authRepository.guestLogin(guestLogin);
 
                     expect(mockUserSave).toHaveBeenCalled();
                 });

@@ -4,23 +4,23 @@ export class DataTypeValidationImpl implements DataTypeValidation {
 
   constructor() { };
 
-  checkFieldIsString(inputData: string | undefined): boolean {
-    return (!!inputData && typeof inputData === "string");
+  checkFieldIsString(input: string | undefined): boolean {
+    return (!!input && typeof input === "string");
   };
 
-  checkFieldIsNumber(inputData: number | undefined): boolean {
-    return (inputData === 0 || (!!inputData && typeof inputData === "number"));
+  checkFieldIsNumber(input: number | undefined): boolean {
+    return (input === 0 || (!!input && typeof input === "number"));
   };
 
-  checkFieldIsBoolean(inputData: boolean | undefined): boolean {
-    return (inputData === false || (!!inputData && typeof inputData === "boolean"));
+  checkFieldIsBoolean(input: boolean | undefined): boolean {
+    return (input === false || (!!input && typeof input === "boolean"));
   };
 
-  checkFieldIsObject(inputData: Record<string, any> | undefined): boolean {
-    return (!!inputData && Object(inputData).constructor.name === "Object");
+  checkFieldIsObject(input: Record<string, any> | undefined): boolean {
+    return (!!input && Object(input).constructor.name === "Object");
   };
 
-  checkFieldIsArray(inputData: Array<any> | undefined): boolean {
-    return (!!inputData && Object(inputData).constructor.name === "Array");
+  checkFieldIsArray(input: Array<any> | undefined): boolean {
+    return (!!input && Object(input).constructor.name === "Array");
   };
 };

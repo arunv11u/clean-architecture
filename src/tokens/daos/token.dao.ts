@@ -1,5 +1,5 @@
 import { PipelineStage, ClientSession, FilterQuery, Types, UpdateQuery } from "mongoose";
-import { CreateTokenInput, ResponseHandler, TokenDAO, MongooseServiceImpl, DatabaseService, ResponseHandlerImpl, RefreshTokenData, TokenTypes, MongooseHelper, MongooseHelperImpl } from "../../utils";
+import { CreateTokenInput, ResponseHandler, TokenDAO, MongooseServiceImpl, DatabaseService, ResponseHandlerImpl, RefreshToken, TokenTypes, MongooseHelper, MongooseHelperImpl } from "../../utils";
 import { BuildToken, SaveTokenTypes, Token, TokenDoc, TokenObj } from "../models/token.model";
 
 export class TokenDAOImpl implements TokenDAO {
@@ -30,13 +30,13 @@ export class TokenDAOImpl implements TokenDAO {
         await this._mongooseService.save(token, { session });
     };
 
-    async getRefreshToken(id: string | Types.ObjectId, session?: ClientSession): Promise<RefreshTokenData> {
+    async getRefreshToken(id: string | Types.ObjectId, session?: ClientSession): Promise<RefreshToken> {
         if (!id) throw this._responseHandler.internalError("Id is undefined in get refresh token DAO, expected token id");
 
         const token = await this._mongooseService.findOne(Token, { _id: id, type: TokenTypes.refresh }, { session });
         const tokenObj = Token.jsonObj(token) as TokenObj;
 
-        return tokenObj as RefreshTokenData;
+        return tokenObj as RefreshToken;
     };
 
     async getStolenRefreshTokenIds(id: string | Types.ObjectId, session?: ClientSession | undefined): Promise<Types.ObjectId[]> {

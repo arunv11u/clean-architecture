@@ -1,5 +1,5 @@
 
 export interface StringHelper {
-    trimString(inputData: string): string;
-    camelToTitleCase(inputData: string): string;
+    trimString(input: string): string;
+    camelToTitleCase(input: string): string;
 };

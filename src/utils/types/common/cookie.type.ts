@@ -9,12 +9,12 @@ enum SignedCookies {
     lifeverseChristmasEventRefreshToken = "lifeversechristmasevent_refresh"
 };
 
-interface CookieData {
+interface CookieInput {
     name: Cookies;
     value: string;
 };
 
-interface SignedCookieData {
+interface SignedCookieInput {
     name: SignedCookies;
     value: string;
 };
@@ -28,8 +28,8 @@ type ModCookiesObj = Record<keyof typeof Cookies, string>;
 type ModSignedCookiesObj = Record<keyof typeof SignedCookies, string>;
 
 interface Cookie {
-    setCookies(response: Response, cookieData: CookieData, cookieOptions?: CookieOptions): void;
-    setSignedCookies(response: Response, cookieData: SignedCookieData, cookieOptions?: CookieOptions): void;
+    setCookies(response: Response, cookie: CookieInput, cookieOptions?: CookieOptions): void;
+    setSignedCookies(response: Response, cookie: SignedCookieInput, cookieOptions?: CookieOptions): void;
     getCookies(request: Request): ModCookiesObj;
     getSignedCookies(request: Request): ModSignedCookiesObj;
     clear(response: Response, key: Cookies | SignedCookies, cookieOptions?: CookieOptions): void;
@@ -38,8 +38,8 @@ interface Cookie {
 export {
     Cookies,
     SignedCookies,
-    CookieData,
-    SignedCookieData,
+    CookieInput,
+    SignedCookieInput,
     CookiesObj,
     SignedCookiesObj,
     ModCookiesObj,

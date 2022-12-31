@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { MongooseHelper, MongooseHelperImpl, RefreshTokenData, TokenRepository } from "../../utils";
+import { MongooseHelper, MongooseHelperImpl, RefreshToken, TokenRepository } from "../../utils";
 import mockTokenDAOImpl, { mockGetRefreshToken, mockGetStolenRefreshTokenIds, mockMarkStolenRefreshTokens } from "../daos/__mocks__/token.dao.mock";
 import { SaveTokenTypes } from "../models/token.model";
 import { TokenRepositoryImpl } from "./token.repository";
@@ -40,7 +40,7 @@ describe("Token Component", () => {
 
             describe("Happy Path", () => {
                 it("Token id is passed and token is not stolen, should return false", async () => {
-                    const expectedRefreshTokenData: RefreshTokenData = {
+                    const expectedRefreshToken: RefreshToken = {
                         id: mongooseHelper.getObjectId(),
                         value: faker.random.alphaNumeric(10),
                         user: mongooseHelper.getObjectId(),
@@ -52,7 +52,7 @@ describe("Token Component", () => {
                         version: 0
                     };
 
-                    mockGetRefreshToken.mockImplementation(() => expectedRefreshTokenData);
+                    mockGetRefreshToken.mockImplementation(() => expectedRefreshToken);
 
                     const isStolenToken = await tokenRespository.markStolenRefreshTokensIfStolen(mongooseHelper.getObjectId());
 
@@ -65,7 +65,7 @@ describe("Token Component", () => {
                 it("Stolen token id is passed as input, should mark the stolen tokens as true and return true", async () => {
                     const stolenTokenId = mongooseHelper.getObjectId();
                     const stolenRefreshTokenIds = [mongooseHelper.getObjectId()];
-                    const expectedRefreshTokenData: RefreshTokenData = {
+                    const expectedRefreshToken: RefreshToken = {
                         id: stolenTokenId,
                         value: faker.random.alphaNumeric(10),
                         user: mongooseHelper.getObjectId(),
@@ -78,7 +78,7 @@ describe("Token Component", () => {
                         version: 0
                     };
 
-                    mockGetRefreshToken.mockImplementation(() => expectedRefreshTokenData);
+                    mockGetRefreshToken.mockImplementation(() => expectedRefreshToken);
                     mockGetStolenRefreshTokenIds.mockImplementation(() => stolenRefreshTokenIds);
 
                     const isStolenToken = await tokenRespository.markStolenRefreshTokensIfStolen(stolenTokenId);
@@ -91,7 +91,7 @@ describe("Token Component", () => {
 
                 it("Stolen token id is passed which is already been realized as an stolen token, should return true", async () => {
                     const stolenTokenId = mongooseHelper.getObjectId();
-                    const expectedRefreshTokenData: RefreshTokenData = {
+                    const expectedRefreshToken: RefreshToken = {
                         id: stolenTokenId,
                         value: faker.random.alphaNumeric(10),
                         user: mongooseHelper.getObjectId(),
@@ -103,7 +103,7 @@ describe("Token Component", () => {
                         version: 0
                     };
 
-                    mockGetRefreshToken.mockImplementation(() => expectedRefreshTokenData);
+                    mockGetRefreshToken.mockImplementation(() => expectedRefreshToken);
 
                     const isStolenToken = await tokenRespository.markStolenRefreshTokensIfStolen(stolenTokenId);
 

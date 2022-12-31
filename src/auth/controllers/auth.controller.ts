@@ -32,9 +32,9 @@ export class AuthController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const responseData = await authService.guestLogin(request, response, next);
+      const guestLogin = await authService.guestLogin(request, response, next);
 
-      responseHandler.ok<AuthRO.GuestLogin, {}>(response, responseData);
+      responseHandler.ok<AuthRO.GuestLogin, {}>(response, guestLogin);
     } catch (error) {
       console.error(`Error in guestLogin :`, error);
       next(error);

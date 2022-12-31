@@ -5,8 +5,8 @@ export class StringValidationImpl implements StringValidation {
 
   constructor() { };
 
-  checkStrMaxLen(inputData: string | undefined, length: number): boolean {
-    if (!inputData || typeof inputData !== "string")
+  checkStrMaxLen(input: string | undefined, length: number): boolean {
+    if (!input || typeof input !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
         errorCode: 500
@@ -17,13 +17,13 @@ export class StringValidationImpl implements StringValidation {
         errorCode: 500
       });
 
-    if (inputData.length <= length) return true;
+    if (input.length <= length) return true;
 
     return false;
   };
 
-  checkStrMinLen(inputData: string | undefined, length: number): boolean {
-    if (!inputData || typeof inputData !== "string")
+  checkStrMinLen(input: string | undefined, length: number): boolean {
+    if (!input || typeof input !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
         errorCode: 500
@@ -34,27 +34,27 @@ export class StringValidationImpl implements StringValidation {
         errorCode: 500
       });
 
-    if (inputData.length >= length) return true;
+    if (input.length >= length) return true;
 
     return false;
   };
 
-  checkValidEmail(inputData: string | undefined): boolean {
-    if (!inputData || typeof inputData !== "string")
+  checkValidEmail(input: string | undefined): boolean {
+    if (!input || typeof input !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
         errorCode: 500
       });
 
-    return !!String(inputData)
+    return !!String(input)
       .toLowerCase()
       .match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
 
-  allowEmptyStr(inputData: string | undefined): boolean {
-    if ((inputData !== "" && !inputData) || typeof inputData !== "string")
+  allowEmptyStr(input: string | undefined): boolean {
+    if ((input !== "" && !input) || typeof input !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
         errorCode: 500
@@ -63,13 +63,13 @@ export class StringValidationImpl implements StringValidation {
     return true;
   };
 
-  checkRegexMatch(inputData: string | undefined, regexPattern: RegExp): boolean {
-    if (!inputData || typeof inputData !== "string")
+  checkRegexMatch(input: string | undefined, regexPattern: RegExp): boolean {
+    if (!input || typeof input !== "string")
       throw new GenericError({
         error: new Error("Input data is invalid, expected a string"),
         errorCode: 500
       });
 
-    return !!String(inputData).match(regexPattern);
+    return !!String(input).match(regexPattern);
   };
 };

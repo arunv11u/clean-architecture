@@ -1,6 +1,6 @@
 
 export interface ObjectValidation {
-  checkFieldExist(inputData: Record<string, any>, field: string): boolean;
-  allowUndefinedField(inputData: any): boolean;
-  allowFields(inputData: Record<string, any>, fields: string[]): { isValid: boolean, message?: string };
+  checkFieldExist(input: Record<string, any>, field: string): boolean;
+  allowUndefinedField(input: any): boolean;
+  allowFields(input: Record<string, any>, fields: string[]): { isValid: boolean, message?: string };
 }

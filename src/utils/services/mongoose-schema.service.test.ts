@@ -14,15 +14,15 @@ describe("Mongoose Schema Service Module", () => {
             it("Should return transform function for the document", () => {
                 const transform = mongooseSchemaService.transform;
 
-                const documentData = {
+                const document = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     __v: 0
                 };
 
-                const returnValue = transform(documentData, { ...documentData });
+                const returnValue = transform(document, { ...document });
 
-                expect({ id: documentData._id, name: documentData.name, version: documentData.__v }).toStrictEqual(returnValue);
+                expect({ id: document._id, name: document.name, version: document.__v }).toStrictEqual(returnValue);
             });
         });
     });

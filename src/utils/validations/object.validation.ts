@@ -5,27 +5,27 @@ export class ObjectValidationImpl implements ObjectValidation {
 
   constructor() { };
 
-  checkFieldExist(inputData: Record<string, any>, field: string): boolean {
-    if (inputData.constructor.name !== "Object")
+  checkFieldExist(input: Record<string, any>, field: string): boolean {
+    if (input.constructor.name !== "Object")
       throw new GenericError({
         error: new Error("Input data is invalid, expected an object"),
         errorCode: 500,
       });
 
-    return Object(inputData).hasOwnProperty(field);
+    return Object(input).hasOwnProperty(field);
   };
 
-  allowUndefinedField(inputData: any): boolean {
-    return inputData === undefined;
+  allowUndefinedField(input: any): boolean {
+    return input === undefined;
   };
 
-  allowFields(inputData: Record<string, any>, fields: string[]) {
-    if (!inputData)
+  allowFields(input: Record<string, any>, fields: string[]) {
+    if (!input)
       throw new GenericError({
         error: new Error("Input data is invalid, expected an object"),
         errorCode: 500,
       });
-    if (inputData.constructor.name !== "Object")
+    if (input.constructor.name !== "Object")
       throw new GenericError({
         error: new Error("Input data is invalid, expected an object"),
         errorCode: 500,
@@ -50,7 +50,7 @@ export class ObjectValidationImpl implements ObjectValidation {
     });
 
     let forbiddenFields: string[] = [];
-    for (let key in inputData) {
+    for (let key in input) {
       if (!fields.some((field) => field === key)) {
         forbiddenFields.push(key);
         break;

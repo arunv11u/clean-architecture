@@ -5,8 +5,8 @@ export class ArrayValidationImpl implements ArrayValidation {
 
   constructor() { };
 
-  checkMaxLen(inputData: Array<any> | undefined, length: number) {
-    if (!inputData || Object(inputData).constructor.name !== "Array")
+  checkMaxLen(input: Array<any> | undefined, length: number) {
+    if (!input || Object(input).constructor.name !== "Array")
       throw new GenericError({
         error: new Error("Input data is invalid, expected an array"),
         errorCode: 500,
@@ -17,11 +17,11 @@ export class ArrayValidationImpl implements ArrayValidation {
         errorCode: 500,
       });
 
-    return inputData.length <= length;
+    return input.length <= length;
   };
 
-  checkMinLen(inputData: Array<any> | undefined, length: number) {
-    if (!inputData || Object(inputData).constructor.name !== "Array")
+  checkMinLen(input: Array<any> | undefined, length: number) {
+    if (!input || Object(input).constructor.name !== "Array")
       throw new GenericError({
         error: new Error("Input data is invalid, expected an array"),
         errorCode: 500,
@@ -32,17 +32,17 @@ export class ArrayValidationImpl implements ArrayValidation {
         errorCode: 500,
       });
 
-    return inputData.length >= length;
+    return input.length >= length;
   };
 
-  checkArrOfStr(inputData: Array<string> | undefined) {
-    if (!inputData || Object(inputData).constructor.name !== "Array")
+  checkArrOfStr(input: Array<string> | undefined) {
+    if (!input || Object(input).constructor.name !== "Array")
       throw new GenericError({
         error: new Error("Input data is invalid, expected an array of strings"),
         errorCode: 500,
       });
 
-    for (let ele of inputData)
+    for (let ele of input)
       if (typeof ele !== "string")
         throw new GenericError({
           error: new Error(
@@ -54,14 +54,14 @@ export class ArrayValidationImpl implements ArrayValidation {
     return true;
   };
 
-  checkArrOfNum(inputData: Array<number> | undefined) {
-    if (!inputData || Object(inputData).constructor.name !== "Array")
+  checkArrOfNum(input: Array<number> | undefined) {
+    if (!input || Object(input).constructor.name !== "Array")
       throw new GenericError({
         error: new Error("Input data is invalid, expected an array of numbers"),
         errorCode: 500,
       });
 
-    for (let ele of inputData)
+    for (let ele of input)
       if (typeof ele !== "number")
         throw new GenericError({
           error: new Error(
@@ -73,8 +73,8 @@ export class ArrayValidationImpl implements ArrayValidation {
     return true;
   };
 
-  checkArrOfBool = (inputData: Array<boolean> | undefined) => {
-    if (!inputData || Object(inputData).constructor.name !== "Array")
+  checkArrOfBool = (input: Array<boolean> | undefined) => {
+    if (!input || Object(input).constructor.name !== "Array")
       throw new GenericError({
         error: new Error(
           "Input data is invalid, expected an array of booleans"
@@ -82,7 +82,7 @@ export class ArrayValidationImpl implements ArrayValidation {
         errorCode: 500,
       });
 
-    for (let ele of inputData)
+    for (let ele of input)
       if (typeof ele !== "boolean")
         throw new GenericError({
           error: new Error(

@@ -16,17 +16,17 @@ export class TokenRepositoryImpl implements TokenRepository {
         if (!id) throw this._responseHandler.internalError("Id is undefined in mark stolen refresh tokens if stolen method in token repository, expected Object Id");
 
         let isStolenToken: boolean = false;
-        const refreshTokenData = await this._tokenDAO.getRefreshToken(id, session);
+        const refreshToken = await this._tokenDAO.getRefreshToken(id, session);
 
-        if (!refreshTokenData) throw this._responseHandler.clientError("Token is invalid");
+        if (!refreshToken) throw this._responseHandler.clientError("Token is invalid");
 
-        if (refreshTokenData.refreshTokenUsed) {
+        if (refreshToken.refreshTokenUsed) {
             const stolenTokenIds = await this._tokenDAO.getStolenRefreshTokenIds(id, session);
 
             await this._tokenDAO.markStolenRefreshTokens(stolenTokenIds, session);
 
             isStolenToken = true;
-        } else if (refreshTokenData.isStolen) isStolenToken = true;
+        } else if (refreshToken.isStolen) isStolenToken = true;
         else isStolenToken = false;
 
 

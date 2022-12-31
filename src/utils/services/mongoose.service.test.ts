@@ -58,16 +58,16 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If all required inputs passed, should save and return document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" },
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 const saveRes = await mongooseService.save(newUser);
-                expect((User as any).jsonObj(saveRes)).toStrictEqual({ ...userData, __v: 0 });
+                expect((User as any).jsonObj(saveRes)).toStrictEqual({ ...userInput, __v: 0 });
             });
         });
     });
@@ -87,25 +87,25 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If all required inputs passed, should save and return documents", async () => {
-                const inputData = {
+                const input = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
 
-                const insertManyRes = await mongooseService.insertMany(User, [inputData]);
-                expect((User as any).jsonObj(insertManyRes)).toStrictEqual([{ ...inputData, __v: 0 }]);
+                const insertManyRes = await mongooseService.insertMany(User, [input]);
+                expect((User as any).jsonObj(insertManyRes)).toStrictEqual([{ ...input, __v: 0 }]);
             });
 
             it("If all required inputs passed with options, should save and return documents", async () => {
-                const inputData = {
+                const input = {
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
 
-                const insertManyRes = await mongooseService.insertMany(User, [inputData], { rawResult: true } as any) as unknown as InsertManyResult;
+                const insertManyRes = await mongooseService.insertMany(User, [input], { rawResult: true } as any) as unknown as InsertManyResult;
                 expect(insertManyRes.insertedCount).toBe(1);
             });
         });
@@ -126,18 +126,18 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If id is passed, should return the respected document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
-                const user = await mongooseService.findById(User, userData._id.toString());
-                expect((User as any).jsonObj(user)).toStrictEqual({ ...userData, __v: 0 });
+                const user = await mongooseService.findById(User, userInput._id.toString());
+                expect((User as any).jsonObj(user)).toStrictEqual({ ...userInput, __v: 0 });
             });
         });
     });
@@ -157,18 +157,18 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If query is passed, should return the matched document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
-                const user = await mongooseService.findOne(User, { _id: userData._id.toString() });
-                expect((User as any).jsonObj(user)).toStrictEqual({ ...userData, __v: 0 });
+                const user = await mongooseService.findOne(User, { _id: userInput._id.toString() });
+                expect((User as any).jsonObj(user)).toStrictEqual({ ...userInput, __v: 0 });
             });
         });
     });
@@ -188,18 +188,18 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If query is passed, should return the matched document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
-                const users = await mongooseService.find(User, { _id: userData._id.toString() });
-                expect((User as any).jsonObj(users)).toStrictEqual([{ ...userData, __v: 0 }]);
+                const users = await mongooseService.find(User, { _id: userInput._id.toString() });
+                expect((User as any).jsonObj(users)).toStrictEqual([{ ...userInput, __v: 0 }]);
             });
         });
     });
@@ -219,17 +219,17 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If query is passed, should return the matched document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
-                const usersCount = await mongooseService.countDocuments(User, { _id: userData._id.toString() });
+                const usersCount = await mongooseService.countDocuments(User, { _id: userInput._id.toString() });
                 expect(usersCount).toBe(1);
             });
         });
@@ -250,18 +250,18 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If pipeline stages are passed, should return the matched documents", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
                 const users = await mongooseService.aggregate(User, [{ $sort: { _id: -1 } }]);
-                expect(users).toStrictEqual([{ ...userData, __v: 0 }]);
+                expect(users).toStrictEqual([{ ...userInput, __v: 0 }]);
             });
         });
     });
@@ -288,19 +288,19 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If id and update queries are passed, should update and return the document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
                 const newName = faker.name.fullName();
-                const updatedUser = await mongooseService.findByIdAndUpdate(User, userData._id.toString(), { $set: { name: newName } }, { new: true });
-                expect((User as any).jsonObj(updatedUser)).toStrictEqual({ ...userData, name: newName, __v: 0 });
+                const updatedUser = await mongooseService.findByIdAndUpdate(User, userInput._id.toString(), { $set: { name: newName } }, { new: true });
+                expect((User as any).jsonObj(updatedUser)).toStrictEqual({ ...userInput, name: newName, __v: 0 });
             });
         });
     });
@@ -325,19 +325,19 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If filter and update queries are passed, should update and return the document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
                 const newName = faker.name.fullName();
-                const updatedUser = await mongooseService.findOneAndUpdate(User, { _id: userData._id.toString() }, { $set: { name: newName } }, { new: true });
-                expect((User as any).jsonObj(updatedUser)).toStrictEqual({ ...userData, name: newName, __v: 0 });
+                const updatedUser = await mongooseService.findOneAndUpdate(User, { _id: userInput._id.toString() }, { $set: { name: newName } }, { new: true });
+                expect((User as any).jsonObj(updatedUser)).toStrictEqual({ ...userInput, name: newName, __v: 0 });
             });
         });
     });
@@ -362,18 +362,18 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If filter and update queries are passed, should update and return the document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
                 const newName = faker.name.fullName();
-                const updateResult = await mongooseService.updateOne(User, { _id: userData._id.toString() }, { $set: { name: newName } });
+                const updateResult = await mongooseService.updateOne(User, { _id: userInput._id.toString() }, { $set: { name: newName } });
                 expect(updateResult.modifiedCount).toBe(1);
             });
         });
@@ -400,7 +400,7 @@ describe("Mongoose Service Module", () => {
         describe("Happy Path", () => {
             it("If filter and update queries are passed, should update and return the document", async () => {
                 const phoneNumber = "9876543210";
-                const userData = [
+                const userInput = [
                     {
                         _id: mongooseHelper.getObjectId(),
                         name: faker.name.fullName(),
@@ -414,7 +414,7 @@ describe("Mongoose Service Module", () => {
                         phone: { code: "+91", number: phoneNumber }
                     }];
 
-                await mongooseService.insertMany(User, userData);
+                await mongooseService.insertMany(User, userInput);
 
                 const newName = faker.name.fullName();
                 const updateResult = await mongooseService.updateMany(User, { number: phoneNumber }, { $set: { name: newName } });
@@ -438,18 +438,18 @@ describe("Mongoose Service Module", () => {
 
         describe("Happy Path", () => {
             it("If filter and update queries are passed, should update and return the document", async () => {
-                const userData = {
+                const userInput = {
                     _id: mongooseHelper.getObjectId(),
                     name: faker.name.fullName(),
                     email: faker.internet.email(),
                     phone: { code: "+91", number: "9876543210" }
                 };
-                const newUser = new User(userData);
+                const newUser = new User(userInput);
 
                 await mongooseService.save(newUser);
 
-                const deletedResult = await mongooseService.findOneAndDelete(User, { _id: userData._id.toString() });
-                expect((User as any).jsonObj(deletedResult)).toStrictEqual({ ...userData, __v: 0 });
+                const deletedResult = await mongooseService.findOneAndDelete(User, { _id: userInput._id.toString() });
+                expect((User as any).jsonObj(deletedResult)).toStrictEqual({ ...userInput, __v: 0 });
             });
         });
     });

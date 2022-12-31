@@ -7,7 +7,7 @@ interface CreateTokenInput {
     value: string;
 };
 
-interface BaseTokenData {
+interface BaseToken {
     id: string | Types.ObjectId;
     value: string;
     user: string | Types.ObjectId;
@@ -18,14 +18,14 @@ interface BaseTokenData {
     version: number;
 };
 
-interface RefreshTokenData extends BaseTokenData {
+interface RefreshToken extends BaseToken {
     type: SaveTokenTypes.refresh,
     refreshTokenUsed?: string | Types.ObjectId;
 };
 
 interface TokenDAO {
     saveRefreshToken(tokenDetails: CreateTokenInput, session?: ClientSession): Promise<void>;
-    getRefreshToken(id: string | Types.ObjectId, session?: ClientSession): Promise<RefreshTokenData>;
+    getRefreshToken(id: string | Types.ObjectId, session?: ClientSession): Promise<RefreshToken>;
     getStolenRefreshTokenIds(id: string | Types.ObjectId, session?: ClientSession): Promise<Types.ObjectId[]>;
     markStolenRefreshTokens(ids: string | Types.ObjectId[], session?: ClientSession): Promise<void>;
     softDeleteRefreshToken(id: string | Types.ObjectId, session?: ClientSession): Promise<void>;
@@ -33,6 +33,6 @@ interface TokenDAO {
 
 export {
     CreateTokenInput,
-    RefreshTokenData,
+    RefreshToken,
     TokenDAO
 };

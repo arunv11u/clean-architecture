@@ -1,5 +1,5 @@
 import { Request, Response, CookieOptions } from "express";
-import { Cookie, CookieData, Cookies, CookiesObj, ModCookiesObj, ModSignedCookiesObj, SignedCookieData, SignedCookies, SignedCookiesObj } from "../types";
+import { Cookie, CookieInput, Cookies, CookiesObj, ModCookiesObj, ModSignedCookiesObj, SignedCookieInput, SignedCookies, SignedCookiesObj } from "../types";
 
 
 export class CookieImpl implements Cookie {
@@ -14,18 +14,18 @@ export class CookieImpl implements Cookie {
         };
     };
 
-    setCookies(response: Response<any, Record<string, any>>, cookieData: CookieData, cookieOptions?: CookieOptions | undefined): void {
+    setCookies(response: Response<any, Record<string, any>>, cookie: CookieInput, cookieOptions?: CookieOptions | undefined): void {
         if (cookieOptions) cookieOptions = { ...this._cookieOptions, ...cookieOptions };
         else cookieOptions = this._cookieOptions;
 
-        response.cookie(cookieData.name, cookieData.value, cookieOptions)
+        response.cookie(cookie.name, cookie.value, cookieOptions)
     };
 
-    setSignedCookies(response: Response<any, Record<string, any>>, cookieData: SignedCookieData, cookieOptions?: CookieOptions | undefined): void {
+    setSignedCookies(response: Response<any, Record<string, any>>, cookie: SignedCookieInput, cookieOptions?: CookieOptions | undefined): void {
         if (cookieOptions) cookieOptions = { ...this._cookieOptions, signed: true, ...cookieOptions };
         else cookieOptions = this._cookieOptions;
 
-        response.cookie(cookieData.name, cookieData.value, cookieOptions)
+        response.cookie(cookie.name, cookie.value, cookieOptions)
     };
 
     getCookies(request: Request<any, Record<string, any>>): ModCookiesObj {

@@ -145,7 +145,7 @@ describe("Token Component", () => {
 
                     mockGetObjectId.mockImplementation(() => refreshTokenIds[0]);
 
-                    const tokensData: TokenDoc[] = [
+                    const tokens: TokenDoc[] = [
                         new Token({
                             _id: refreshTokenIds[0],
                             type: SaveTokenTypes.refresh,
@@ -174,7 +174,7 @@ describe("Token Component", () => {
                             refreshTokenUsed: new mongoose.Types.ObjectId()
                         })
                     ];
-                    await Token.insertMany(tokensData);
+                    await Token.insertMany(tokens);
 
                     const tokenDAO = new TokenDAOImpl();
                     const stolenTokenIds = await tokenDAO.getStolenRefreshTokenIds(refreshTokenIds[0]);
@@ -197,7 +197,7 @@ describe("Token Component", () => {
 
                     mockGetObjectId.mockImplementation(() => refreshTokenIds[0]);
 
-                    const tokensData: TokenDoc[] = [
+                    const tokens: TokenDoc[] = [
                         new Token({
                             _id: refreshTokenIds[0],
                             type: SaveTokenTypes.refresh,
@@ -217,7 +217,7 @@ describe("Token Component", () => {
                             value: faker.random.alphaNumeric(10)
                         })
                     ];
-                    await Token.insertMany(tokensData);
+                    await Token.insertMany(tokens);
 
                     const tokenDAO = new TokenDAOImpl();
                     const stolenTokens = await tokenDAO.getStolenRefreshTokenIds(refreshTokenIds[0]);
